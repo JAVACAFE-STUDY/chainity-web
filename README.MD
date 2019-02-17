@@ -11,3 +11,4 @@ npm run-script build
 
 ### 어플리케이션 실행
 npm start
+http://localhost:8080 접속

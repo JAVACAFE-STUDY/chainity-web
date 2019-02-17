@@ -30,6 +30,11 @@ module.exports = {
       }
     ]
   },
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    port: 8080
+  }
   // not minimized option
   // optimization: {
   //   minimize: false
