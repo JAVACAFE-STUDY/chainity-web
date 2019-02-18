@@ -1,8 +1,9 @@
 # 자바코인 프론트개발 repository
 
 ## 개발환경구성 방법
-전체 소스 check-out
+전체 소스 check-out<br>
 -> 루트로 이동
+
 ### 전체 package 설치
 $ npm i
 
@@ -10,5 +11,5 @@ $ npm i
 npm run-script build
 
 ### 어플리케이션 실행
-npm start
-http://localhost:8080 접속
+npm start;<br>
+-> http://localhost:8080 접속
