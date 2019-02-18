@@ -8,8 +8,8 @@
 $ npm i
 
 ### 소스 변경 후 build
-npm run-script build
+$ npm run-script build
 
 ### 어플리케이션 실행
-npm start;<br>
+$ npm start<br>
 -> http://localhost:8080 접속
