@@ -7,9 +7,9 @@
 ### 전체 package 설치
 $ npm i
 
-### 소스 변경 후 build
-$ npm run-script build
+### 소스 변경 후 build - 작업중 
+$ ~~npm run-script build~~
 
 ### 어플리케이션 실행
 $ npm start<br>
--> http://localhost:8080 접속
+-> http://localhost:8000 접속
