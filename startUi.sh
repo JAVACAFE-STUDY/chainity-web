@@ -2,7 +2,7 @@
 
 #MacOS 에서 node 가 정상적으로 종료되지 않은 경우 해당 프로세스를 찾아서 종료
 
-PID=`lsof -i :8000 | grep node | awk '{print $2}' | head -1`
+PID=`lsof -i :9060 | grep node | awk '{print $2}' | head -1`
 
 if [ -z "${PID}" ]
 then
