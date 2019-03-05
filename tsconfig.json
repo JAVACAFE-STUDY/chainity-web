@@ -1,0 +1,43 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "jsx": "react",
+    "target": "es5",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": false,
+    "noImplicitAny": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "outDir": "build/www/app",
+    "lib": ["es2015", "es2017", "dom"],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "skipLibCheck": true, // false 인경우 material-ui/core 의 table 관련 컴포넌트에서 에러
+    "types": ["webpack-env", "jest"],
+    "allowJs": true,
+    "checkJs": false,
+    "baseUrl": "./",
+    "paths": {
+        "app/*": ["src/main/webapp/app/*"],
+        "@material-ui/core": ["./material-ui/src"],
+        "@material-ui/core/*": ["./material-ui/src/*"],
+        "@material-ui/lab": ["./material-ui-lab/src"],
+        "@material-ui/lab/*": ["./material-ui-lab/src/*"]
+    },
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "src/main/webapp/app/typing.d.ts",
+    "src/main/webapp/app/**/*",
+    "src/test/javascript/spec/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
