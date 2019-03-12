@@ -3,10 +3,12 @@ import List from '@material-ui/core/List';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import AnnounceIcon from '@material-ui/icons/Announcement';
-import AccountBalance from '@material-ui/icons/AccountBalance';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import SortIcon from '@material-ui/icons/Sort';
 import FaceIcon from '@material-ui/icons/Face';
+import PanTool from '@material-ui/icons/PanTool';
+import CompareArrows from '@material-ui/icons/CompareArrows';
+import UpdateIcon from '@material-ui/icons/Update';
 import Divider from '@material-ui/core/Divider';
 import ListItemLink from 'app/shared/layout/sidebar/list-item-link';
 
@@ -47,11 +49,24 @@ class Sidebar extends React.Component {
         </List>
         <Divider />
         <List>
-          <ListItemLink button key={'demo'} to={'/demo'}>
+          <ListItemLink button key={'hello'} to={'/demo/hello'}>
             <ListItemIcon>
-              <AccountBalance />
+              <PanTool />
             </ListItemIcon>
-            <ListItemText primary={'Demo list'} />
+            <ListItemText primary={'Hello world'} />
+          </ListItemLink>
+          <ListItemLink button key={'sendProps'} to={'/demo/sendProps'}>
+            <ListItemIcon>
+              <CompareArrows />
+            </ListItemIcon>
+            <ListItemText primary={'send props'} />
+          </ListItemLink>
+          <ListItemLink button key={'sendState'} to={'/demo/sendState'}>
+            <ListItemIcon>
+              <UpdateIcon />
+            </ListItemIcon>
+            <ListItemText primary={'state 작업중'} />
+            {/*<ListItemText primary={'send State'} />*/}
           </ListItemLink>
         </List>
       </div>

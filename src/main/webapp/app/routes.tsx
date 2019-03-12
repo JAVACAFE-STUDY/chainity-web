@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
 
 import Login from 'app/modules/login/login';
@@ -14,6 +14,8 @@ import Profile from 'app/pages/profile/profile';
 import Rank from 'app/pages/rank/rank';
 import Announce from 'app/pages/announce/announce';
 import Hello from 'app/pages/demo/hello';
+import SendProps from 'app/pages/demo/SendProps';
+import SendState from 'app/pages/demo/SendState';
 import Entities from 'app/entities';
 import PrivateRoute from 'app/shared/auth/private-route';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
@@ -44,8 +46,11 @@ const Routes = () => (
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
       <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />
+      {/* 나열하는 순서가 중요하다. 하위->상위 */}
+      <ErrorBoundaryRoute path="/demo/sendState" component={SendState} />
+      <ErrorBoundaryRoute path="/demo/sendProps" component={SendProps} />
       <ErrorBoundaryRoute path="/demo/hello" component={Hello} />
-      <ErrorBoundaryRoute path="/demo" component={Hello} />
+      <ErrorBoundaryRoute path="/demo/" component={Hello} />
       <ErrorBoundaryRoute path="/announce" component={Announce} />
       <ErrorBoundaryRoute path="/event" component={Event} />
       <ErrorBoundaryRoute path="/rank" component={Rank} />
