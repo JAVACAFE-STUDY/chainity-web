@@ -55,9 +55,13 @@
     "start": "yarn run webpack:dev",
     "webpack:dev": "cross-env NODE_ENV=dev-watch webpack-dev-server --config webpack/webpack.dev.config.js  --progress --inline --hot --profile --port=8000 --open",
     "webpack:build": "yarn run webpack:build:dev",
-    "webpack:build:dev": "webpack --config webpack/webpack.dev.config.js",
+    "webpack:build:dev": "webpack --config webpack/webpack.config.js",
     "webpack:prod": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "test": "cross-env NODE_ENV=test mocha",
-    "postinstall": "yarn run webpack:build"
+    "postinstall": "yarn run webpack:build",
+    "yb:build": "webpack --config webpack/yb/webpack.config.js",
+    "yb:build:dev": "webpack --config webpack/yb/webpack.dev.config.js",
+    "yb:start": "webpack-dev-server --config webpack/yb/webpack.config.js",
+    "yb:open": "opener http://localhost:8080"
   }
 }
