@@ -13,6 +13,7 @@ import Event from 'app/pages/events/event';
 import Profile from 'app/pages/profile/profile';
 import Rank from 'app/pages/rank/rank';
 import Announce from 'app/pages/announce/announce';
+import Hello from 'app/pages/demo/hello';
 import Entities from 'app/entities';
 import PrivateRoute from 'app/shared/auth/private-route';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
@@ -43,6 +44,8 @@ const Routes = () => (
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
       <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />
+      <ErrorBoundaryRoute path="/demo/hello" component={Hello} />
+      <ErrorBoundaryRoute path="/demo" component={Hello} />
       <ErrorBoundaryRoute path="/announce" component={Announce} />
       <ErrorBoundaryRoute path="/event" component={Event} />
       <ErrorBoundaryRoute path="/rank" component={Rank} />
