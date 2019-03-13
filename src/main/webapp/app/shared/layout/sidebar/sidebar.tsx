@@ -6,8 +6,13 @@ import AnnounceIcon from '@material-ui/icons/Announcement';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import SortIcon from '@material-ui/icons/Sort';
 import FaceIcon from '@material-ui/icons/Face';
+import PanTool from '@material-ui/icons/PanTool';
+import CompareArrows from '@material-ui/icons/CompareArrows';
+import UpdateIcon from '@material-ui/icons/Update';
 import Divider from '@material-ui/core/Divider';
 import ListItemLink from 'app/shared/layout/sidebar/list-item-link';
+
+// Material UI Icon list - https://material.io/tools/icons/?icon=announcement&style=baseline
 
 class Sidebar extends React.Component {
   render() {
@@ -40,6 +45,28 @@ class Sidebar extends React.Component {
               <FaceIcon />
             </ListItemIcon>
             <ListItemText primary={'프로필'} />
+          </ListItemLink>
+        </List>
+        <Divider />
+        <List>
+          <ListItemLink button key={'hello'} to={'/demo/hello'}>
+            <ListItemIcon>
+              <PanTool />
+            </ListItemIcon>
+            <ListItemText primary={'Hello world'} />
+          </ListItemLink>
+          <ListItemLink button key={'sendProps'} to={'/demo/sendProps'}>
+            <ListItemIcon>
+              <CompareArrows />
+            </ListItemIcon>
+            <ListItemText primary={'send props'} />
+          </ListItemLink>
+          <ListItemLink button key={'sendState'} to={'/demo/sendState'}>
+            <ListItemIcon>
+              <UpdateIcon />
+            </ListItemIcon>
+            <ListItemText primary={'state 작업중'} />
+            {/*<ListItemText primary={'send State'} />*/}
           </ListItemLink>
         </List>
       </div>

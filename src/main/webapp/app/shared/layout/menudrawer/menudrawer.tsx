@@ -98,7 +98,7 @@ const styles = theme => ({
 
 class MenuDrawer extends React.Component<IDrawerState> {
   state: IDrawerState = {
-    open: false,
+    open: true, // default로 열어놓도록 설
     anchorEl: null
   };
 
