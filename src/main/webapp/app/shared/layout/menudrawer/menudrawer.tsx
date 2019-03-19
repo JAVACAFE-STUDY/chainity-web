@@ -101,16 +101,12 @@ const styles = theme => ({
     display: 'inline-block',
     'padding-left': '30px',
     '& a:hover': {
-      'text-decoration': 'none !important'
+      'text-decoration': 'none'
     }
   },
   'app-bar-button': {
+    padding: '20px',
     color: 'rgb(255, 255, 255)'
-  },
-  'app-bar-button span:hover': {
-    'text-decoration': 'none !important'
-  },
-  'appBarLink': {
   }
 });
 
