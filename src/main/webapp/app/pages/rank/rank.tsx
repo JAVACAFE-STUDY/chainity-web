@@ -1,14 +1,102 @@
-import React from 'react';
-import { Alert, Col, Row } from 'reactstrap';
+import './rank.css';
 
-export class Rank extends React.Component {
+import React from 'react';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Divider from '@material-ui/core/Divider';
+import { connect } from 'react-redux';
+import { getSession } from 'app/shared/reducers/authentication';
+import { withStyles, createStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
+
+let id = 0;
+function createData(name, calories, fat, carbs, protein) {
+  id += 1;
+  return { id, name, calories, fat, carbs, protein };
+}
+
+const rows = [
+  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+  createData('Eclair', 262, 16.0, 24, 6.0),
+  createData('Cupcake', 305, 3.7, 67, 4.3),
+  createData('Gingerbread', 356, 16.0, 49, 3.9)
+];
+
+const styles = theme =>
+  createStyles({
+    root: {
+      flexGrow: 1
+    },
+    paper: {
+      padding: theme.spacing.unit * 2,
+      textAlign: 'center',
+      color: theme.palette.text.secondary
+    }
+  });
+
+const mainLeftContent = classes => (
+  <Paper className={classes.paper}>
+    <Typography color="textSecondary" variant="h1">
+      TODO : 이번 달 랭킹
+    </Typography>
+  </Paper>
+);
+
+const mainRightContent = classes => (
+  <Paper className={classes.paper}>
+    <Typography color="textSecondary" variant="h1">
+      TODO : 전체 랭킹
+    </Typography>
+  </Paper>
+);
+
+const gridContainer = (classes, leftXs, rightXs) => (
+  <Grid container spacing={24}>
+    <Grid item xs={leftXs}>
+      {mainLeftContent(classes)}
+    </Grid>
+    <Grid item xs={rightXs}>
+      {mainRightContent(classes)}
+    </Grid>
+  </Grid>
+);
+
+export interface IHomeProp extends StateProps, DispatchProps {
+  classes: any;
+}
+
+export class EventPage extends React.Component<IHomeProp> {
+  componentDidMount() {
+    this.props.getSession();
+  }
+
   render() {
+    const { account, classes } = this.props;
     return (
-      <Row>
-        <h2>Rank</h2>
-      </Row>
+      <div>
+        {gridContainer(classes, 6, 6)}
+      </div>
     );
   }
 }
 
-export default Rank;
+const mapStateToProps = storeState => ({
+  account: storeState.authentication.account,
+  isAuthenticated: storeState.authentication.isAuthenticated
+});
+
+const mapDispatchToProps = { getSession };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(EventPage));

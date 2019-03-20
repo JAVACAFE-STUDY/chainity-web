@@ -10,6 +10,7 @@ import PasswordResetFinish from 'app/modules/account/password-reset/finish/passw
 import Logout from 'app/modules/login/logout';
 import Home from 'app/pages/home/home';
 import Event from 'app/pages/events/event';
+import EventDetail from 'app/pages/events/eventDetail';
 import Profile from 'app/pages/profile/profile';
 import Rank from 'app/pages/rank/rank';
 import Announce from 'app/pages/announce/announce';
@@ -50,8 +51,9 @@ const Routes = () => (
       <ErrorBoundaryRoute path="/demo/sendState" component={SendState} />
       <ErrorBoundaryRoute path="/demo/sendProps" component={SendProps} />
       <ErrorBoundaryRoute path="/demo/hello" component={Hello} />
-      <ErrorBoundaryRoute path="/demo/" component={Hello} />
+      <ErrorBoundaryRoute path="/demo" component={Hello} />
       <ErrorBoundaryRoute path="/announce" component={Announce} />
+      <ErrorBoundaryRoute path="/event/detail" component={EventDetail} />
       <ErrorBoundaryRoute path="/event" component={Event} />
       <ErrorBoundaryRoute path="/rank" component={Rank} />
       <ErrorBoundaryRoute path="/profile" component={Profile} />

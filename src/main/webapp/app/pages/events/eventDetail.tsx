@@ -45,7 +45,7 @@ const styles = theme =>
 const mainContent = classes => (
   <Paper className={classes.paper}>
     <Typography color="textSecondary" variant="h1">
-      TODO : EventPage
+      TODO : Event detail page
     </Typography>
   </Paper>
 );
@@ -64,7 +64,7 @@ const gridContainer = (classes, leftXs, rightXs) => (
       {mainContent(classes)}
     </Grid>
     <Grid item xs={rightXs}>
-      side 영역 content 미정
+      {sidebarContent(classes)}
     </Grid>
   </Grid>
 );
