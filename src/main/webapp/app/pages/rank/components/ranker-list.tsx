@@ -46,7 +46,7 @@ export class RankerList extends React.Component<IHomeCardProp> {
     const { range } = this.props;
 
     // TODO : range에 따라 파라미터를 다르게 해서 조회하도록 로직 수정
-    fetch('https://jsonplaceholder.typicode.com/users')
+    fetch('http://localhost:8090/groups/1/rewards')
       .then(response => response.json())
       .then(json => {
           this.setState({
@@ -94,12 +94,12 @@ export class RankerList extends React.Component<IHomeCardProp> {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {items.map(row => (
-                  <TableRow key={row.id}>
-                    <TableCell component="th" scope="row">#{row.id}</TableCell>
-                    <TableCell align="right">{row.name}</TableCell>
-                    <TableCell align="right">{row.phone}</TableCell>
-                    <TableCell align="right">{row.website}</TableCell>
+                {items.docs.map(row => (
+                  <TableRow key={row['_id']}>
+                    <TableCell component="th" scope="row">#{row['_id']}</TableCell>
+                    <TableCell align="right">{row.rewardedUser}</TableCell>
+                    <TableCell align="right">{row.tokens}</TableCell>
+                    <TableCell align="right">{row.event.length}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
