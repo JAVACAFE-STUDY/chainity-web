@@ -55,8 +55,7 @@ const Routes = () => (
       <ErrorBoundaryRoute path="/demo/hello" component={Hello} />
       <ErrorBoundaryRoute path="/demo" component={Hello} />
       <ErrorBoundaryRoute path="/announce" component={Announce} />
-      {/* TODO : :id 처리 가능하도록 수정 */}
-      <ErrorBoundaryRoute path="/event/detail" component={EventDetail} />
+      <ErrorBoundaryRoute path="/event/detail/:id" component={EventDetail} />
       <ErrorBoundaryRoute path="/event" component={Event} />
       <ErrorBoundaryRoute path="/rank" component={Rank} />
       <ErrorBoundaryRoute path="/profile" component={Profile} />

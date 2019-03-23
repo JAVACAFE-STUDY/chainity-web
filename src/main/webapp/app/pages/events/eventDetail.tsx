@@ -46,11 +46,11 @@ const sidebarContent = classes => (
   </Paper>
 );
 
-const gridContainer = (classes, leftXs, rightXs) => (
+const gridContainer = (classes, leftXs, rightXs, eventId) => (
   <Grid container spacing={24}>
     <Grid item xs={leftXs}>
       {mainContent(classes)}
-      <RewardList />
+      <RewardList eventId={eventId}/>
     </Grid>
     <Grid item xs={rightXs}>
       {sidebarContent(classes)}
@@ -62,16 +62,20 @@ export interface IHomeProp extends StateProps, DispatchProps {
   classes: any;
 }
 
-export class EventPage extends React.Component<IHomeProp> {
+export class EventDetailPage extends React.Component<IHomeProp> {
   componentDidMount() {
     this.props.getSession();
   }
 
   render() {
-    const { account, classes } = this.props;
+    // @ts-ignore
+    const { account, classes, match } = this.props;
+
+    console.log('### match');
+    console.log(match);
     return (
       <div>
-        {gridContainer(classes, 9, 3)}
+        {gridContainer(classes, 9, 3, match.params.id)}
       </div>
     );
   }
@@ -90,4 +94,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(EventPage));
+)(withStyles(styles)(EventDetailPage));

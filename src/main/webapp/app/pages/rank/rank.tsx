@@ -35,11 +35,11 @@ const styles = theme =>
     }
   });
 
-type SearchRange = 'this month' | 'total';
+type SearchRange = 'month' | 'total';
 
 const mainLeftContent = classes => {
   const title = '이번 달 랭킹';
-  const range: SearchRange = 'this month';
+  const range: SearchRange = 'month';
 
   return (
     <Paper className={classes.paper}>

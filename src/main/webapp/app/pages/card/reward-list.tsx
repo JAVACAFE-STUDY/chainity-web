@@ -80,7 +80,10 @@ export class RewardList extends React.Component<IHomeCardProp> {
   }
 
   componentDidMount() {
-    fetch('http://localhost:8090/groups/1/users/1/rewards', { mode: 'cors' })
+    // @ts-ignore
+    const { eventId } = this.props;
+
+    fetch(`http://localhost:8090/groups/1/users/${eventId}/rewards`, { mode: 'cors' })
       .then(response => response.json())
       .then(json => {
           this.setState({
