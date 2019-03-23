@@ -44,7 +44,6 @@ export class RankerList extends React.Component<IHomeCardProp> {
   componentDidMount() {
     // @ts-ignore
     const { range } = this.props;
-    // TODO : range에 따라 파라미터를 다르게 해서 조회하도록 로직 수정
     fetch(`http://localhost:8090/groups/1/rewards?range=${range}`)
       .then(response => response.json())
       .then(json => {

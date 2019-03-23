@@ -71,8 +71,6 @@ export class EventDetailPage extends React.Component<IHomeProp> {
     // @ts-ignore
     const { account, classes, match } = this.props;
 
-    console.log('### match');
-    console.log(match);
     return (
       <div>
         {gridContainer(classes, 9, 3, match.params.id)}
