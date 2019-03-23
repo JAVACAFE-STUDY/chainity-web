@@ -26,7 +26,7 @@ export interface IHomeCardProp {
   classes: any;
 }
 
-export class Status extends React.Component<IHomeCardProp> {
+export class MemberRank extends React.Component<IHomeCardProp> {
   render() {
     const { classes } = this.props;
     return (
@@ -91,4 +91,4 @@ export class Status extends React.Component<IHomeCardProp> {
   }
 }
 
-export default withStyles(styles)(Status);
+export default withStyles(styles)(MemberRank);

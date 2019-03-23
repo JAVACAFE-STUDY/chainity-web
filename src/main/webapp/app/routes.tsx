@@ -14,6 +14,7 @@ import EventDetail from 'app/pages/events/eventDetail';
 import Profile from 'app/pages/profile/profile';
 import Rank from 'app/pages/rank/rank';
 import Announce from 'app/pages/announce/announce';
+import AjaxCall from 'app/pages/demo/ajaxCall';
 import Hello from 'app/pages/demo/hello';
 import SendProps from 'app/pages/demo/SendProps';
 import SendState from 'app/pages/demo/SendState';
@@ -48,16 +49,18 @@ const Routes = () => (
       <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
       <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />
       {/* 나열하는 순서가 중요하다. 하위->상위 */}
+      <ErrorBoundaryRoute path="/demo/ajaxCall" component={AjaxCall} />
       <ErrorBoundaryRoute path="/demo/sendState" component={SendState} />
       <ErrorBoundaryRoute path="/demo/sendProps" component={SendProps} />
       <ErrorBoundaryRoute path="/demo/hello" component={Hello} />
       <ErrorBoundaryRoute path="/demo" component={Hello} />
       <ErrorBoundaryRoute path="/announce" component={Announce} />
+      {/* TODO : :id 처리 가능하도록 수정 */}
       <ErrorBoundaryRoute path="/event/detail" component={EventDetail} />
       <ErrorBoundaryRoute path="/event" component={Event} />
       <ErrorBoundaryRoute path="/rank" component={Rank} />
       <ErrorBoundaryRoute path="/profile" component={Profile} />
-      <ErrorBoundaryRoute path="/" component={Home} />
+      <ErrorBoundaryRoute path="/" component={Event} />
     </Switch>
   </div>
 );

@@ -7,14 +7,10 @@ import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
 import { withStyles, createStyles } from '@material-ui/core/styles';
-import ApplyList from './card/apply-list';
-import CompletionList from './card/completion-list';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import ApplyList from '../card/apply-list';
+import CompletionList from '../card/completion-list';
 import Typography from '@material-ui/core/Typography';
+import RewardList from '../card/reward-list';
 
 let id = 0;
 function createData(name, calories, fat, carbs, protein) {
@@ -62,6 +58,7 @@ const gridContainer = (classes, leftXs, rightXs) => (
   <Grid container spacing={24}>
     <Grid item xs={leftXs}>
       {mainContent(classes)}
+      <RewardList />
     </Grid>
     <Grid item xs={rightXs}>
       {sidebarContent(classes)}
