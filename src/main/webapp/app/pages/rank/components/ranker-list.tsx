@@ -31,7 +31,7 @@ export interface IHomeCardProp {
   classes: any;
 }
 
-export class RewardList extends React.Component<IHomeCardProp> {
+export class RankerList extends React.Component<IHomeCardProp> {
   constructor(props) {
     super(props);
     this.state = {
@@ -111,4 +111,4 @@ export class RewardList extends React.Component<IHomeCardProp> {
   }
 }
 
-export default withStyles(styles)(RewardList);
+export default withStyles(styles)(RankerList);
