@@ -80,7 +80,7 @@ export class RewardList extends React.Component<IHomeCardProp> {
   }
 
   componentDidMount() {
-    fetch('https://jsonplaceholder.typicode.com/users')
+    fetch('http://localhost:8090/groups/1/users/1/rewards', { mode: 'cors' })
       .then(response => response.json())
       .then(json => {
           this.setState({
@@ -127,12 +127,12 @@ export class RewardList extends React.Component<IHomeCardProp> {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {items.map(row => (
-                  <TableRow key={row.id}>
-                    <TableCell component="th" scope="row">{row.name}</TableCell>
-                    <TableCell align="right">{row.id}</TableCell>
-                    <TableCell align="right">{row.phone}</TableCell>
-                    <TableCell align="right">{row.website}</TableCell>
+                {items.docs.map(row => (
+                  <TableRow key={row['_id']}>
+                    <TableCell component="th" scope="row">{row.rewardedUser}</TableCell>
+                    <TableCell align="right">{row.tokens}</TableCell>
+                    <TableCell align="right">{row.createdAt}</TableCell>
+                    <TableCell align="right">{row.tx}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
