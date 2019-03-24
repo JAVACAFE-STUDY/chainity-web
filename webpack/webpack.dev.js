@@ -44,12 +44,13 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
         '/swagger-resources',
         '/v2/api-docs',
         '/h2-console',
-        '/auth'
+        '/auth',
+        '/v1'
       ],
-      target: `http${options.tls ? 's' : ''}://127.0.0.1:8080`,
+      target: `http${options.tls ? 's' : ''}://localhost:8090`,
       secure: false,
       changeOrigin: options.tls,
-      headers: { host: 'localhost:9000' }
+      headers: { host: 'localhost:8090' }
     }],
     watchOptions: {
       ignored: /node_modules/
