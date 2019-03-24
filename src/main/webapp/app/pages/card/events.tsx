@@ -31,7 +31,7 @@ export interface IHomeCardProp {
   classes: any;
 }
 
-export class HomeStatus extends React.Component<IHomeCardProp> {
+export class Events extends React.Component<IHomeCardProp> {
   render() {
     const { classes } = this.props;
     return (
@@ -44,4 +44,4 @@ export class HomeStatus extends React.Component<IHomeCardProp> {
   }
 }
 
-export default withStyles(styles)(HomeStatus);
+export default withStyles(styles)(Events);

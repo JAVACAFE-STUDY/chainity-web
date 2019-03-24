@@ -7,28 +7,16 @@ import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
 import { withStyles, createStyles } from '@material-ui/core/styles';
-import ApplyList from './card/apply-list';
-import CompletionList from './card/completion-list';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import ApplyList from '../card/apply-list';
+import CompletionList from '../card/completion-list';
 import Typography from '@material-ui/core/Typography';
+import RewardList from '../card/reward-list';
 
 let id = 0;
 function createData(name, calories, fat, carbs, protein) {
   id += 1;
   return { id, name, calories, fat, carbs, protein };
 }
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9)
-];
 
 const styles = theme =>
   createStyles({
@@ -58,10 +46,11 @@ const sidebarContent = classes => (
   </Paper>
 );
 
-const gridContainer = (classes, leftXs, rightXs) => (
+const gridContainer = (classes, leftXs, rightXs, eventId) => (
   <Grid container spacing={24}>
     <Grid item xs={leftXs}>
       {mainContent(classes)}
+      <RewardList eventId={eventId}/>
     </Grid>
     <Grid item xs={rightXs}>
       {sidebarContent(classes)}
@@ -73,16 +62,18 @@ export interface IHomeProp extends StateProps, DispatchProps {
   classes: any;
 }
 
-export class EventPage extends React.Component<IHomeProp> {
+export class EventDetailPage extends React.Component<IHomeProp> {
   componentDidMount() {
     this.props.getSession();
   }
 
   render() {
-    const { account, classes } = this.props;
+    // @ts-ignore
+    const { account, classes, match } = this.props;
+
     return (
       <div>
-        {gridContainer(classes, 9, 3)}
+        {gridContainer(classes, 9, 3, match.params.id)}
       </div>
     );
   }
@@ -101,4 +92,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(EventPage));
+)(withStyles(styles)(EventDetailPage));

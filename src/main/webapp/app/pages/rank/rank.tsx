@@ -3,30 +3,17 @@ import './rank.css';
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
 import { withStyles, createStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+import RankerList from './components/ranker-list';
 
 let id = 0;
 function createData(name, calories, fat, carbs, protein) {
   id += 1;
   return { id, name, calories, fat, carbs, protein };
 }
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9)
-];
 
 const styles = theme =>
   createStyles({
@@ -40,21 +27,33 @@ const styles = theme =>
     }
   });
 
-const mainLeftContent = classes => (
-  <Paper className={classes.paper}>
-    <Typography color="textSecondary" variant="h1">
-      TODO : 이번 달 랭킹
-    </Typography>
-  </Paper>
-);
+type SearchRange = 'month' | 'total';
 
-const mainRightContent = classes => (
-  <Paper className={classes.paper}>
-    <Typography color="textSecondary" variant="h1">
-      TODO : 전체 랭킹
-    </Typography>
-  </Paper>
-);
+const mainLeftContent = classes => {
+  const title = '이번 달 랭킹';
+  const range: SearchRange = 'month';
+
+  return (
+    <Paper className={classes.paper}>
+      <Typography color="textSecondary" variant="h1">
+        <RankerList title={title} range={range}/>
+      </Typography>
+    </Paper>
+  );
+};
+
+const mainRightContent = classes => {
+  const title = '전체 랭킹';
+  const range: SearchRange = 'total';
+
+  return (
+    <Paper className={classes.paper}>
+      <Typography color="textSecondary" variant="h1">
+        <RankerList title={title} range={range}/>
+      </Typography>
+    </Paper>
+  );
+};
 
 const gridContainer = (classes, leftXs, rightXs) => (
   <Grid container spacing={24}>
