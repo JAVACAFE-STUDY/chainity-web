@@ -36,21 +36,50 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     stats: options.stats,
     hot: true,
     contentBase: './build/www',
-    proxy: [{
-      context: [
-        /* jhipster-needle-add-entity-to-webpack - JHipster will add entity api paths here */
-        '/api',
-        '/management',
-        '/swagger-resources',
-        '/v2/api-docs',
-        '/h2-console',
-        '/auth'
-      ],
-      target: `http${options.tls ? 's' : ''}://127.0.0.1:8080`,
-      secure: false,
-      changeOrigin: options.tls,
-      headers: { host: 'localhost:9000' }
-    }],
+    proxy: {
+      // jHipster 기존 설정 내용
+      '/api': {
+          target: `http${options.tls ? 's' : ''}://127.0.0.1:8080`,
+          secure: false,
+          changeOrigin: options.tls,
+          headers: { host: 'localhost:9000' }
+        },
+      '/management': {
+          target: `http${options.tls ? 's' : ''}://127.0.0.1:8080`,
+          secure: false,
+          changeOrigin: options.tls,
+          headers: { host: 'localhost:9000' }
+        },
+      '/swagger-resources': {
+          target: `http${options.tls ? 's' : ''}://127.0.0.1:8080`,
+          secure: false,
+          changeOrigin: options.tls,
+          headers: { host: 'localhost:9000' }
+        },
+      '/v2/api-docs': {
+          target: `http${options.tls ? 's' : ''}://127.0.0.1:8080`,
+          secure: false,
+          changeOrigin: options.tls,
+          headers: { host: 'localhost:9000' }
+        },
+      '/h2-console': {
+          target: `http${options.tls ? 's' : ''}://127.0.0.1:8080`,
+          secure: false,
+          changeOrigin: options.tls,
+          headers: { host: 'localhost:9000' }
+        },
+      '/auth': {
+          target: `http${options.tls ? 's' : ''}://127.0.0.1:8080`,
+          secure: false,
+          changeOrigin: options.tls,
+          headers: { host: 'localhost:9000' }
+        },
+      // 자바 코인 백엔드 api
+      '/v1/': {
+        target: 'http://localhost:8090',
+        secure: false,
+      }
+    },
     watchOptions: {
       ignored: /node_modules/
     }
