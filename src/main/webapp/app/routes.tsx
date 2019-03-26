@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import Loadable from 'react-loadable';
 
 import Login from 'app/modules/login/login';
@@ -8,9 +8,8 @@ import Activate from 'app/modules/account/activate/activate';
 import PasswordResetInit from 'app/modules/account/password-reset/init/password-reset-init';
 import PasswordResetFinish from 'app/modules/account/password-reset/finish/password-reset-finish';
 import Logout from 'app/modules/login/logout';
-import Home from 'app/pages/home/home';
 import Event from 'app/pages/events/event';
-import EventDetail from 'app/pages/events/eventDetail';
+import EventDetail from 'app/pages/events/event-detail';
 import Profile from 'app/pages/profile/profile';
 import Rank from 'app/pages/rank/rank';
 import Announce from 'app/pages/announce/announce';
