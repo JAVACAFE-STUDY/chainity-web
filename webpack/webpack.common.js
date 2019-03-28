@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MergeJsonWebpackPlugin = require('merge-jsons-webpack-plugin');
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 const utils = require('./utils.js');
 
@@ -107,6 +108,7 @@ module.exports = options => ({
         SERVER_API_URL: `''`
       }
     }),
+    new Dotenv(),
     new ForkTsCheckerWebpackPlugin({ tslint: true }),
     new CopyWebpackPlugin([
       { from: './node_modules/swagger-ui/dist/css', to: 'swagger-ui/dist/css' },

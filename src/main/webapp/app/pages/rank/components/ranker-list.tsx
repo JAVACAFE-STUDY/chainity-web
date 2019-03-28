@@ -8,6 +8,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { createStyles, withStyles } from '@material-ui/core/styles';
+import { API_SERVER_URL } from 'app/config/constants';
+console.log(API_SERVER_URL);
 
 const styles = theme => createStyles({
   root: {
@@ -44,7 +46,10 @@ export class RankerList extends React.Component<IHomeCardProp> {
   componentDidMount() {
     // @ts-ignore
     const { range } = this.props;
-    fetch(`http://localhost:8090/groups/1/rewards?range=${range}`)
+    // const url = API_SERVER_URL;
+    const url = 'http://localhost:8090/groups/1/rewards';
+
+    fetch(`${url}?range=${range}`)
       .then(response => response.json())
       .then(json => {
           this.setState({
