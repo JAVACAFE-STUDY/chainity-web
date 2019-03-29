@@ -1,28 +1,51 @@
 import './event.css';
+import { Card } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
+import Input from '@material-ui/core/Input';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import { BlurCircular } from '@material-ui/icons';
+import SearchIcon from '@material-ui/icons/Search';
+import { create } from 'jss';
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
-import { connect } from 'react-redux';
-import { getSession } from 'app/shared/reducers/authentication';
 import { withStyles, createStyles } from '@material-ui/core/styles';
-import ApplyList from '../card/apply-list';
-import CompletionList from '../card/completion-list';
-import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
 
-let id = 0;
-function createData(name, calories, fat, carbs, protein) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
+interface IEventList {
+  totalDocs: Number;
+  offset: Number;
+  limit: Number;
+  docs: IEventListItem[];
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9)
-];
+interface IEventListItem {
+  _id: String;
+  title: String;
+  description: String;
+  tokens: Number;
+  maxNumberOfParticipants: Number;
+  startDate: String;
+  endDate: String;
+  isClosed: String;
+  createdAt: String;
+  createdBy: String;
+}
+
+interface IEventListState {
+  data?: IEventList;
+  nowDate: Date;
+  list?: IEventListItem[];
+  isNext?: Boolean;
+  param: {
+    offset: Number;
+    limit: Number;
+    keyword?: String;
+  };
+}
 
 const styles = theme =>
   createStyles({
@@ -33,66 +56,215 @@ const styles = theme =>
       padding: theme.spacing.unit * 2,
       textAlign: 'center',
       color: theme.palette.text.secondary
+    },
+    input: {
+      marginLeft: 8,
+      flex: 1
+    },
+    iconButton: {
+      padding: 10
+    },
+    listItem: {
+      height: '300px',
+      margin: '20px 0',
+      padding: '20px'
+    },
+    listItemTitle: {
+      'font-size': '1.5em',
+      margin: '20px 10px'
+    },
+    listItemContent: {
+      display: '-webkit-box',
+      overflow: 'hidden',
+      'text-overflow': 'ellipsis',
+      '-webkit-line-clamp': 4,
+      '-webkit-box-orient': 'vertical',
+      'font-size': '1.2rem',
+      'line-height': '2rem',
+      'letter-spacing': '-1px',
+      margin: '5px 0px'
+    },
+    listItemCoinIcon: {
+      display: 'inline',
+      'font-size': '1.5em',
+      color: '#FFF42F'
+    },
+    listItemTokens: {
+      display: 'inline',
+      padding: '0 5px'
+    },
+    listItemStartDate: {
+      display: 'inline',
+      padding: '0 5px'
     }
   });
 
-const mainContent = classes => (
-  <Paper className={classes.paper}>
-    <Typography color="textSecondary" variant="h1">
-      TODO : EventPage
-    </Typography>
-  </Paper>
-);
+export class EventPage extends React.Component<null, IEventListState> {
+  constructor(props: Readonly<null>) {
+    super(props);
+    this.state = {
+      param: {
+        limit: 3,
+        offset: 1
+      },
+      nowDate: new Date(),
+      list: []
+    };
+    this.clickSearch = this.clickSearch.bind(this);
+    this.changeEvent = this.changeEvent.bind(this);
+    this.enterEvent = this.enterEvent.bind(this);
+    this.calcDate = this.calcDate.bind(this);
+    this.nextPageSearch = this.nextPageSearch.bind(this);
+    this.scrollEvent = this.scrollEvent.bind(this);
+  }
 
-const sidebarContent = classes => (
-  <Paper className={classes.paper}>
-    <ApplyList />
-    <Divider variant="middle" />
-    <CompletionList />
-  </Paper>
-);
+  componentDidMount(): void {
+    window.addEventListener('scroll', this.scrollEvent);
+  }
 
-const gridContainer = (classes, leftXs, rightXs) => (
-  <Grid container spacing={24}>
-    <Grid item xs={leftXs}>
-      {mainContent(classes)}
-    </Grid>
-    <Grid item xs={rightXs}>
-      {sidebarContent(classes)}
-    </Grid>
-  </Grid>
-);
+  componentWillUnmount(): void {
+    window.removeEventListener('scroll', this.scrollEvent);
+  }
 
-export interface IHomeProp extends StateProps, DispatchProps {
-  classes: any;
-}
+  scrollEvent() {
+    if ((window.scrollY + window.innerHeight) === document.body.offsetHeight) {
+      this.nextPageSearch();
+    }
+  }
 
-export class EventPage extends React.Component<IHomeProp> {
-  componentDidMount() {
-    // this.props.getSession();
+  clickSearch() {
+    this.setState({
+      ...this.state,
+      param: {
+        ...this.state.param,
+        offset: 1
+      },
+      list: []
+    });
+    this.search();
+  }
+
+  async search() {
+    const res = await axios.get('/v1/groups/1/events', {
+      params: {
+        ...this.state.param
+      }
+    });
+    this.setState({
+      ...this.state,
+      isNext: (res.data.limit + res.data.offset) < res.data.totalDocs,
+      data: res.data,
+      list: res.data.docs.reduce((previousValue, currentValue) => {
+        previousValue.push(currentValue);
+        return previousValue;
+      }, this.state.list)
+    });
+  }
+
+  enterEvent(e: KeyboardEvent) {
+    if (e.key === 'Enter') {
+      this.search();
+    }
+  }
+
+  nextPageSearch() {
+    if (this.state.isNext) {
+      this.setState({
+        ...this.state,
+        param: {
+          ...this.state.param,
+          offset: this.state.param.offset + this.state.param.limit
+        }
+      });
+      this.search();
+    }
+  }
+
+  changeEvent(e) {
+    this.setState({
+      ...this.state,
+      param: {
+        limit: this.state.param.limit,
+        offset: this.state.param.offset,
+        keyword: e.target.value
+      }
+    });
+  }
+
+  calcDate(regDate: String) {
+    const regDateObject = new Date(regDate) || new Date();
+    const secondDate = (this.state.nowDate - regDateObject) / 1000;
+    if ((secondDate / 60) <= 1) {
+      return `${(secondDate).toFixed(0)} 초 전`;
+    } else if ((secondDate / 60 / 60) <= 1) {
+      return `${(secondDate / 60).toFixed(0)} 분 전`;
+    } else if ((secondDate / 60 / 60 / 24) <= 1) {
+      return `${(secondDate / 60 / 60).toFixed(0)} 시간 전`;
+    }
+    return `${regDateObject.toLocaleString('ko-kr', {
+      year: 'numeric', month: 'long', day: 'numeric'
+    })}`;
   }
 
   render() {
     const { account, classes } = this.props;
     return (
-      <div>
-        {gridContainer(classes, 9, 3)}
-      </div>
+      <>
+        <Grid container spacing={24}>
+          <Grid item xs={9}>
+            <Paper className={classes.paper}>
+              <FormControl fullWidth>
+                <Input
+                  className={classes.input} placeholder="이벤트 검색 키워드를 입력해주세요."
+                  onChange={this.changeEvent}
+                  onKeyUp={this.enterEvent}
+                  endAdornment={
+                    <IconButton className={classes.iconButton} aria-label="Search">
+                      <SearchIcon
+                        onClick={this.clickSearch}
+                      />
+                    </IconButton>
+                  }
+                />
+              </FormControl>
+            </Paper>
+            <Paper>
+              <List>
+                {
+                  this.state.list ?
+                    this.state.list.map((event, index) => {
+                        return (
+                          <Card
+                            key={index}
+                            className={classes.listItem}
+                          >
+                            <Typography component="p" className={classes.listItemTitle}>
+                              {event.title}
+                            </Typography>
+                            <Typography className={classes.listItemContent}>
+                              {event.description}
+                            </Typography>
+                            <BlurCircular className={classes.listItemCoinIcon}/>
+                            <Typography component="span" className={classes.listItemTokens}>
+                              {event.tokens}
+                            </Typography>
+                            <Typography component="span" className={classes.listItemStartDate}>
+                              {this.calcDate(event.startDate)}
+                            </Typography>
+                          </Card>
+                        );
+                      }
+                    )
+                    : (<Card>No Data</Card>)
+                }
+              </List>
+              {this.state.list ? <Button onClick={this.nextPageSearch} disabled={!this.state.isNext}>더보기</Button> : <></>}
+            </ Paper>
+          </ Grid>
+        </ Grid>
+      </ >
     );
   }
 }
 
-const mapStateToProps = storeState => ({
-  account: storeState.authentication.account,
-  isAuthenticated: storeState.authentication.isAuthenticated
-});
-
-const mapDispatchToProps = { getSession };
-
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof mapDispatchToProps;
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(EventPage));
+export default withStyles(styles)(EventPage);
