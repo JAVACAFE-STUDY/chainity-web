@@ -1,3 +1,4 @@
+/* tslint:disable:ter-arrow-body-style */
 import './event.css';
 import { Card } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -14,6 +15,7 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 interface IEventList {
   totalDocs: Number;
@@ -35,16 +37,18 @@ interface IEventListItem {
   createdBy: String;
 }
 
+interface IEventListParam {
+  offset: Number;
+  limit: Number;
+  keyword?: String;
+}
+
 interface IEventListState {
   data?: IEventList;
   nowDate: Date;
   list?: IEventListItem[];
   isNext?: Boolean;
-  param: {
-    offset: Number;
-    limit: Number;
-    keyword?: String;
-  };
+  param: IEventListParam;
 }
 
 const styles = theme =>
@@ -99,6 +103,15 @@ const styles = theme =>
     }
   });
 
+const stateParamToParam = (param: IEventListParam) => {
+  return Object.keys(param).reduce((pv, cv) => {
+     if (param[cv]) {
+        Object.assign(pv, { [cv]: param[cv] });
+     }
+    return pv;
+  }, {});
+};
+
 export class EventPage extends React.Component<null, IEventListState> {
   constructor(props: Readonly<null>) {
     super(props);
@@ -147,7 +160,7 @@ export class EventPage extends React.Component<null, IEventListState> {
   async search() {
     const res = await axios.get('/v1/groups/1/events', {
       params: {
-        ...this.state.param
+      ...stateParamToParam(this.state.param)
       }
     });
     this.setState({
@@ -163,7 +176,7 @@ export class EventPage extends React.Component<null, IEventListState> {
 
   enterEvent(e: KeyboardEvent) {
     if (e.key === 'Enter') {
-      this.search();
+      this.clickSearch();
     }
   }
 
@@ -231,34 +244,35 @@ export class EventPage extends React.Component<null, IEventListState> {
             <Paper>
               <List>
                 {
-                  this.state.list ?
+                  this.state.list.length ?
                     this.state.list.map((event, index) => {
                         return (
-                          <Card
-                            key={index}
-                            className={classes.listItem}
-                          >
-                            <Typography component="p" className={classes.listItemTitle}>
-                              {event.title}
-                            </Typography>
-                            <Typography className={classes.listItemContent}>
-                              {event.description}
-                            </Typography>
-                            <BlurCircular className={classes.listItemCoinIcon}/>
-                            <Typography component="span" className={classes.listItemTokens}>
-                              {event.tokens}
-                            </Typography>
-                            <Typography component="span" className={classes.listItemStartDate}>
-                              {this.calcDate(event.startDate)}
-                            </Typography>
-                          </Card>
+                          <Link to={`/event/detail/${event._id}`} key={index}>
+                            <Card
+                              className={classes.listItem}
+                            >
+                              <Typography component="p" className={classes.listItemTitle}>
+                                {event.title}
+                              </Typography>
+                              <Typography className={classes.listItemContent}>
+                                {event.description}
+                              </Typography>
+                              <BlurCircular className={classes.listItemCoinIcon}/>
+                              <Typography component="span" className={classes.listItemTokens}>
+                                {event.tokens}
+                              </Typography>
+                              <Typography component="span" className={classes.listItemStartDate}>
+                                {this.calcDate(event.startDate)}
+                              </Typography>
+                            </Card>
+                          </Link>
                         );
                       }
                     )
-                    : (<Card>No Data</Card>)
+                    : <></>
                 }
               </List>
-              {this.state.list ? <Button onClick={this.nextPageSearch} disabled={!this.state.isNext}>더보기</Button> : <></>}
+              {this.state.list.length ? <Button onClick={this.nextPageSearch} disabled={!this.state.isNext}>더보기</Button> : (<Card>No Data</Card>)}
             </ Paper>
           </ Grid>
         </ Grid>
