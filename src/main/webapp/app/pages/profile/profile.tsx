@@ -6,14 +6,9 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
-import { withStyles, createStyles } from '@material-ui/core/styles';
-import Wallet from '../card/wallet';
-import Events from '../card/events';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import { createStyles, withStyles } from '@material-ui/core/styles';
+import Wallet from '../../components/card/wallet';
+import Events from '../../components/card/events';
 import Typography from '@material-ui/core/Typography';
 
 let id = 0;

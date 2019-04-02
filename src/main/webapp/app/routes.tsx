@@ -2,14 +2,14 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 import Loadable from 'react-loadable';
 
-import Login from 'app/modules/login/login';
-import Register from 'app/modules/account/register/register';
-import Activate from 'app/modules/account/activate/activate';
-import PasswordResetInit from 'app/modules/account/password-reset/init/password-reset-init';
-import PasswordResetFinish from 'app/modules/account/password-reset/finish/password-reset-finish';
-import Logout from 'app/modules/login/logout';
+import Login from 'app/pages/login/login';
+import Register from 'app/pages/account/register/register';
+import Activate from 'app/pages/account/activate/activate';
+import PasswordResetInit from 'app/pages/account/password-reset/init/password-reset-init';
+import PasswordResetFinish from 'app/pages/account/password-reset/finish/password-reset-finish';
+import Logout from 'app/pages/login/logout';
 import Event from 'app/pages/events/event';
-import EventDetail from 'app/pages/events/event-detail';
+import EventDetail from 'app/pages/events/event/event-detail';
 import Profile from 'app/pages/profile/profile';
 import Rank from 'app/pages/rank/rank';
 import Announce from 'app/pages/announce/announce';
@@ -24,12 +24,12 @@ import { AUTHORITIES } from 'app/config/constants';
 
 // tslint:disable:space-in-parens
 const Account = Loadable({
-  loader: () => import(/* webpackChunkName: "account" */ 'app/modules/account'),
+  loader: () => import(/* webpackChunkName: "account" */ 'app/pages/account'),
   loading: () => <div>loading ...</div>
 });
 
 const Admin = Loadable({
-  loader: () => import(/* webpackChunkName: "administration" */ 'app/modules/administration'),
+  loader: () => import(/* webpackChunkName: "administration" */ 'app/pages/administration'),
   loading: () => <div>loading ...</div>
 });
 // tslint:enable

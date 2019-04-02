@@ -5,9 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
-import { withStyles, createStyles } from '@material-ui/core/styles';
-import ApplyList from '../card/apply-list';
-import CompletionList from '../card/completion-list';
+import { createStyles, withStyles } from '@material-ui/core/styles';
+import CompletionList from '../../components/card/completion-list';
 import Typography from '@material-ui/core/Typography';
 
 let id = 0;
@@ -46,7 +45,7 @@ const mainContent = classes => (
 
 const sidebarContent = classes => (
   <Paper className={classes.paper}>
-    <ApplyList />
+    {/*<zApplyList />*/}
     <Divider variant="middle" />
     <CompletionList />
   </Paper>
