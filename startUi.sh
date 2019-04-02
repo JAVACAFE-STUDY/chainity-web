@@ -12,6 +12,17 @@ else
       echo ${PID} "was found and killed."
 fi
 
+PID_MOCK=`lsof -i :8090 | grep node | awk '{print $2}' | head -1`
+
+if [ -z "${PID_MOCK}" ]
+then
+      echo "There was no PID to be killed."
+else
+      kill -9 ${PID_MOCK}
+      echo ${PID_MOCK} "was found and killed."
+fi
+
+
 yarn start
 
 

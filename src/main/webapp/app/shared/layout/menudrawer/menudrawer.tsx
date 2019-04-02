@@ -2,30 +2,37 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 import AppRoutes from 'app/routes';
 import Footer from 'app/shared/layout/footer/footer';
 import { Card } from 'reactstrap';
-import Typography from '@material-ui/core/Typography/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Sidebar from '../sidebar/sidebar';
+import axios from 'axios';
 
-const drawerWidth = 240;
+// drawer를 사용하지 않도록 설정했으므로 0px로 설정
+// const drawerWidth = 240;
+const drawerWidth = 0;
+
+interface IDrawerUser {
+  id: string;
+  group: number;
+  avatar: string;
+}
 
 export interface IDrawerState {
   open: boolean;
   anchorEl: any;
+  user: IDrawerUser;
 }
 
 const styles = theme => ({
@@ -93,14 +100,47 @@ const styles = theme => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit * 3
+  },
+  navigationBar: {
+    display: 'inline-block',
+    'padding-left': '30px',
+    '& a:hover': {
+      'text-decoration': 'none'
+    },
+    color: '#ffffff'
+  },
+  'app-bar-button': {
+    padding: '20px',
+    color: 'rgb(255, 255, 255)'
+  },
+  logo: {
+    width: '50px',
+    height: '50px'
   }
 });
 
 class MenuDrawer extends React.Component<IDrawerState> {
-  state: IDrawerState = {
-    open: true, // default로 열어놓도록 설
-    anchorEl: null
-  };
+  constructor(props: IDrawerState, context: any, state: IDrawerState) {
+    super(props, context);
+    this.state = {
+      open: true, // default로 열어놓도록 설정
+      anchorEl: null,
+      user: {
+        avatar: ''
+      }
+    };
+  }
+
+  componentDidMount(): void {
+    axios.get(this.userInfoToUserInfoApi({}))
+      .then(res => {
+        this.setState({
+          user: res.data
+        });
+      });
+  }
+
+  userInfoToUserInfoApi = ({ group = 1, id = '1' }: IDrawerUser) => `/v1/groups/${group}/users/${id}`;
 
   handleDrawerOpen = () => {
     this.setState({ open: true });
@@ -121,8 +161,42 @@ class MenuDrawer extends React.Component<IDrawerState> {
   render() {
     // @ts-ignore
     const { classes, theme } = this.props;
-    const { anchorEl } = this.state;
-    const open = Boolean(anchorEl);
+    const open = Boolean(this.state.anchorEl);
+
+    const appBar = (
+      <AppBar
+        position="fixed"
+        className={classNames(classes.appBar, {
+          [classes.appBarShift]: this.state.open
+        })}
+      >
+        <Toolbar disableGutters={!this.state.open}>
+          <Link to={'/'}>
+            <img
+              src={'/content/images/logo.png'}
+              className={classes.logo}
+            />
+          </Link>
+          <div className={classes.navigationBar}>
+            <Link to={'/event'}>
+              <Button className={classes['app-bar-button']}>이벤트</Button>
+            </Link>
+            <Link className={classes.appBarLink} to={'/rank'}>
+              <Button className={classes['app-bar-button']}>랭킹</Button>
+            </Link>
+          </div>
+          <div className={classes.grow}/>
+          <div>
+            <IconButton aria-owns={open ? 'menu-appbar' : undefined} aria-haspopup="true" onClick={this.handleMenu} color="inherit">
+              <img
+                className={classes.logo}
+                src={this.state.user.avatar}
+              />
+            </IconButton>
+          </div>
+        </Toolbar>
+      </AppBar>
+    );
 
     const renderMenu = (
       <Menu
@@ -144,70 +218,49 @@ class MenuDrawer extends React.Component<IDrawerState> {
       </Menu>
     );
 
-    return (
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={classNames(classes.appBar, {
-            [classes.appBarShift]: this.state.open
-          })}
-        >
-          <Toolbar disableGutters={!this.state.open}>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
-              className={classNames(classes.menuButton, {
-                [classes.hide]: this.state.open
-              })}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Link to={'/'} style={{ color: '#00ffff' }}>
-              {' '}
-              <Typography variant="h6" color="inherit" noWrap>
-                JavaCafe
-              </Typography>
-            </Link>
-            <div className={classes.grow} />
-            <div>
-              <IconButton aria-owns={open ? 'menu-appbar' : undefined} aria-haspopup="true" onClick={this.handleMenu} color="inherit">
-                <AccountCircle />
-              </IconButton>
-            </div>
-          </Toolbar>
-        </AppBar>
-        {renderMenu}
-        <Drawer
-          variant="permanent"
-          className={classNames(classes.drawer, {
+    const drawer = (
+      <Drawer
+        variant="permanent"
+        className={classNames(classes.drawer, {
+          [classes.drawerOpen]: this.state.open,
+          [classes.drawerClose]: !this.state.open
+        })}
+        classes={{
+          paper: classNames({
             [classes.drawerOpen]: this.state.open,
             [classes.drawerClose]: !this.state.open
-          })}
-          classes={{
-            paper: classNames({
-              [classes.drawerOpen]: this.state.open,
-              [classes.drawerClose]: !this.state.open
-            })
-          }}
-          open={this.state.open}
-        >
-          <div className={classes.toolbar}>
-            <IconButton onClick={this.handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-            </IconButton>
-          </div>
-          <Divider />
-          <Sidebar />
-        </Drawer>
+          })
+        }}
+        open={this.state.open}
+      >
+        <div className={classes.toolbar}>
+          <IconButton onClick={this.handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
+          </IconButton>
+        </div>
+        <Divider/>
+      </Drawer>
+    );
+
+    /*
+      화면구성요소
+      appBar : 전체 menu의 navigation영역이 담긴 header영역
+      renderMenu :
+      drawer : 기존 layout에서 전체 menu의 navigation 역할을 했던 left 메뉴
+    */
+    return (
+      <div className={classes.root}>
+        <CssBaseline/>
+        {appBar}
+        {renderMenu}
+        {/*drawer*/}
         <main className={classes.content}>
           <Card className="jh-card">
             <ErrorBoundary>
-              <AppRoutes />
+              <AppRoutes/>
             </ErrorBoundary>
           </Card>
-          <Footer />
+          <Footer/>
         </main>
       </div>
     );

@@ -5,6 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -26,14 +27,17 @@ export interface IHomeCardProp {
   classes: any;
 }
 
-export class Status extends React.Component<IHomeCardProp> {
+export class CompletionList extends React.Component<IHomeCardProp> {
   render() {
     const { classes } = this.props;
     return (
       <Card>
-        <CardActions>
-          <Button size="small">더보기</Button>
-        </CardActions>
+        <CardHeader
+          title="참여완료"
+          action={
+            <Button size="small">더보기</Button>
+          }
+        />
         <CardContent>
           <List className={classes.root}>
             <ListItem alignItems="flex-start">
@@ -91,4 +95,4 @@ export class Status extends React.Component<IHomeCardProp> {
   }
 }
 
-export default withStyles(styles)(Status);
+export default withStyles(styles)(CompletionList);
