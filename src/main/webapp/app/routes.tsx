@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
 
 import Login from 'app/modules/login/login';
@@ -8,12 +8,11 @@ import Activate from 'app/modules/account/activate/activate';
 import PasswordResetInit from 'app/modules/account/password-reset/init/password-reset-init';
 import PasswordResetFinish from 'app/modules/account/password-reset/finish/password-reset-finish';
 import Logout from 'app/modules/login/logout';
+import Home from 'app/pages/home/home';
 import Event from 'app/pages/events/event';
-import EventDetail from 'app/pages/events/event-detail';
 import Profile from 'app/pages/profile/profile';
 import Rank from 'app/pages/rank/rank';
 import Announce from 'app/pages/announce/announce';
-import AjaxCall from 'app/pages/demo/ajaxCall';
 import Hello from 'app/pages/demo/hello';
 import SendProps from 'app/pages/demo/SendProps';
 import SendState from 'app/pages/demo/SendState';
@@ -48,17 +47,15 @@ const Routes = () => (
       <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
       <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />
       {/* 나열하는 순서가 중요하다. 하위->상위 */}
-      <ErrorBoundaryRoute path="/demo/ajaxCall" component={AjaxCall} />
       <ErrorBoundaryRoute path="/demo/sendState" component={SendState} />
       <ErrorBoundaryRoute path="/demo/sendProps" component={SendProps} />
       <ErrorBoundaryRoute path="/demo/hello" component={Hello} />
-      <ErrorBoundaryRoute path="/demo" component={Hello} />
+      <ErrorBoundaryRoute path="/demo/" component={Hello} />
       <ErrorBoundaryRoute path="/announce" component={Announce} />
-      <ErrorBoundaryRoute path="/event/detail/:id" component={EventDetail} />
       <ErrorBoundaryRoute path="/event" component={Event} />
       <ErrorBoundaryRoute path="/rank" component={Rank} />
       <ErrorBoundaryRoute path="/profile" component={Profile} />
-      <ErrorBoundaryRoute path="/" component={Event} />
+      <ErrorBoundaryRoute path="/" component={Home} />
     </Switch>
   </div>
 );

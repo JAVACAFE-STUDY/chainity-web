@@ -7,8 +7,8 @@ import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
 import { withStyles, createStyles } from '@material-ui/core/styles';
-import HomeStatus from '../card/home-status';
-import MemberRank from '../card/memebr-rank';
+import HomeStatus from './card/home-status';
+import MemberRank from './card/memebr-rank';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -42,59 +42,6 @@ const styles = theme =>
     }
   });
 
-const mainContent = classes => (
-  <Paper className={classes.paper}>
-    <Typography color="textSecondary" variant="h1">
-      TODO : main content
-    </Typography>
-    {/*
-    <Table className={classes.table}>
-      <TableHead>
-        <TableRow>
-          <TableCell>Dessert (100g serving)</TableCell>
-          <TableCell align="right">Calories</TableCell>
-          <TableCell align="right">Fat (g)</TableCell>
-          <TableCell align="right">Carbs (g)</TableCell>
-          <TableCell align="right">Protein (g)</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {rows.map(row => (
-          <TableRow key={row.id}>
-            <TableCell component="th" scope="row">
-              {row.name}
-            </TableCell>
-            <TableCell align="right">{row.calories}</TableCell>
-            <TableCell align="right">{row.fat}</TableCell>
-            <TableCell align="right">{row.carbs}</TableCell>
-            <TableCell align="right">{row.protein}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-    */}
-  </Paper>
-);
-
-const sidebarContent = classes => (
-  <Paper className={classes.paper}>
-    <HomeStatus />
-    <Divider variant="middle" />
-    <MemberRank />
-  </Paper>
-);
-
-const gridContainer = (classes, leftXs, rightXs) => (
-  <Grid container spacing={24}>
-    <Grid item xs={leftXs}>
-      {mainContent(classes)}
-    </Grid>
-    <Grid item xs={rightXs}>
-      {sidebarContent(classes)}
-    </Grid>
-  </Grid>
-);
-
 export interface IHomeProp extends StateProps, DispatchProps {
   classes: any;
 }
@@ -108,7 +55,46 @@ export class Home extends React.Component<IHomeProp> {
     const { account, classes } = this.props;
     return (
       <div>
-        {gridContainer(classes, 9, 3)}
+        <Typography color="textSecondary" variant="h1">
+          메인페이지222!!!!
+        </Typography>
+        <Grid container spacing={24}>
+          <Grid item xs={9}>
+            <Paper className={classes.paper}>
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Dessert (100g serving)</TableCell>
+                    <TableCell align="right">Calories</TableCell>
+                    <TableCell align="right">Fat (g)</TableCell>
+                    <TableCell align="right">Carbs (g)</TableCell>
+                    <TableCell align="right">Protein (g)</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map(row => (
+                    <TableRow key={row.id}>
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell align="right">{row.calories}</TableCell>
+                      <TableCell align="right">{row.fat}</TableCell>
+                      <TableCell align="right">{row.carbs}</TableCell>
+                      <TableCell align="right">{row.protein}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Paper>
+          </Grid>
+          <Grid item xs={3}>
+            <Paper className={classes.paper}>
+              <HomeStatus />
+              <Divider variant="middle" />
+              <MemberRank />
+            </Paper>
+          </Grid>
+        </Grid>
       </div>
     );
   }

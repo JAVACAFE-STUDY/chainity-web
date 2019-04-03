@@ -5,7 +5,6 @@ const config = {
 export default config;
 
 export const SERVER_API_URL = process.env.SERVER_API_URL;
-export const API_SERVER_URL = process.env.API_SERVER_DOMAIN + ':' + process.env.API_SERVER_PORT;
 
 export const AUTHORITIES = {
   ADMIN: 'ROLE_ADMIN',
