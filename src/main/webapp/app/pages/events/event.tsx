@@ -1,4 +1,5 @@
 /* tslint:disable:ter-arrow-body-style */
+import React from 'react';
 import './event.css';
 import { Card } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -10,16 +11,22 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import { BlurCircular } from '@material-ui/icons';
 import SearchIcon from '@material-ui/icons/Search';
-import React from 'react';
+import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { HomeStatus } from 'app/components/card/home-status';
+import MemberRank from 'app/components/card/memebr-rank';
+import { getSession } from 'app/shared/reducers/authentication';
+import { getEvent } from 'app/pages/events/event.reducer';
+import { getUsers } from 'app/pages/users/users.reducer';
+import { connect } from 'react-redux';
 
 interface IEventList {
-    totalDocs: Number;
-    offset: Number;
-    limit: Number;
+    totalDocs: number;
+    offset: number;
+    limit: number;
     docs: IEventListItem[];
 }
 
@@ -27,8 +34,8 @@ interface IEventListItem {
     _id: String;
     title: String;
     description: String;
-    tokens: Number;
-    maxNumberOfParticipants: Number;
+    tokens: number;
+    maxNumberOfParticipants: number;
     startDate: String;
     endDate: String;
     isClosed: String;
@@ -37,8 +44,8 @@ interface IEventListItem {
 }
 
 interface IEventListParam {
-    offset: Number;
-    limit: Number;
+    offset: number;
+    limit: number;
     keyword?: String;
 }
 
@@ -102,7 +109,6 @@ const styles = theme =>
         }
     });
 
-
 const stateParamToParam = (param: IEventListParam) => {
     return Object.keys(param).reduce((pv, cv) => {
         if (param[ cv ]) {
@@ -112,7 +118,12 @@ const stateParamToParam = (param: IEventListParam) => {
     }, {});
 };
 
-export class EventPage extends React.Component<null, IEventListState> {
+export interface IEventPageProp extends StateProps, DispatchProps {
+    classes: any;
+    match: any;
+}
+
+export class EventPage extends React.Component<IEventPageProp, IEventListState> {
     constructor(props: Readonly<null>) {
         super(props);
         this.state = {
@@ -132,6 +143,7 @@ export class EventPage extends React.Component<null, IEventListState> {
     }
 
     componentDidMount(): void {
+        this.props.getUsers('1');
         window.addEventListener('scroll', this.scrollEvent);
     }
 
@@ -204,7 +216,7 @@ export class EventPage extends React.Component<null, IEventListState> {
         });
     }
 
-    calcDate(regDate: String) {
+    calcDate(regDate: string) {
         const regDateObject = new Date(regDate) || new Date();
         const secondDate = (this.state.nowDate - regDateObject) / 1000;
         if ((secondDate / 60) <= 1) {
@@ -220,9 +232,9 @@ export class EventPage extends React.Component<null, IEventListState> {
     }
 
     render() {
-        const { account, classes } = this.props;
+        const { users, classes } = this.props;
         return (
-            <>
+            <React.Fragment>
                 <Grid container spacing={ 24 }>
                     <Grid item xs={ 9 }>
                         <Paper className={ classes.paper }>
@@ -248,9 +260,7 @@ export class EventPage extends React.Component<null, IEventListState> {
                                         this.state.list.map((event, index) => {
                                                 return (
                                                     <Link to={ `/event/detail/${event._id}` } key={ index }>
-                                                        <Card
-                                                            className={ classes.listItem }
-                                                        >
+                                                        <Card className={ classes.listItem }>
                                                             <Typography component="p" className={ classes.listItemTitle }>
                                                                 { event.title }
                                                             </Typography>
@@ -277,12 +287,30 @@ export class EventPage extends React.Component<null, IEventListState> {
                             { this.state.list.length ?
                                 <Button onClick={ this.nextPageSearch } disabled={ !this.state.isNext }>더보기</Button> : (
                                     <Card>No Data</Card>) }
-                        </ Paper>
-                    </ Grid>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={ 3 }>\
+                        {/* 전체 통계를 호출하는 API 필요 */}
+                        <HomeStatus classes/>
+                        <Divider variant="middle"/>
+                        {/* 이달의 멥버 통계 호출하는 API 필요 */}
+                        <MemberRank/>
+                    </Grid>
                 </ Grid>
-            </ >
+            </React.Fragment>
         );
     }
 }
 
-export default withStyles(styles)(EventPage);
+const mapStateToProps = storeState => ({
+    account: storeState.authentication.account,
+    isAuthenticated: storeState.authentication.isAuthenticated,
+    users: storeState.users.data.docs
+});
+
+const mapDispatchToProps = { getSession, getEvent, getUsers };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EventPage));

@@ -19,20 +19,20 @@ const styles = createStyles({
     }
 });
 
-export interface IHomeCardProp {
+export interface IHomeStatusProp {
     classes: any;
 }
 
-export class HomeStatus extends React.Component<IHomeCardProp> {
+export class HomeStatus extends React.Component<IHomeStatusProp> {
     render() {
         const { classes } = this.props;
         return (
             <Card>
                 <CardContent className={ classes.text }>
-                    <Typography className={ classes.title } color="textSecondary" gutterBottom>
+                    <Typography variant="h5" component="h2" color="textSecondary" gutterBottom>
                         JAVACAFE 상태
                     </Typography>
-                    <Typography variant="h5" component="h2">
+                    <Typography component="p">
                         총 토큰 발생
                         <br/>
                         { '560' }

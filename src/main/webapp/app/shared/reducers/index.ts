@@ -13,38 +13,42 @@ import password, { PasswordState } from 'app/pages/account/password/password.red
 import settings, { SettingsState } from 'app/pages/account/settings/settings.reducer';
 import passwordReset, { PasswordResetState } from 'app/pages/account/password-reset/password-reset.reducer';
 import event, { EventState } from 'app/pages/events/event.reducer';
+import users, { UsersState } from 'app/pages/users/users.reducer';
+
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
-  readonly authentication: AuthenticationState;
-  readonly locale: LocaleState;
-  readonly applicationProfile: ApplicationProfileState;
-  readonly administration: AdministrationState;
-  readonly userManagement: UserManagementState;
-  readonly register: RegisterState;
-  readonly activate: ActivateState;
-  readonly passwordReset: PasswordResetState;
-  readonly password: PasswordState;
-  readonly settings: SettingsState;
-  readonly event: EventState;
-  /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
-  readonly loadingBar: any;
+    readonly authentication: AuthenticationState;
+    readonly locale: LocaleState;
+    readonly applicationProfile: ApplicationProfileState;
+    readonly administration: AdministrationState;
+    readonly userManagement: UserManagementState;
+    readonly register: RegisterState;
+    readonly activate: ActivateState;
+    readonly passwordReset: PasswordResetState;
+    readonly password: PasswordState;
+    readonly settings: SettingsState;
+    readonly event: EventState;
+    readonly users: UsersState;
+    /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
+    readonly loadingBar: any;
 }
 
 const rootReducer = combineReducers<IRootState>({
-  authentication,
-  locale,
-  applicationProfile,
-  administration,
-  userManagement,
-  register,
-  activate,
-  passwordReset,
-  password,
-  settings,
-  event,
-  /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
-  loadingBar
+    authentication,
+    locale,
+    applicationProfile,
+    administration,
+    userManagement,
+    register,
+    activate,
+    passwordReset,
+    password,
+    settings,
+    event,
+    users,
+    /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
+    loadingBar
 });
 
 export default rootReducer;
