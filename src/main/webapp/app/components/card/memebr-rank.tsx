@@ -33,7 +33,7 @@ export class MemberRank extends React.Component<IHomeCardProp> {
         return (
             <Card>
                 <CardActions>
-                    <Grid container spacing={12}>
+                    <Grid container>
                         <Grid item sm={8}>
                             <p>이달의 멤버</p>
                         </Grid>

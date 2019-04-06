@@ -17,7 +17,6 @@ import Footer from 'app/shared/layout/footer/footer';
 import { Card } from 'reactstrap';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import axios from 'axios';
 
 const styles = theme => ({
     root: {
@@ -219,8 +218,8 @@ class MenuDrawer extends React.Component<IDrawerState> {
                 open={ open }
                 onClose={ this.handleClose }
             >
-                <MenuItem onClick={ this.handleClose }>Profile</MenuItem>
-                <MenuItem onClick={ this.handleClose }>My account</MenuItem>
+                <MenuItem onClick={ this.handleClose }><Link to={ '/profile' }>프로필</Link></MenuItem>
+                <MenuItem onClick={ this.handleClose }>로그아웃</MenuItem>
             </Menu>
         );
 
@@ -266,7 +265,6 @@ class MenuDrawer extends React.Component<IDrawerState> {
                             <AppRoutes/>
                         </ErrorBoundary>
                     </Card>
-                    <Footer/>
                 </main>
             </div>
         );

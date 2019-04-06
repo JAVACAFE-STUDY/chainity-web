@@ -13,35 +13,46 @@ import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import CardHeader from '@material-ui/core/CardHeader/CardHeader';
 
 const styles = createStyles({
-  card: {
-    minWidth: 275
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
-  },
-  text: {
-    textAlign: 'left'
-  }
+    card: {
+        minWidth: 275
+    },
+    title: {
+        fontSize: 14
+    },
+    pos: {
+        marginBottom: 12
+    },
+    text: {
+        textAlign: 'left'
+    },
+    margin: {
+        marginLeft: 10
+    }
 });
 
 export interface IHomeCardProp {
-  classes: any;
+    classes: any;
 }
 
 export class Events extends React.Component<IHomeCardProp> {
-  render() {
-    const { classes } = this.props;
-    return (
-      <Card>
-        <CardHeader
-          title="이벤트"
-        />
-      </Card>
-    );
-  }
+    render() {
+        const { classes } = this.props;
+        return (
+            <Card>
+                <CardHeader title="이벤트"/>
+                <CardActions className={ classes.text }>
+                    <CardContent className={ classes.margin }>
+                        <Typography color="textSecondary" component="p">
+                            첨여
+                        </Typography>
+                        <Typography component="p">
+                            { '13' }
+                        </Typography>
+                    </CardContent>
+                </CardActions>
+            </Card>
+        );
+    }
 }
 
 export default withStyles(styles)(Events);
