@@ -65,7 +65,7 @@ const mainContent = (classes, event) => (
 
 const sidebarContent = classes => (
     <Paper className={ classes.paper }>
-        <ApplyList participations={[]}/>
+        <ApplyList participations={ [] }/>
         <Divider variant="middle"/>
         <CompletionList/>
     </Paper>
@@ -126,7 +126,4 @@ const mapDispatchToProps = { getSession, getEvent, getEventParticipations };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withStyles(styles)(EventDetailPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EventDetailPage));
