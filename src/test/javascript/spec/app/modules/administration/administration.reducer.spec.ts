@@ -39,12 +39,14 @@ describe('Administration reducer tests', () => {
 
   function testMultipleTypes(types, payload, testFunction) {
     types.forEach(e => {
+      // @ts-ignore
       testFunction(administration(undefined, { type: e, payload }));
     });
   }
 
   describe('Common', () => {
     it('should return the initial state', () => {
+      // @ts-ignore
       testInitialState(administration(undefined, {}));
     });
   });
@@ -98,6 +100,7 @@ describe('Administration reducer tests', () => {
   describe('Success', () => {
     it('should update state according to a successful fetch logs request', () => {
       const payload = { data: [{ name: 'ROOT', level: 'DEBUG' }] };
+      // @ts-ignore
       const toTest = administration(undefined, { type: SUCCESS(ACTION_TYPES.FETCH_LOGS), payload });
 
       expect(toTest).toMatchObject({
@@ -108,6 +111,7 @@ describe('Administration reducer tests', () => {
 
     it('should update state according to a successful fetch health request', () => {
       const payload = { data: { status: 'UP' } };
+      // @ts-ignore
       const toTest = administration(undefined, { type: SUCCESS(ACTION_TYPES.FETCH_HEALTH), payload });
 
       expect(toTest).toMatchObject({
@@ -118,6 +122,7 @@ describe('Administration reducer tests', () => {
 
     it('should update state according to a successful fetch metrics request', () => {
       const payload = { data: { version: '3.1.3', gauges: {} } };
+      // @ts-ignore
       const toTest = administration(undefined, { type: SUCCESS(ACTION_TYPES.FETCH_METRICS), payload });
 
       expect(toTest).toMatchObject({
@@ -128,6 +133,7 @@ describe('Administration reducer tests', () => {
 
     it('should update state according to a successful fetch thread dump request', () => {
       const payload = { data: [{ threadName: 'hz.gateway.cached.thread-6', threadId: 9266 }] };
+      // @ts-ignore
       const toTest = administration(undefined, { type: SUCCESS(ACTION_TYPES.FETCH_THREAD_DUMP), payload });
 
       expect(toTest).toMatchObject({
@@ -138,6 +144,7 @@ describe('Administration reducer tests', () => {
 
     it('should update state according to a successful fetch configurations request', () => {
       const payload = { data: { contexts: { jhipster: { beans: {} } } } };
+      // @ts-ignore
       const toTest = administration(undefined, { type: SUCCESS(ACTION_TYPES.FETCH_CONFIGURATIONS), payload });
 
       expect(toTest).toMatchObject({
@@ -151,6 +158,7 @@ describe('Administration reducer tests', () => {
 
     it('should update state according to a successful fetch env request', () => {
       const payload = { data: { activeProfiles: ['swagger', 'dev'] } };
+      // @ts-ignore
       const toTest = administration(undefined, { type: SUCCESS(ACTION_TYPES.FETCH_ENV), payload });
 
       expect(toTest).toMatchObject({
@@ -165,6 +173,7 @@ describe('Administration reducer tests', () => {
     it('should update state according to a successful fetch audits request', () => {
       const headers = { ['x-total-count']: 1 };
       const payload = { data: [{ id: 1, userLogin: 'admin' }], headers };
+      // @ts-ignore
       const toTest = administration(undefined, { type: SUCCESS(ACTION_TYPES.FETCH_AUDITS), payload });
 
       expect(toTest).toMatchObject({
