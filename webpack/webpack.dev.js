@@ -50,24 +50,6 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
           changeOrigin: options.tls,
           headers: { host: 'localhost:9000' }
         },
-      '/swagger-resources': {
-          target: `http${options.tls ? 's' : ''}://127.0.0.1:8080`,
-          secure: false,
-          changeOrigin: options.tls,
-          headers: { host: 'localhost:9000' }
-        },
-      '/v2/api-docs': {
-          target: `http${options.tls ? 's' : ''}://127.0.0.1:8080`,
-          secure: false,
-          changeOrigin: options.tls,
-          headers: { host: 'localhost:9000' }
-        },
-      '/h2-console': {
-          target: `http${options.tls ? 's' : ''}://127.0.0.1:8080`,
-          secure: false,
-          changeOrigin: options.tls,
-          headers: { host: 'localhost:9000' }
-        },
       '/auth': {
           target: `http${options.tls ? 's' : ''}://127.0.0.1:8080`,
           secure: false,

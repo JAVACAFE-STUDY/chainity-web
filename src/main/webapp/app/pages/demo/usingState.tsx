@@ -3,7 +3,7 @@ import React from 'react';
 class UsingProps extends React.Component {
   render() {
     // @ts-ignore
-    const { props1, props2, props3 } = this.props
+    const { props1, props2, props3 } = this.props;
     return (
       <div>
         <h1>전달받은 props</h1>

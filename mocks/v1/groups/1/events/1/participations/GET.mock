@@ -1,0 +1,31 @@
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+
+{
+    "totalDocs": 3,
+    "offset":0,
+    "limit":10
+    "docs": [
+        {
+            "_id": "1",
+            "event": "1",
+            "participant": "user1",
+            "createdBy": "admin",
+            "createdAt": "2019/03/01 16:03:07"
+        },
+        {
+            "_id": "2",
+            "event": "1",
+            "participant": "user2",
+            "createdBy": "admin",
+            "createdAt": "2019/03/01 16:03:07"
+        },
+        {
+            "_id": "3",
+            "event": "1",
+            "participant": "user3",
+            "createdBy": "admin",
+            "createdAt": "2019/03/01 16:03:07"
+        }
+    ]
+}

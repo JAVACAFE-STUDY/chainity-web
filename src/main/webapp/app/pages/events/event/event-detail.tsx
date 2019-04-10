@@ -1,4 +1,4 @@
-import './event.css';
+import '../event.css';
 
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
@@ -6,12 +6,12 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
-import { getEventDetail } from './event-detail.reducer';
+import { getEvent, getEventParticipations } from '../event.reducer';
 import { createStyles, withStyles } from '@material-ui/core/styles';
-import ApplyList from '../card/apply-list';
-import CompletionList from '../card/completion-list';
+import ApplyList from '../../../components/card/apply-list';
+import CompletionList from '../../../components/card/completion-list';
 import Typography from '@material-ui/core/Typography';
-import RewardList from '../card/reward-list';
+import RewardList from '../../../components/card/reward-list';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -40,7 +40,7 @@ const mainContent = (classes, event) => (
                 <Grid item className={ classes.item }>
                     <Avatar style={ { float: 'left' } }>H</Avatar>
                     <Typography component="h5" variant="h5">
-                        안경섭
+                        안경섭 ---
                     </Typography>
                     <Typography variant="subtitle1" color="textSecondary">
                         2019-08-19
@@ -65,7 +65,7 @@ const mainContent = (classes, event) => (
 
 const sidebarContent = classes => (
     <Paper className={ classes.paper }>
-        <ApplyList/>
+        <ApplyList participations={ [] }/>
         <Divider variant="middle"/>
         <CompletionList/>
     </Paper>
@@ -95,12 +95,16 @@ export interface IEventDetailPageProp extends StateProps, DispatchProps {
 export class EventDetailPage extends React.Component<IEventDetailPageProp> {
     componentDidMount() {
         // this.props.getSession();
-        this.props.getEventDetail('1', '1');
+        this.props.getEvent('1', '1');
+        this.props.getEventParticipations('1', '1');
     }
 
     render() {
         const { account, classes, match, event } = this.props;
         // match.params.id
+
+        console.log('event', this.props.event);
+        console.log('participations', this.props.participations);
 
         return (
             <div>
@@ -113,15 +117,13 @@ export class EventDetailPage extends React.Component<IEventDetailPageProp> {
 const mapStateToProps = storeState => ({
     account: storeState.authentication.account,
     isAuthenticated: storeState.authentication.isAuthenticated,
-    event: storeState.eventDetail.event
+    participations: storeState.event.participations,
+    event: storeState.event.event
 });
 
-const mapDispatchToProps = { getSession, getEventDetail };
+const mapDispatchToProps = { getSession, getEvent, getEventParticipations };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withStyles(styles)(EventDetailPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EventDetailPage));
