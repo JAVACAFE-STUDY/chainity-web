@@ -41,18 +41,21 @@ describe('User management reducer tests', () => {
 
   function testMultipleTypes(types, payload, testFunction) {
     types.forEach(e => {
+      // @ts-ignore
       testFunction(userManagement(undefined, { type: e, payload }));
     });
   }
 
   describe('Common', () => {
     it('should return the initial state', () => {
+      // @ts-ignore
       testInitialState(userManagement(undefined, {}));
     });
   });
 
   describe('Requests', () => {
     it('should not modify the current state', () => {
+      // @ts-ignore
       testInitialState(userManagement(undefined, { type: REQUEST(ACTION_TYPES.FETCH_ROLES) }));
     });
 
@@ -109,6 +112,7 @@ describe('User management reducer tests', () => {
     it('should update state according to a successful fetch users request', () => {
       const headers = { ['x-total-count']: 42 };
       const payload = { data: 'some handsome users', headers };
+      // @ts-ignore
       const toTest = userManagement(undefined, { type: SUCCESS(ACTION_TYPES.FETCH_USERS), payload });
 
       expect(toTest).toMatchObject({
@@ -120,6 +124,7 @@ describe('User management reducer tests', () => {
 
     it('should update state according to a successful fetch user request', () => {
       const payload = { data: 'some handsome user' };
+      // @ts-ignore
       const toTest = userManagement(undefined, { type: SUCCESS(ACTION_TYPES.FETCH_USER), payload });
 
       expect(toTest).toMatchObject({
@@ -130,6 +135,7 @@ describe('User management reducer tests', () => {
 
     it('should update state according to a successful fetch role request', () => {
       const payload = { data: ['ROLE_ADMIN'] };
+      // @ts-ignore
       const toTest = userManagement(undefined, { type: SUCCESS(ACTION_TYPES.FETCH_ROLES), payload });
 
       expect(toTest).toMatchObject({
@@ -149,6 +155,7 @@ describe('User management reducer tests', () => {
     });
 
     it('should set state to successful update with an empty user', () => {
+      // @ts-ignore
       const toTest = userManagement(undefined, { type: SUCCESS(ACTION_TYPES.DELETE_USER) });
 
       expect(toTest).toMatchObject({
@@ -175,8 +182,8 @@ describe('User management reducer tests', () => {
         ...initialState,
         loading: true
       };
-      expect(
-        userManagement(payload, {
+      // @ts-ignore
+      expect(userManagement(payload, {
           type: ACTION_TYPES.RESET
         })
       ).toEqual(initialState);

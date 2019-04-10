@@ -21,12 +21,14 @@ describe('Creating account tests', () => {
   });
 
   it('should return the initial state', () => {
+    // @ts-ignore
     expect(register(undefined, {})).toEqual({
       ...initialState
     });
   });
 
   it('should detect a request', () => {
+    // @ts-ignore
     expect(register(undefined, { type: REQUEST(ACTION_TYPES.CREATE_ACCOUNT) })).toEqual({
       ...initialState,
       loading: true
@@ -34,15 +36,15 @@ describe('Creating account tests', () => {
   });
 
   it('should handle RESET', () => {
-    expect(
-      register({ loading: true, registrationSuccess: true, registrationFailure: true, errorMessage: '' }, { type: ACTION_TYPES.RESET })
-    ).toEqual({
+    // @ts-ignore
+    expect(register({ loading: true, registrationSuccess: true, registrationFailure: true, errorMessage: '' }, { type: ACTION_TYPES.RESET })).toEqual({
       ...initialState
     });
   });
 
   it('should handle CREATE_ACCOUNT success', () => {
     expect(
+      // @ts-ignore
       register(undefined, {
         type: SUCCESS(ACTION_TYPES.CREATE_ACCOUNT),
         payload: 'fake payload'
@@ -56,6 +58,7 @@ describe('Creating account tests', () => {
   it('should handle CREATE_ACCOUNT failure', () => {
     const payload = { response: { data: { errorKey: 'fake error' } } };
     expect(
+      // @ts-ignore
       register(undefined, {
         type: FAILURE(ACTION_TYPES.CREATE_ACCOUNT),
         payload

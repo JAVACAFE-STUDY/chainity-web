@@ -15,6 +15,7 @@ describe('Password reducer tests', () => {
 
   describe('Common tests', () => {
     it('should return the initial state', () => {
+      // @ts-ignore
       const toTest = password(undefined, {});
       expect(toTest).toMatchObject({
         loading: false,
@@ -27,6 +28,7 @@ describe('Password reducer tests', () => {
 
   describe('Password update', () => {
     it('should detect a request', () => {
+      // @ts-ignore
       const toTest = password(undefined, { type: REQUEST(ACTION_TYPES.UPDATE_PASSWORD) });
       expect(toTest).toMatchObject({
         updateSuccess: false,
@@ -35,6 +37,7 @@ describe('Password reducer tests', () => {
       });
     });
     it('should detect a success', () => {
+      // @ts-ignore
       const toTest = password(undefined, { type: SUCCESS(ACTION_TYPES.UPDATE_PASSWORD) });
       expect(toTest).toMatchObject({
         updateSuccess: true,
@@ -43,6 +46,7 @@ describe('Password reducer tests', () => {
       });
     });
     it('should detect a failure', () => {
+      // @ts-ignore
       const toTest = password(undefined, { type: FAILURE(ACTION_TYPES.UPDATE_PASSWORD) });
       expect(toTest).toMatchObject({
         updateSuccess: false,
@@ -59,6 +63,7 @@ describe('Password reducer tests', () => {
         updateFailure: false
       };
       expect(
+        // @ts-ignore
         password(
           { ...initialState, loading: true },
           {
