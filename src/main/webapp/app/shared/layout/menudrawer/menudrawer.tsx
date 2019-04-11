@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+import { createStyles, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,8 +12,9 @@ import { Card } from 'reactstrap';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { connect } from 'react-redux';
+import { logout } from 'app/shared/reducers/authentication';
 
-const styles = theme => ({
+const styles = theme => createStyles({
     root: {
         display: 'flex'
     },
@@ -107,7 +108,9 @@ interface IDrawerState {
     anchorEl?: any;
 }
 
-class MenuDrawer extends React.Component<StateProps, IDrawerState> {
+interface IDrawerProps extends StateProps, DispatchProps {}
+
+class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
     // @ts-ignore
     state: IDrawerState = {
         open: false,
@@ -115,7 +118,7 @@ class MenuDrawer extends React.Component<StateProps, IDrawerState> {
         component: null
     };
 
-    constructor(props: StateProps | Readonly<StateProps>, context?: any) {
+    constructor(props: IDrawerProps | Readonly<IDrawerProps>, context?: any) {
         super(props, context);
     }
 
@@ -125,6 +128,10 @@ class MenuDrawer extends React.Component<StateProps, IDrawerState> {
 
     handleClose = () => {
         this.setState({ anchorEl: null });
+    };
+
+    handleLogout = () => {
+        this.props.logout();
     };
 
     render() {
@@ -186,7 +193,7 @@ class MenuDrawer extends React.Component<StateProps, IDrawerState> {
                 onClose={ this.handleClose }
             >
                 <MenuItem onClick={ this.handleClose }><Link to={ '/profile' }>프로필</Link></MenuItem>
-                <MenuItem onClick={ this.handleClose }>로그아웃</MenuItem>
+                <MenuItem onClick={ this.handleLogout }>로그아웃</MenuItem>
             </Menu>
         );
 
@@ -224,5 +231,12 @@ const mapStateToProps = storeState => ({
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 
+const mapDispatchToProps = { logout };
+
+type DispatchProps = typeof mapDispatchToProps;
+
 // @ts-ignore
-export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(MenuDrawer));
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withStyles(styles, { withTheme: true })(MenuDrawer));
