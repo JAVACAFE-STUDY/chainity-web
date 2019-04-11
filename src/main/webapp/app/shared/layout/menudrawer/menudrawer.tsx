@@ -3,20 +3,15 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ErrorBoundary from 'app/shared/error/error-boundary';
-import AppRoutes from 'app/routes';
-import Footer from 'app/shared/layout/footer/footer';
 import { Card } from 'reactstrap';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import { connect } from 'react-redux';
 
 const styles = theme => ({
     root: {
@@ -31,7 +26,7 @@ const styles = theme => ({
     },
     appBarShift: {
         marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
+        width: `calc(100% - ${ drawerWidth }px)`,
         transition: theme.transitions.create([ 'width', 'margin' ], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen
@@ -106,51 +101,23 @@ const styles = theme => ({
 // const drawerWidth = 240;
 const drawerWidth = 0;
 
-interface IDrawerUser {
-    id: string;
-    group: number;
-    avatar: string;
+interface IDrawerState {
+    component: any;
+    open?: boolean;
+    anchorEl?: any;
 }
 
-export interface IDrawerState {
-    readonly open: boolean;
-    readonly anchorEl: any;
-    user: IDrawerUser;
-}
+class MenuDrawer extends React.Component<StateProps, IDrawerState> {
+    // @ts-ignore
+    state: IDrawerState = {
+        open: false,
+        anchorEl: null,
+        component: null
+    };
 
-class MenuDrawer extends React.Component<IDrawerState> {
-    constructor(props: IDrawerState, context: any, state: IDrawerState) {
+    constructor(props: StateProps | Readonly<StateProps>, context?: any) {
         super(props, context);
-        this.state = {
-            open: true, // default로 열어놓도록 설정
-            anchorEl: null,
-            user: {
-                id: '',
-                group: 0,
-                avatar: ''
-            }
-        };
     }
-
-    componentDidMount(): void {
-        // 에러 발생으로 인한 주석처리
-        // axios.get(this.userInfoToUserInfoApi({})
-        //     .then(res => {
-        //         this.setState({
-        //             user: res.data
-        //         });
-        //     });
-    }
-
-    userInfoToUserInfoApi = ({ group = 1, id = '1' }: IDrawerUser) => `/v1/groups/${group}/users/${id}`;
-
-    handleDrawerOpen = () => {
-        this.setState({ open: true });
-    };
-
-    handleDrawerClose = () => {
-        this.setState({ open: false });
-    };
 
     handleMenu = event => {
         this.setState({ anchorEl: event.currentTarget });
@@ -195,7 +162,7 @@ class MenuDrawer extends React.Component<IDrawerState> {
                                     onClick={ this.handleMenu } color="inherit">
                             <img
                                 className={ classes.logo }
-                                src={ this.state.user.avatar }
+                                src={ this.props.account.avatar }
                             />
                         </IconButton>
                     </div>
@@ -223,37 +190,17 @@ class MenuDrawer extends React.Component<IDrawerState> {
             </Menu>
         );
 
-        const drawer = (
-            <Drawer
-                variant="permanent"
-                className={ classNames(classes.drawer, {
-                    [ classes.drawerOpen ]: this.state.open,
-                    [ classes.drawerClose ]: !this.state.open
-                }) }
-                classes={ {
-                    paper: classNames({
-                        [ classes.drawerOpen ]: this.state.open,
-                        [ classes.drawerClose ]: !this.state.open
-                    })
-                } }
-                open={ this.state.open }
-            >
-                <div className={ classes.toolbar }>
-                    <IconButton onClick={ this.handleDrawerClose }>
-                        { theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/> }
-                    </IconButton>
-                </div>
-                <Divider/>
-            </Drawer>
-        );
-
         /*
           화면구성요소
           appBar : 전체 menu의 navigation영역이 담긴 header영역
           renderMenu :
           drawer : 기존 layout에서 전체 menu의 navigation 역할을 했던 left 메뉴
         */
+
+        // @ts-ignore
+        const RouterComponent = this.props.component;
         return (
+
             <div className={ classes.root }>
                 <CssBaseline/>
                 { appBar }
@@ -262,7 +209,7 @@ class MenuDrawer extends React.Component<IDrawerState> {
                 <main className={ classes.content }>
                     <Card className="jh-card">
                         <ErrorBoundary>
-                            <AppRoutes/>
+                            <RouterComponent { ...this.props } />
                         </ErrorBoundary>
                     </Card>
                 </main>
@@ -271,5 +218,11 @@ class MenuDrawer extends React.Component<IDrawerState> {
     }
 }
 
+const mapStateToProps = storeState => ({
+    account: storeState.authentication.account
+});
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+
 // @ts-ignore
-export default withStyles(styles, { withTheme: true })(MenuDrawer);
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(MenuDrawer));
