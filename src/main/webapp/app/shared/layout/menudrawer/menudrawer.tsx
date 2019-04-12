@@ -113,14 +113,14 @@ interface IDrawerUser {
 }
 
 export interface IDrawerState {
-    readonly open: boolean;
-    readonly anchorEl: any;
+    open: boolean;
+    anchorEl: any;
     user: IDrawerUser;
 }
 
-class MenuDrawer extends React.Component<IDrawerState> {
-    constructor(props: IDrawerState, context: any, state: IDrawerState) {
-        super(props, context);
+class MenuDrawer extends React.Component<null, IDrawerState> {
+    constructor(props) {
+        super(props);
         this.state = {
             open: true, // default로 열어놓도록 설정
             anchorEl: null,
@@ -173,7 +173,7 @@ class MenuDrawer extends React.Component<IDrawerState> {
                 className={ classNames(classes.appBar, {
                     [ classes.appBarShift ]: this.state.open
                 }) }
-            >
+            >z
                 <Toolbar disableGutters={ !this.state.open }>
                     <Link to={ '/' }>
                         <img

@@ -31,22 +31,22 @@ interface IEventList {
 }
 
 interface IEventListItem {
-    _id: String;
-    title: String;
-    description: String;
+    _id: string;
+    title: string;
+    description: string;
     tokens: number;
     maxNumberOfParticipants: number;
-    startDate: String;
-    endDate: String;
-    isClosed: String;
-    createdAt: String;
-    createdBy: String;
+    startDate: string;
+    endDate: string;
+    isClosed: string;
+    createdAt: string;
+    createdBy: string;
 }
 
 interface IEventListParam {
     offset: number;
     limit: number;
-    keyword?: String;
+    keyword?: string;
 }
 
 interface IEventListState {
@@ -124,7 +124,7 @@ export interface IEventPageProp extends StateProps, DispatchProps {
 }
 
 export class EventPage extends React.Component<IEventPageProp, IEventListState> {
-    constructor(props: Readonly<null>) {
+    constructor(props) {
         super(props);
         this.state = {
             param: {
@@ -186,7 +186,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
         });
     }
 
-    enterEvent(e: KeyboardEvent) {
+    enterEvent(e) {
         if (e.key === 'Enter') {
             this.clickSearch();
         }
@@ -218,7 +218,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
 
     calcDate(regDate: string) {
         const regDateObject = new Date(regDate) || new Date();
-        const secondDate = (this.state.nowDate - regDateObject) / 1000;
+        const secondDate = (this.state.nowDate.valueOf() - regDateObject.valueOf()) / 1000;
         if ((secondDate / 60) <= 1) {
             return `${(secondDate).toFixed(0)} 초 전`;
         } else if ((secondDate / 60 / 60) <= 1) {
@@ -290,10 +290,10 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                         </Paper>
                     </Grid>
                     <Grid item xs={ 3 }>\
-                        {/* 전체 통계를 호출하는 API 필요 */}
+                        { /* 전체 통계를 호출하는 API 필요 */ }
                         <HomeStatus classes/>
                         <Divider variant="middle"/>
-                        {/* 이달의 멥버 통계 호출하는 API 필요 */}
+                        { /* 이달의 멥버 통계 호출하는 API 필요 */ }
                         <MemberRank/>
                     </Grid>
                 </ Grid>
