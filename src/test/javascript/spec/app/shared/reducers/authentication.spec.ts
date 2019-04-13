@@ -172,6 +172,7 @@ describe('Authentication reducer tests', () => {
           locale: 'ko'
         }
       ];
+      // @ts-ignore
       await store.dispatch(getSession()).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
@@ -249,6 +250,7 @@ describe('Authentication reducer tests', () => {
       const loginResponse = { headers: { authorization: 'Bearer TestToken' } };
       axios.post = sinon.stub().returns(Promise.resolve(loginResponse));
 
+      // @ts-ignore
       await store.dispatch(login('user', 'user', true)).then(() => {
         expect(Storage.session.get(AUTH_TOKEN_KEY)).toBe(undefined);
         expect(Storage.local.get(AUTH_TOKEN_KEY)).toBe('TestToken');
