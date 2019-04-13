@@ -1,7 +1,7 @@
 /* tslint:disable:ter-arrow-body-style */
 import React from 'react';
 import './event.css';
-import { Card } from '@material-ui/core';
+import { Card, WithStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
@@ -31,22 +31,22 @@ interface IEventList {
 }
 
 interface IEventListItem {
-    _id: String;
-    title: String;
-    description: String;
+    _id: string;
+    title: string;
+    description: string;
     tokens: number;
     maxNumberOfParticipants: number;
-    startDate: String;
-    endDate: String;
-    isClosed: String;
-    createdAt: String;
-    createdBy: String;
+    startDate: string;
+    endDate: string;
+    isClosed: string;
+    createdAt: string;
+    createdBy: string;
 }
 
 interface IEventListParam {
     offset: number;
     limit: number;
-    keyword?: String;
+    keyword?: string;
 }
 
 interface IEventListState {
@@ -57,7 +57,7 @@ interface IEventListState {
     param: IEventListParam;
 }
 
-const styles = theme =>
+export const styles = theme =>
     createStyles({
         root: {
             flexGrow: 1
@@ -118,46 +118,35 @@ const stateParamToParam = (param: IEventListParam) => {
     }, {});
 };
 
-export interface IEventPageProp extends StateProps, DispatchProps {
-    classes: any;
-    match: any;
+export interface IEventPageProp extends StateProps, DispatchProps, WithStyles {
 }
 
 export class EventPage extends React.Component<IEventPageProp, IEventListState> {
-    constructor(props: Readonly<null>) {
-        super(props);
-        this.state = {
-            param: {
-                limit: 3,
-                offset: 1
-            },
-            nowDate: new Date(),
-            list: []
-        };
-        this.clickSearch = this.clickSearch.bind(this);
-        this.changeEvent = this.changeEvent.bind(this);
-        this.enterEvent = this.enterEvent.bind(this);
-        this.calcDate = this.calcDate.bind(this);
-        this.nextPageSearch = this.nextPageSearch.bind(this);
-        this.scrollEvent = this.scrollEvent.bind(this);
-    }
+    state: IEventListState = {
+        param: {
+            limit: 3,
+            offset: 1
+        },
+        nowDate: new Date(),
+        list: []
+    };
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.props.getUsers('1');
         window.addEventListener('scroll', this.scrollEvent);
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount() {
         window.removeEventListener('scroll', this.scrollEvent);
     }
 
-    scrollEvent() {
+    scrollEvent = () => {
         if ((window.scrollY + window.innerHeight) === document.body.offsetHeight) {
             this.nextPageSearch();
         }
-    }
+    };
 
-    clickSearch() {
+    clickSearch = () => {
         this.setState({
             ...this.state,
             param: {
@@ -167,9 +156,9 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
             list: []
         });
         this.search();
-    }
+    };
 
-    async search() {
+    search = async () => {
         const res = await axios.get('/v1/groups/1/events', {
             params: {
                 ...stateParamToParam(this.state.param)
@@ -184,15 +173,15 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                 return previousValue;
             }, this.state.list)
         });
-    }
+    };
 
-    enterEvent(e: KeyboardEvent) {
+    enterEvent = e => {
         if (e.key === 'Enter') {
             this.clickSearch();
         }
-    }
+    };
 
-    nextPageSearch() {
+    nextPageSearch = () => {
         if (this.state.isNext) {
             this.setState({
                 ...this.state,
@@ -203,9 +192,9 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
             });
             this.search();
         }
-    }
+    };
 
-    changeEvent(e) {
+    changeEvent = e => {
         this.setState({
             ...this.state,
             param: {
@@ -214,25 +203,23 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                 keyword: e.target.value
             }
         });
-    }
+    };
 
-    calcDate(regDate: string) {
+    calcDate = (regDate: string) => {
         const regDateObject = new Date(regDate) || new Date();
-        const secondDate = (this.state.nowDate - regDateObject) / 1000;
+        const secondDate = (+this.state.nowDate - +regDateObject) / 1000;
         if ((secondDate / 60) <= 1) {
-            return `${(secondDate).toFixed(0)} 초 전`;
+            return `${ (secondDate).toFixed(0) } 초 전`;
         } else if ((secondDate / 60 / 60) <= 1) {
-            return `${(secondDate / 60).toFixed(0)} 분 전`;
+            return `${ (secondDate / 60).toFixed(0) } 분 전`;
         } else if ((secondDate / 60 / 60 / 24) <= 1) {
-            return `${(secondDate / 60 / 60).toFixed(0)} 시간 전`;
+            return `${ (secondDate / 60 / 60).toFixed(0) } 시간 전`;
         }
-        return `${regDateObject.toLocaleString('ko-kr', {
-            year: 'numeric', month: 'long', day: 'numeric'
-        })}`;
-    }
+        return `${ regDateObject.getFullYear() }-${ regDateObject.getMonth() + 1 }-${ regDateObject.getDate() }`;
+    };
 
     render() {
-        const { users, classes } = this.props;
+        const { classes } = this.props;
         return (
             <React.Fragment>
                 <Grid container spacing={ 24 }>
@@ -259,7 +246,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                                     this.state.list.length ?
                                         this.state.list.map((event, index) => {
                                                 return (
-                                                    <Link to={ `/event/detail/${event._id}` } key={ index }>
+                                                    <Link to={ `/event/detail/${ event._id }` } key={ index }>
                                                         <Card className={ classes.listItem }>
                                                             <Typography component="p" className={ classes.listItemTitle }>
                                                                 { event.title }
@@ -290,10 +277,10 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                         </Paper>
                     </Grid>
                     <Grid item xs={ 3 }>\
-                        {/* 전체 통계를 호출하는 API 필요 */}
+                        {/* 전체 통계를 호출하는 API 필요 */ }
                         <HomeStatus classes/>
                         <Divider variant="middle"/>
-                        {/* 이달의 멥버 통계 호출하는 API 필요 */}
+                        {/* 이달의 멥버 통계 호출하는 API 필요 */ }
                         <MemberRank/>
                     </Grid>
                 </ Grid>
