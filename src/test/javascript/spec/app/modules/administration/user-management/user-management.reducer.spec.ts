@@ -14,7 +14,7 @@ import userManagement, {
   updateUser,
   deleteUser,
   reset
-} from 'app/modules/administration/user-management/user-management.reducer';
+} from 'app/pages/administration/user-management/user-management.reducer';
 import { defaultValue } from 'app/shared/model/user.model';
 
 describe('User management reducer tests', () => {

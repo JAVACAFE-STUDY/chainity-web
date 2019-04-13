@@ -15,7 +15,7 @@ import administration, {
   getConfigurations,
   getEnv,
   getAudits
-} from 'app/modules/administration/administration.reducer';
+} from 'app/pages/administration/administration.reducer';
 
 describe('Administration reducer tests', () => {
   function isEmpty(element): boolean {
