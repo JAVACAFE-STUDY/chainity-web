@@ -122,6 +122,7 @@ export interface IEventPageProp extends StateProps, DispatchProps, WithStyles {
 }
 
 export class EventPage extends React.Component<IEventPageProp, IEventListState> {
+
     state: IEventListState = {
         param: {
             limit: 3,
@@ -207,7 +208,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
 
     calcDate = (regDate: string) => {
         const regDateObject = new Date(regDate) || new Date();
-        const secondDate = (+this.state.nowDate - +regDateObject) / 1000;
+        const secondDate = (this.state.nowDate.valueOf() - regDateObject.valueOf()) / 1000;
         if ((secondDate / 60) <= 1) {
             return `${ (secondDate).toFixed(0) } 초 전`;
         } else if ((secondDate / 60 / 60) <= 1) {
@@ -276,12 +277,12 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                                     <Card>No Data</Card>) }
                         </Paper>
                     </Grid>
-                    <Grid item xs={ 3 }>\
+                    <Grid item xs={ 3 }>
                         {/* 전체 통계를 호출하는 API 필요 */ }
-                        <HomeStatus classes/>
+                        <HomeStatus classes={classes}/>
                         <Divider variant="middle"/>
                         {/* 이달의 멥버 통계 호출하는 API 필요 */ }
-                        <MemberRank/>
+                        <MemberRank classes={classes}/>
                     </Grid>
                 </ Grid>
             </React.Fragment>

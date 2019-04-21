@@ -11,30 +11,21 @@ const styles = theme => ({
         width: '100%',
         maxWidth: 360,
         backgroundColor: theme.palette.background.paper
-    },
-    inline: {
-        display: 'inline'
-    },
-    text: {
-        textAlign: 'left'
-    },
-    margin: {
-        marginLeft: 10
     }
 });
 
-export interface IHomeCardProp {
+export interface IWalletCardProp {
     classes: any;
 }
 
-export class Wallet extends React.Component<IHomeCardProp> {
+export class Wallet extends React.Component<IWalletCardProp> {
     render() {
         const { classes } = this.props;
         return (
-            <Card className={ classes.text }>
+            <Card style={ { textAlign: 'left' } }>
                 <CardHeader title="지갑"/>
                 <CardActions>
-                    <CardContent className={ classes.margin }>
+                    <CardContent style={ { marginLeft: 10 } }>
                         <Typography color="textSecondary" component="p">
                             주소
                         </Typography>

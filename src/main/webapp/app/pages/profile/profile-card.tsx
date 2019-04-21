@@ -31,8 +31,11 @@ const styles = theme =>
         }
     });
 
-export class ProfileCard extends React.Component {
+export interface IProfileCardProp {
+    classes: any;
+}
 
+export class ProfileCard extends React.Component<IProfileCardProp> {
     render() {
         const { classes } = this.props;
         return (
