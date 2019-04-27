@@ -22,26 +22,35 @@ const styles = theme =>
             textAlign: 'center',
             color: theme.palette.text.secondary
         },
-        side: {}
+        button: {
+            borderRadius: '3px',
+            fontSize: '14px',
+            fontWeight: 400,
+            padding: '6px 10px',
+            backgroundColor: '#fff',
+            borderColor: '#e5e5e5',
+            color: '#2e2e2e',
+            whiteSpace: 'nowrap'
+        }
     });
 
 const mainContent = classes => (
     <React.Fragment>
         <Paper className={ classes.paper }>
-            <ProfileCard/>
+            <ProfileCard classes={ classes }/>
         </Paper>
         <Paper className={ classes.paper }>
-            <RewardList eventId={ '1' }/>
+            <RewardList classes={ classes } eventId={ '1' }/>
         </Paper>
     </React.Fragment>
 );
 
 const sidebarContent = classes => (
     <React.Fragment>
-        <Paper className={ classes.side }>
-            <Wallet/>
+        <Paper className={ classes }>
+            <Wallet classes={ classes }/>
             <Divider variant="middle"/>
-            <Events/>
+            <Events classes={ classes }/>
         </Paper>
     </React.Fragment>
 );
@@ -61,16 +70,27 @@ export interface IProfileProp extends StateProps, DispatchProps {
     classes: any;
 }
 
-export class ProfilePage extends React.Component<IProfileProp> {
+export interface IProfileState {
+    profile: any;
+}
+
+export class ProfilePage extends React.Component<IProfileProp, IProfileState> {
+
+    state: IProfileState = {
+        profile: null
+    };
+
     componentDidMount() {
-        this.props.getSession();
+        // this.props.getSession();
     }
 
     render() {
-        const { account, classes } = this.props;
+        const { classes } = this.props;
         return (
             <div>
-                { gridContainer(classes, 9, 3) }
+                <div>
+                    { gridContainer(classes, 9, 3) }
+                </div>
             </div>
         );
     }

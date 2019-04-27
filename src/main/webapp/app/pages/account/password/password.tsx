@@ -22,7 +22,7 @@ export class PasswordPage extends React.Component<IUserPasswordProps, IUserPassw
 
   componentDidMount() {
     this.props.reset();
-    this.props.getSession();
+    this.props.getSession('');
   }
 
   componentWillUnmount() {
