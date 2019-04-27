@@ -130,7 +130,7 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-image: url('../images/hipster192.png');
+  background-image: url('../images/loading.png');
   background-size: contain;
   -webkit-animation: lds-pacman-3 1s linear infinite;
   animation: lds-pacman-3 1.5s linear infinite;
