@@ -58,18 +58,20 @@ export default (state: AuthenticationState = initialState, action): Authenticati
                 loading: false,
                 loginError: false,
                 showModalLogin: false,
-                loginSuccess: true
+                loginSuccess: true,
+                isAuthenticated: true
             };
         case ACTION_TYPES.LOGOUT:
             return {
                 ...initialState
             };
         case SUCCESS(ACTION_TYPES.GET_SESSION): {
-            const isAuthenticated = action.payload && action.payload.data && action.payload.data.activated;
+            const isAuthenticated = !!action.payload && !!action.payload.data;
             return {
                 ...state,
                 isAuthenticated,
                 loading: false,
+                loginSuccess: true,
                 sessionHasBeenFetched: true,
                 account: action.payload.data
             };
@@ -94,21 +96,25 @@ export default (state: AuthenticationState = initialState, action): Authenticati
 
 export const displayAuthError = message => ({ type: ACTION_TYPES.ERROR_MESSAGE, message });
 
-export const getSession = (email?) => async dispatch => {
-    await dispatch({
-        type: ACTION_TYPES.GET_SESSION,
-        payload: axios.get('/v1/groups/1/users/' + email)
-    });
+export const getSession = () => async dispatch => {
+    const sessionValue = Storage.session.get(AUTH_TOKEN_KEY);
+    const email = sessionValue ? JSON.parse(sessionValue).email : null ;
+
+    if (email) {
+        await dispatch({
+            type: ACTION_TYPES.GET_SESSION,
+            payload: axios.get('/v1/groups/1/users/' + email)
+        });
+    }
 };
 
-export const login = (username, password) => async dispatch => {
+export const login = (username, password) => async (dispatch) => {
     const result = await dispatch({
         type: ACTION_TYPES.LOGIN,
         payload: axios.post('/v1/groups/1/login', { email: username, password })
     });
-    const { token, email } = result.value.data;
-    Storage.session.set(AUTH_TOKEN_KEY, token);
-    await dispatch(getSession(email));
+    Storage.session.set(AUTH_TOKEN_KEY, JSON.stringify(result.value.data));
+    await dispatch(getSession());
 };
 
 export const clearAuthToken = () => {
