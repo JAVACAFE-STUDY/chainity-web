@@ -5,6 +5,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import ProfileDialog from 'app/pages/profile/profile-dialog';
+import { getSession, updateUser } from 'app/shared/reducers/authentication';
+import TextField from '@material-ui/core/TextField';
+import { connect } from 'react-redux';
 
 const styles = theme =>
     createStyles({
@@ -29,10 +32,14 @@ const styles = theme =>
             width: '100px',
             height: '100px',
             color: '#fff'
+        },
+        textField: {
+            marginLeft: theme.spacing.unit,
+            marginRight: theme.spacing.unit
         }
     });
 
-export interface IProfileCardProp {
+export interface IProfileCardProp extends StateProps, DispatchProps {
     classes: any;
 }
 
@@ -40,6 +47,8 @@ export interface IProfileCardState {
     src: any;
     img: any;
     open: boolean;
+    name: string;
+    email: string;
 }
 
 export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardState> {
@@ -49,7 +58,9 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
     state: IProfileCardState = {
         src: null,
         img: null,
-        open: false
+        open: false,
+        name: '',
+        email: ''
     };
 
     onSelectFile = e => {
@@ -66,13 +77,11 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
         }
     };
 
-    onClick = () => {
-        console.log('onClick');
+    handleSelectFile = () => {
         this.selectFileRef.current.click();
     };
 
     onClose = () => {
-        console.log('onClose');
         this.setState({ open: false });
     };
 
@@ -80,14 +89,26 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
         this.setState({ open: false, img: croppedImg });
     };
 
+    handleUpdateProfile = () => {
+        this.props.updateUser(this.state.name, this.state.email);
+    };
+
+    handleNameChange = e => {
+        this.setState({ name: e.target.value });
+    };
+
+    handleEmailChange = e => {
+        this.setState({ email: e.target.value });
+    };
+
     render() {
-        const { classes } = this.props;
+        const { classes, account } = this.props;
         return (
             <React.Fragment>
                 <Card className={ classes.card }>
                     <div>
                         <div className={ classes.imgContainer }>
-                            <img src={ this.state.img }
+                            <img src={ this.state.img ? this.state.img : account.thumbnail }
                                  height="200px"
                                  width="200px"
                                  alt="Cropped"
@@ -96,7 +117,7 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
                         <input type="file" ref={ this.selectFileRef } onChange={ this.onSelectFile }
                                style={ { display: 'none' } }/>
                         <Button
-                            onClick={ this.onClick }
+                            onClick={ this.handleSelectFile }
                             variant="contained"
                             color="primary"
                             className={ classes.button }
@@ -109,24 +130,52 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
                     </div>
                     <div className={ classes.details }>
                         <CardContent className={ classes.content }>
-                            <Typography component="h5" variant="h5">
-                                안경섭
-                                <Button color="secondary" style={ { fontSize: 10 } }
+                            <div>
+                                <TextField
+                                    required
+                                    id="name"
+                                    label="이름"
+                                    defaultValue={ account.name }
+                                    className={ classes.textField }
+                                    onChange={ this.handleNameChange }
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                                <Button color="secondary" onClick={ this.handleUpdateProfile }
+                                        style={ { fontSize: 10 } }
                                         className={ classes.button }>+수정</Button>
-                            </Typography>
-                            <Typography variant="subtitle1" color="textSecondary">
-                                이메일
-                            </Typography>
-                            <Typography variant="subtitle1">
-                                email@javacafe.co.kr
-                            </Typography>
+                            </div>
+                            <div>
+                                <TextField
+                                    required
+                                    id="email"
+                                    label="이메일"
+                                    defaultValue={ account.email }
+                                    onChange={ this.handleEmailChange }
+                                    className={ classes.textField }
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                            </div>
                         </CardContent>
                     </div>
                 </Card>
             </React.Fragment>
-        )
-            ;
+        );
     }
 }
 
-export default withStyles(styles)(ProfileCard);
+const mapStateToProps = storeState => ({
+    account: storeState.authentication.account,
+    isAuthenticated: storeState.authentication.isAuthenticated
+});
+
+const mapDispatchToProps = { getSession, updateUser };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withStyles(styles)(ProfileCard));

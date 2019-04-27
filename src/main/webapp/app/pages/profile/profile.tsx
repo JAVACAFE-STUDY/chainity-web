@@ -11,7 +11,6 @@ import Wallet from '../../components/card/wallet';
 import Events from '../../components/card/events';
 import ProfileCard from './profile-card';
 import RewardList from 'app/components/card/reward-list';
-import ProfileDialog from 'profile-dialog';
 
 const styles = theme =>
     createStyles({
@@ -23,7 +22,6 @@ const styles = theme =>
             textAlign: 'center',
             color: theme.palette.text.secondary
         },
-        side: {},
         button: {
             borderRadius: '3px',
             fontSize: '14px',
@@ -49,7 +47,7 @@ const mainContent = classes => (
 
 const sidebarContent = classes => (
     <React.Fragment>
-        <Paper className={ classes.side }>
+        <Paper className={ classes }>
             <Wallet classes={ classes }/>
             <Divider variant="middle"/>
             <Events classes={ classes }/>
@@ -78,8 +76,6 @@ export interface IProfileState {
 
 export class ProfilePage extends React.Component<IProfileProp, IProfileState> {
 
-    private imageRef: any;
-
     state: IProfileState = {
         profile: null
     };
@@ -89,7 +85,7 @@ export class ProfilePage extends React.Component<IProfileProp, IProfileState> {
     }
 
     render() {
-        const { account, classes } = this.props;
+        const { classes } = this.props;
         return (
             <div>
                 <div>

@@ -54,6 +54,7 @@ export interface IEasyCropperState {
     croppedAreaPixels: any;
 }
 
+// crop 할 수 있는 사이즈 고정하여 이미지를 옮기는 형태
 class EasyCropper extends React.Component<IEasyCropperProp, IEasyCropperState> {
 
     state: IEasyCropperState = {

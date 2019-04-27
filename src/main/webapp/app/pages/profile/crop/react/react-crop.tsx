@@ -32,6 +32,7 @@ export interface ICropState {
     crop: any;
 }
 
+// drag & drop 형태로 image crop
 export class Cropper extends React.Component<ICropProp, ICropState> {
 
     private imageRef: any;
