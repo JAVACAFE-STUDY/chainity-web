@@ -11,6 +11,7 @@ import Wallet from '../../components/card/wallet';
 import Events from '../../components/card/events';
 import ProfileCard from './profile-card';
 import RewardList from 'app/components/card/reward-list';
+import ProfileDialog from 'profile-dialog';
 
 const styles = theme =>
     createStyles({
@@ -22,16 +23,26 @@ const styles = theme =>
             textAlign: 'center',
             color: theme.palette.text.secondary
         },
-        side: {}
+        side: {},
+        button: {
+            borderRadius: '3px',
+            fontSize: '14px',
+            fontWeight: 400,
+            padding: '6px 10px',
+            backgroundColor: '#fff',
+            borderColor: '#e5e5e5',
+            color: '#2e2e2e',
+            whiteSpace: 'nowrap'
+        }
     });
 
 const mainContent = classes => (
     <React.Fragment>
         <Paper className={ classes.paper }>
-            <ProfileCard/>
+            <ProfileCard classes={ classes }/>
         </Paper>
         <Paper className={ classes.paper }>
-            <RewardList eventId={ '1' }/>
+            <RewardList classes={ classes } eventId={ '1' }/>
         </Paper>
     </React.Fragment>
 );
@@ -39,9 +50,9 @@ const mainContent = classes => (
 const sidebarContent = classes => (
     <React.Fragment>
         <Paper className={ classes.side }>
-            <Wallet/>
+            <Wallet classes={ classes }/>
             <Divider variant="middle"/>
-            <Events/>
+            <Events classes={ classes }/>
         </Paper>
     </React.Fragment>
 );
@@ -61,16 +72,29 @@ export interface IProfileProp extends StateProps, DispatchProps {
     classes: any;
 }
 
-export class ProfilePage extends React.Component<IProfileProp> {
+export interface IProfileState {
+    profile: any;
+}
+
+export class ProfilePage extends React.Component<IProfileProp, IProfileState> {
+
+    private imageRef: any;
+
+    state: IProfileState = {
+        profile: null
+    };
+
     componentDidMount() {
-        this.props.getSession();
+        // this.props.getSession();
     }
 
     render() {
         const { account, classes } = this.props;
         return (
             <div>
-                { gridContainer(classes, 9, 3) }
+                <div>
+                    { gridContainer(classes, 9, 3) }
+                </div>
             </div>
         );
     }

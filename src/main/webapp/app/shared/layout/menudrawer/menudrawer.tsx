@@ -147,7 +147,7 @@ class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
                 className={ classNames(classes.appBar, {
                     [ classes.appBarShift ]: this.state.open
                 }) }
-            >z
+            >
                 <Toolbar disableGutters={ !this.state.open }>
                     <Link to={ '/' }>
                         <img
