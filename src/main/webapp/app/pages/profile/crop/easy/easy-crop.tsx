@@ -11,24 +11,20 @@ const styles = {
         marginLeft: 16
     },
     cropContainer: {
-        position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 80
     },
     App: {
-        position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0
     },
     controls: {
-        boxSizing: 'border-box',
-        position: 'absolute',
         bottom: 0,
-        left: '0%',
+        left: 0,
         width: '100%',
         padding: '0 16px',
         height: '80px',

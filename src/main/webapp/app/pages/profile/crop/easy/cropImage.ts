@@ -1,6 +1,6 @@
 const createImage = url =>
     new Promise((resolve, reject) => {
-        const image = new Image();
+        const image: any = new Image();
         image.addEventListener('load', () => resolve(image));
         image.addEventListener('error', error => reject(error));
         image.setAttribute('crossOrigin', 'anonymous'); // needed to avoid cross-origin issues on CodeSandbox
@@ -13,7 +13,7 @@ const createImage = url =>
  * @param {Object} pixelCrop - pixelCrop Object provided by react-easy-crop
  */
 export default async function getCroppedImg(imageSrc, pixelCrop) {
-    const image = await createImage(imageSrc);
+    const image: any = await createImage(imageSrc);
     const canvas = document.createElement('canvas');
     canvas.width = pixelCrop.width;
     canvas.height = pixelCrop.height;

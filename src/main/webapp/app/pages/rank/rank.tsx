@@ -73,7 +73,7 @@ export interface IHomeProp extends StateProps, DispatchProps {
 
 export class EventPage extends React.Component<IHomeProp> {
     componentDidMount() {
-        this.props.getSession('email');
+        this.props.getSession();
     }
 
     render() {

@@ -17,7 +17,7 @@ export interface IUserSettingsState {
 
 export class SettingsPage extends React.Component<IUserSettingsProps, IUserSettingsState> {
   componentDidMount() {
-    this.props.getSession('email');
+    this.props.getSession();
   }
 
   componentWillUnmount() {
