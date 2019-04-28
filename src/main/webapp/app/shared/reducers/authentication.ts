@@ -8,7 +8,8 @@ export const ACTION_TYPES = {
     GET_SESSION: 'authentication/GET_SESSION',
     LOGOUT: 'authentication/LOGOUT',
     CLEAR_AUTH: 'authentication/CLEAR_AUTH',
-    ERROR_MESSAGE: 'authentication/ERROR_MESSAGE'
+    ERROR_MESSAGE: 'authentication/ERROR_MESSAGE',
+    UPDATE_USER: 'authentication/UPDATE_USER'
 };
 
 const AUTH_TOKEN_KEY = 'jhi-authenticationToken';
@@ -89,6 +90,15 @@ export default (state: AuthenticationState = initialState, action): Authenticati
                 showModalLogin: true,
                 isAuthenticated: false
             };
+        case ACTION_TYPES.UPDATE_USER:
+            return {
+                ...state,
+                account: {
+                    ...state.account,
+                    name: action.payload.name,
+                    email: action.payload.email
+                }
+            };
         default:
             return state;
     }
@@ -108,7 +118,7 @@ export const getSession = () => async dispatch => {
     }
 };
 
-export const login = (username, password) => async (dispatch) => {
+export const login = (username, password) => async dispatch => {
     const result = await dispatch({
         type: ACTION_TYPES.LOGIN,
         payload: axios.post('/v1/groups/1/login', { email: username, password })
@@ -138,5 +148,12 @@ export const clearAuthentication = messageKey => dispatch => {
     dispatch(displayAuthError(messageKey));
     dispatch({
         type: ACTION_TYPES.CLEAR_AUTH
+    });
+};
+
+export const updateUser = (username, useremail) => dispatch => {
+    dispatch({
+        type: ACTION_TYPES.UPDATE_USER,
+        payload: { name: username, email: useremail }
     });
 };

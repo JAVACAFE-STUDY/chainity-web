@@ -120,7 +120,8 @@ const stateParamToParam = (param: IEventListParam) => {
     }, {});
 };
 
-interface IEventPageProp extends StateProps, DispatchProps, WithStyles {}
+interface IEventPageProp extends StateProps, DispatchProps, WithStyles {
+}
 
 const searchBar = (classes, { changeEvent, enterEvent, clickSearch }) => {
     return (
@@ -287,16 +288,16 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                                 ? <Button onClick={ this.nextPageSearch } disabled={ !this.state.isNext }>
                                     더보기
                                 </Button>
-                                : <Card className={classes.noData}>조회된 데이터가 없습니다.</Card>
+                                : <Card className={ classes.noData }>조회된 데이터가 없습니다.</Card>
                             }
                         </Paper>
                     </Grid>
                     <Grid item xs={ 3 }>
-                        {/* 전체 통계를 호출하는 API 필요 */ }
-                        <HomeStatus classes={classes}/>
+                        { /* 전체 통계를 호출하는 API 필요 */ }
+                        <HomeStatus classes={ classes }/>
                         <Divider variant="middle"/>
-                        {/* 이달의 멥버 통계 호출하는 API 필요 */ }
-                        <MemberRank classes={classes}/>
+                        { /* 이달의 멥버 통계 호출하는 API 필요 */ }
+                        <MemberRank classes={ classes }/>
                     </Grid>
                 </ Grid>
             </React.Fragment>

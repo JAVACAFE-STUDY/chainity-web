@@ -13,6 +13,7 @@
     "@fortawesome/react-fontawesome": "0.1.3",
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "latest",
+    "react-easy-crop": "latest",
     "async": "^2.6.2",
     "availity-reactstrap-validation": "2.0.6",
     "axios": "0.18.0",
@@ -41,7 +42,9 @@
     "redux-promise-middleware": "5.1.1",
     "redux-thunk": "2.3.0",
     "tslib": "1.9.3",
-    "uuid": "3.3.2"
+    "uuid": "3.3.2",
+    "react-image-crop": "latest",
+    "@material-ui/lab": "latest"
   },
   "devDependencies": {
     "@types/enzyme": "3.1.13",

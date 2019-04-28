@@ -205,7 +205,7 @@ class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
                 <main className={ classes.content }>
                     <Card className="jh-card">
                         <ErrorBoundary>
-                            <RouterComponent />
+                            <RouterComponent/>
                         </ErrorBoundary>
                     </Card>
                 </main>
