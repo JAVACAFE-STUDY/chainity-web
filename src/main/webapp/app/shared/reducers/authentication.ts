@@ -108,7 +108,7 @@ export const getSession = () => async dispatch => {
     }
 };
 
-export const login = (username, password) => async (dispatch) => {
+export const login = (username, password) => async dispatch => {
     const result = await dispatch({
         type: ACTION_TYPES.LOGIN,
         payload: axios.post('/v1/groups/1/login', { email: username, password })
