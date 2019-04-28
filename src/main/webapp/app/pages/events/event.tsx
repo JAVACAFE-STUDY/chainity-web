@@ -1,7 +1,7 @@
 /* tslint:disable:ter-arrow-body-style */
 import React from 'react';
 import './event.css';
-import { Card, WithStyles } from '@material-ui/core';
+import { Card, WithStyles, createStyles, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
@@ -13,7 +13,6 @@ import { BlurCircular } from '@material-ui/icons';
 import SearchIcon from '@material-ui/icons/Search';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
-import { createStyles, withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { HomeStatus } from 'app/components/card/home-status';
@@ -74,6 +73,9 @@ export const styles = theme =>
         iconButton: {
             padding: 10
         },
+        noData: {
+            textAlign: 'center'
+        },
         listItem: {
             height: '300px',
             margin: '20px 0',
@@ -118,11 +120,64 @@ const stateParamToParam = (param: IEventListParam) => {
     }, {});
 };
 
-export interface IEventPageProp extends StateProps, DispatchProps, WithStyles {
-}
+interface IEventPageProp extends StateProps, DispatchProps, WithStyles {}
+
+const searchBar = (classes, { changeEvent, enterEvent, clickSearch }) => {
+    return (
+        <Paper className={ classes.paper }>
+            <FormControl fullWidth>
+                <Input
+                    className={ classes.input } placeholder="이벤트 검색 키워드를 입력해주세요."
+                    onChange={ changeEvent }
+                    onKeyUp={ enterEvent }
+                    endAdornment={
+                        <IconButton className={ classes.iconButton } aria-label="Search">
+                            <SearchIcon
+                                onClick={ clickSearch }
+                            />
+                        </IconButton>
+                    }
+                />
+            </FormControl>
+        </Paper>
+    );
+};
+
+const listItem = (classes, { event, index }, calcDate) => {
+    return (
+        <Link to={ `/event/detail/${ event._id }` } key={ index }>
+            <Card className={ classes.listItem }>
+                <Typography component="p" className={ classes.listItemTitle }>
+                    { event.title }
+                </Typography>
+                <Typography className={ classes.listItemContent }>
+                    { event.description }
+                </Typography>
+                <BlurCircular className={ classes.listItemCoinIcon }/>
+                <Typography component="span"
+                            className={ classes.listItemTokens }>
+                    { event.tokens }
+                </Typography>
+                <Typography component="span"
+                            className={ classes.listItemStartDate }>
+                    { calcDate(event.startDate) }
+                </Typography>
+            </Card>
+        </Link>
+    );
+};
+const listWrapper = (classes, list, { calcDate }) => {
+    return (
+        <List>
+            { list.length
+                ? list.map((event, index) => (listItem(classes, { event, index }, calcDate)))
+                : <React.Fragment/>
+            }
+        </List>
+    );
+};
 
 export class EventPage extends React.Component<IEventPageProp, IEventListState> {
-
     state: IEventListState = {
         param: {
             limit: 3,
@@ -225,56 +280,15 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
             <React.Fragment>
                 <Grid container spacing={ 24 }>
                     <Grid item xs={ 9 }>
-                        <Paper className={ classes.paper }>
-                            <FormControl fullWidth>
-                                <Input
-                                    className={ classes.input } placeholder="이벤트 검색 키워드를 입력해주세요."
-                                    onChange={ this.changeEvent }
-                                    onKeyUp={ this.enterEvent }
-                                    endAdornment={
-                                        <IconButton className={ classes.iconButton } aria-label="Search">
-                                            <SearchIcon
-                                                onClick={ this.clickSearch }
-                                            />
-                                        </IconButton>
-                                    }
-                                />
-                            </FormControl>
-                        </Paper>
+                        { searchBar(classes, this) }
                         <Paper>
-                            <List>
-                                {
-                                    this.state.list.length ?
-                                        this.state.list.map((event, index) => {
-                                                return (
-                                                    <Link to={ `/event/detail/${ event._id }` } key={ index }>
-                                                        <Card className={ classes.listItem }>
-                                                            <Typography component="p" className={ classes.listItemTitle }>
-                                                                { event.title }
-                                                            </Typography>
-                                                            <Typography className={ classes.listItemContent }>
-                                                                { event.description }
-                                                            </Typography>
-                                                            <BlurCircular className={ classes.listItemCoinIcon }/>
-                                                            <Typography component="span"
-                                                                        className={ classes.listItemTokens }>
-                                                                { event.tokens }
-                                                            </Typography>
-                                                            <Typography component="span"
-                                                                        className={ classes.listItemStartDate }>
-                                                                { this.calcDate(event.startDate) }
-                                                            </Typography>
-                                                        </Card>
-                                                    </Link>
-                                                );
-                                            }
-                                        )
-                                        : <></>
-                                }
-                            </List>
-                            { this.state.list.length ?
-                                <Button onClick={ this.nextPageSearch } disabled={ !this.state.isNext }>더보기</Button> : (
-                                    <Card>No Data</Card>) }
+                            { listWrapper(classes, this.state.list, this) }
+                            { this.state.list.length
+                                ? <Button onClick={ this.nextPageSearch } disabled={ !this.state.isNext }>
+                                    더보기
+                                </Button>
+                                : <Card className={classes.noData}>조회된 데이터가 없습니다.</Card>
+                            }
                         </Paper>
                     </Grid>
                     <Grid item xs={ 3 }>
@@ -301,4 +315,6 @@ const mapDispatchToProps = { getSession, getEvent, getUsers };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EventPage));
+export default connect(
+    mapStateToProps, mapDispatchToProps
+)(withStyles(styles, { withTheme: true })(EventPage));

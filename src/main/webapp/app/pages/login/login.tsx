@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import classNames from 'classnames';
 import { IRootState } from 'app/shared/reducers';
 import { login } from 'app/shared/reducers/authentication';
@@ -59,11 +59,20 @@ const styles = () => createStyles({
     }
 });
 
-export class Login extends React.Component<ILoginProps, ILoginState> {
+class Login extends React.Component<ILoginProps, ILoginState> {
     state: ILoginState = {
         userName: '',
         password: ''
     };
+
+    constructor(props: ILoginProps) {
+        super(props);
+
+        const { loginSuccess } = props;
+        if (loginSuccess) {
+            this.props.history.push('/event');
+        }
+    }
 
     handleLogin = async () => {
         await this.props.login(this.state.userName, this.state.password);
@@ -86,11 +95,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
     };
 
     render() {
-        const { classes, isAuthenticated } = this.props;
-        const { from } = { from: { pathname: '/', search: location.search } };
-        if (isAuthenticated) {
-            return <Redirect to={ from }/>;
-        }
+        const { classes } = this.props;
         return (
             <Grid
                 container
@@ -98,7 +103,6 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                 direction="column"
                 alignItems="center"
                 justify="center"
-
             >
                 <Grid item xs={ 5 }>
                     <Card className={ classNames(classes.form) }>
@@ -134,7 +138,7 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
                                     onClick={ this.handleLogin }
                             >로그인
                             </Button>
-                            <Typography className={ classNames(classes.errorMessage)}>
+                            <Typography className={ classNames(classes.errorMessage) }>
                                 { this.props.errorMessage }
                             </Typography>
                         </CardContent>
@@ -146,7 +150,6 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
 }
 
 const mapStateToProps = ({ authentication }: IRootState) => ({
-    isAuthenticated: authentication.isAuthenticated,
     loginError: authentication.loginError,
     loginSuccess: authentication.loginSuccess,
     errorMessage: authentication.errorMessage
@@ -157,6 +160,7 @@ const mapDispatchToProps = { login };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
+// @ts-ignore
 export default connect(
     mapStateToProps,
     mapDispatchToProps

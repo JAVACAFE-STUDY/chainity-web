@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { createStyles, withStyles } from '@material-ui/core/styles';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -108,19 +108,15 @@ interface IDrawerState {
     anchorEl?: any;
 }
 
-interface IDrawerProps extends StateProps, DispatchProps {}
+interface IDrawerProps extends StateProps, DispatchProps, WithStyles {
+}
 
 class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
-    // @ts-ignore
     state: IDrawerState = {
         open: false,
         anchorEl: null,
         component: null
     };
-
-    constructor(props: IDrawerProps | Readonly<IDrawerProps>, context?: any) {
-        super(props, context);
-    }
 
     handleMenu = event => {
         this.setState({ anchorEl: event.currentTarget });
@@ -135,21 +131,16 @@ class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
     };
 
     render() {
-        // @ts-ignore
-        const { classes, theme } = this.props;
-        // @ts-ignore
+        const { classes } = this.props;
         const open = Boolean(this.state.anchorEl);
 
-        // @ts-ignore
         const appBar = (
             <AppBar
                 position="fixed"
-                className={ classNames(classes.appBar, {
-                    [ classes.appBarShift ]: this.state.open
-                }) }
-            >z
+                className={ classNames(classes.appBar) }
+            >
                 <Toolbar disableGutters={ !this.state.open }>
-                    <Link to={ '/' }>
+                    <Link to={ '/event' }>
                         <img
                             src={ '/content/images/logo.png' }
                             className={ classes.logo }
@@ -207,16 +198,14 @@ class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
         // @ts-ignore
         const RouterComponent = this.props.component;
         return (
-
             <div className={ classes.root }>
                 <CssBaseline/>
                 { appBar }
                 { renderMenu }
-                { /*drawer*/ }
                 <main className={ classes.content }>
                     <Card className="jh-card">
                         <ErrorBoundary>
-                            <RouterComponent { ...this.props } />
+                            <RouterComponent />
                         </ErrorBoundary>
                     </Card>
                 </main>
@@ -235,7 +224,6 @@ const mapDispatchToProps = { logout };
 
 type DispatchProps = typeof mapDispatchToProps;
 
-// @ts-ignore
 export default connect(
     mapStateToProps,
     mapDispatchToProps
