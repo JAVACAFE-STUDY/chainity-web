@@ -13,6 +13,7 @@ export const ACTION_TYPES = {
 };
 
 const AUTH_TOKEN_KEY = 'jhi-authenticationToken';
+const AUTH_INFO = 'jhi-authentication';
 
 const initialState = {
     loading: false,
@@ -107,7 +108,7 @@ export default (state: AuthenticationState = initialState, action): Authenticati
 export const displayAuthError = message => ({ type: ACTION_TYPES.ERROR_MESSAGE, message });
 
 export const getSession = () => async dispatch => {
-    const sessionValue = Storage.session.get(AUTH_TOKEN_KEY);
+    const sessionValue = Storage.session.get(AUTH_INFO);
     const email = sessionValue ? JSON.parse(sessionValue).email : null ;
 
     if (email) {
@@ -123,7 +124,8 @@ export const login = (username, password) => async dispatch => {
         type: ACTION_TYPES.LOGIN,
         payload: axios.post('/v1/groups/1/login', { email: username, password })
     });
-    Storage.session.set(AUTH_TOKEN_KEY, JSON.stringify(result.value.data));
+    Storage.session.set(AUTH_INFO, JSON.stringify(result.value.data));
+    Storage.session.set(AUTH_TOKEN_KEY, result.value.data.token);
     await dispatch(getSession());
 };
 
@@ -133,6 +135,12 @@ export const clearAuthToken = () => {
     }
     if (Storage.session.get(AUTH_TOKEN_KEY)) {
         Storage.session.remove(AUTH_TOKEN_KEY);
+    }
+    if (Storage.local.get(AUTH_INFO)) {
+        Storage.local.remove(AUTH_INFO);
+    }
+    if (Storage.session.get(AUTH_INFO)) {
+        Storage.session.remove(AUTH_INFO);
     }
 };
 
