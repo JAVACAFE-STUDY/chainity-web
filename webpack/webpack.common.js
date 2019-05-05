@@ -72,13 +72,13 @@ module.exports = options => ({
         test: /\.jsx?$/,
         loader: 'source-map-loader'
       }
-      ,
+      /*,
       {
         test: /\.tsx?$/,
         enforce: 'pre',
         loader: 'tslint-loader',
         exclude: [utils.root('node_modules')]
-      }
+      }*/
     ]
   },
   stats: {
@@ -109,7 +109,7 @@ module.exports = options => ({
       }
     }),
     new Dotenv(),
-    new ForkTsCheckerWebpackPlugin({ tslint: true }),
+    /*new ForkTsCheckerWebpackPlugin({ tslint: true }),*/
     new CopyWebpackPlugin([
       { from: './src/main/webapp/static/', to: 'content' },
       { from: './src/main/webapp/favicon.ico', to: 'favicon.ico' },
