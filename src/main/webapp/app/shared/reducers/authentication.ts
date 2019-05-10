@@ -52,7 +52,7 @@ export default (state: AuthenticationState = initialState, action): Authenticati
                 isAuthenticated: false,
                 sessionHasBeenFetched: true,
                 showModalLogin: true,
-                errorMessage: action.payload
+                errorMessage: action.payload.response.data.message
             };
         case SUCCESS(ACTION_TYPES.LOGIN):
             return {
@@ -107,14 +107,22 @@ export default (state: AuthenticationState = initialState, action): Authenticati
 
 export const displayAuthError = message => ({ type: ACTION_TYPES.ERROR_MESSAGE, message });
 
+function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = decodeURIComponent(atob(base64Url)
+        .split('')
+        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+
+    return JSON.parse(base64);
+}
+
 export const getSession = () => async dispatch => {
     const sessionValue = Storage.session.get(AUTH_INFO);
-    const email = sessionValue ? JSON.parse(sessionValue).email : null ;
-
-    if (email) {
+    const jwt = sessionValue ? parseJwt(JSON.parse(sessionValue).token) : null;
+    if (jwt) {
         await dispatch({
             type: ACTION_TYPES.GET_SESSION,
-            payload: axios.get('/v1/groups/1/users/' + email)
+            payload: axios.get('/v1/groups/1/users/' + jwt['_id'])
         });
     }
 };
