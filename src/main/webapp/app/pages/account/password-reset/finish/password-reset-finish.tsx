@@ -1,11 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Alert, Col, Row, Button } from 'reactstrap';
-import { AvForm, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, getUrlParameter } from 'react-jhipster';
+import { Alert, Button, Col, Row } from 'reactstrap';
+import { AvField, AvForm } from 'availity-reactstrap-validation';
+import { getUrlParameter, translate, Translate } from 'react-jhipster';
 import { RouteComponentProps } from 'react-router-dom';
-
-import { IRootState } from 'app/shared/reducers';
 import { handlePasswordResetFinish, reset } from '../password-reset.reducer';
 import PasswordStrengthBar from 'app/shared/layout/password/password-strength-bar';
 

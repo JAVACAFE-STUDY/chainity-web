@@ -23,7 +23,7 @@ const styles = theme => ({
 });
 
 export interface IHomeCardProp {
-  classes: any;
+  classes?: any;
 }
 
 export class CompletionList extends React.Component<IHomeCardProp> {

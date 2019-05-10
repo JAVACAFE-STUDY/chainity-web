@@ -27,7 +27,7 @@ const styles = createStyles({
 });
 
 export interface IApplyListProp {
-    classes: any;
+    classes?: any;
     participations: any;
 
 }

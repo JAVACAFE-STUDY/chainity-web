@@ -103,6 +103,7 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
 
     render() {
         const { classes, account } = this.props;
+        const emailDisable = true;
         return (
             <React.Fragment>
                 <Card className={ classes.card }>
@@ -149,6 +150,7 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
                                 <TextField
                                     required
                                     id="email"
+                                    disabled={ emailDisable }
                                     label="이메일"
                                     defaultValue={ account.email }
                                     onChange={ this.handleEmailChange }

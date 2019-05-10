@@ -1,7 +1,8 @@
 /* tslint:disable:ter-arrow-body-style */
-import React from 'react';
 import './event.css';
-import { Card, WithStyles, createStyles, withStyles } from '@material-ui/core';
+import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+import { Card, createStyles, WithStyles, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
@@ -13,6 +14,8 @@ import { BlurCircular } from '@material-ui/icons';
 import SearchIcon from '@material-ui/icons/Search';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { HomeStatus } from 'app/components/card/home-status';
@@ -66,6 +69,9 @@ export const styles = theme =>
             textAlign: 'center',
             color: theme.palette.text.secondary
         },
+        fab: {
+            margin: theme.spacing.unit
+        },
         input: {
             marginLeft: 8,
             flex: 1
@@ -108,6 +114,26 @@ export const styles = theme =>
         listItemStartDate: {
             display: 'inline',
             padding: '0 5px'
+        },
+        search: {
+            root: {
+                padding: '2px 4px',
+                display: 'flex',
+                alignItems: 'center',
+                flexGrow: 1
+            },
+            input: {
+                marginLeft: 8,
+                flex: 1
+            },
+            iconButton: {
+                padding: 10
+            },
+            divider: {
+                width: 1,
+                height: 28,
+                margin: 4
+            }
         }
     });
 
@@ -120,19 +146,16 @@ const stateParamToParam = (param: IEventListParam) => {
     }, {});
 };
 
-interface IEventPageProp extends StateProps, DispatchProps, WithStyles {
-}
-
 const searchBar = (classes, { changeEvent, enterEvent, clickSearch }) => {
     return (
-        <Paper className={ classes.paper }>
+        <Paper className={ classes.search.root } elevation={ 1 }>
             <FormControl fullWidth>
                 <Input
-                    className={ classes.input } placeholder="이벤트 검색 키워드를 입력해주세요."
+                    className={ classes.search.input } placeholder=" 이벤트 검색 키워드를 입력해주세요. "
                     onChange={ changeEvent }
                     onKeyUp={ enterEvent }
                     endAdornment={
-                        <IconButton className={ classes.iconButton } aria-label="Search">
+                        <IconButton className={ classes.search.iconButton } aria-label="Search">
                             <SearchIcon
                                 onClick={ clickSearch }
                             />
@@ -177,6 +200,9 @@ const listWrapper = (classes, list, { calcDate }) => {
         </List>
     );
 };
+
+interface IEventPageProp extends StateProps, DispatchProps, RouteComponentProps<{}>, WithStyles {
+}
 
 export class EventPage extends React.Component<IEventPageProp, IEventListState> {
     state: IEventListState = {
@@ -275,6 +301,10 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
         return `${ regDateObject.getFullYear() }-${ regDateObject.getMonth() + 1 }-${ regDateObject.getDate() }`;
     };
 
+    handleClick = () => {
+        this.props.history.push('/event/new');
+    };
+
     render() {
         const { classes } = this.props;
         return (
@@ -297,9 +327,14 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                         <HomeStatus classes={ classes }/>
                         <Divider variant="middle"/>
                         { /* 이달의 멥버 통계 호출하는 API 필요 */ }
-                        <MemberRank classes={ classes }/>
+                        <MemberRank/>
                     </Grid>
                 </ Grid>
+                <Fab color="primary" aria-label="Add" className={ classes.fab }>
+                    <Link to={ '/event/new' }>
+                        <AddIcon/>
+                    </Link>
+                </Fab>
             </React.Fragment>
         );
     }
