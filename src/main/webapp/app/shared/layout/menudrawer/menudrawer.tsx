@@ -23,7 +23,8 @@ const styles = theme => createStyles({
         transition: theme.transitions.create([ 'width', 'margin' ], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
-        })
+        }),
+        backgroundColor: '#2196F3'
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -82,7 +83,7 @@ const styles = theme => createStyles({
     },
     navigationBar: {
         display: 'inline-block',
-        'padding-left': '30px',
+        'padding-left': '20px',
         '& a:hover': {
             'text-decoration': 'none'
         },
@@ -90,11 +91,18 @@ const styles = theme => createStyles({
     },
     'app-bar-button': {
         padding: '20px',
-        color: 'rgb(255, 255, 255)'
+        color: 'rgb(255, 255, 255)',
+        'font-size': '17px',
+        'margin-top': '-1px'
     },
     logo: {
-        width: '50px',
-        height: '50px'
+        height: '50px',
+        'margin-left': '20px'
+    },
+    profile: {
+      width: '50px',
+      height: '50px',
+      'border-radius': '3px'
     }
 });
 
@@ -138,11 +146,12 @@ class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
             <AppBar
                 position="fixed"
                 className={ classNames(classes.appBar) }
+                color="inherit"
             >
                 <Toolbar disableGutters={ !this.state.open }>
                     <Link to={ '/event' }>
                         <img
-                            src={ '/content/images/logo.png' }
+                            src={ '/content/images/javacafe_logo2.png' }
                             className={ classes.logo }
                         />
                     </Link>
@@ -159,7 +168,7 @@ class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
                         <IconButton aria-owns={ open ? 'menu-appbar' : undefined } aria-haspopup="true"
                                     onClick={ this.handleMenu } color="inherit">
                             <img
-                                className={ classes.logo }
+                                className={ classes.profile }
                                 src={ this.props.account.avatar }
                             />
                         </IconButton>
