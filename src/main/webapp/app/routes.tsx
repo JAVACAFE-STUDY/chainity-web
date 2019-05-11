@@ -10,6 +10,7 @@ import PasswordResetFinish from 'app/pages/account/password-reset/finish/passwor
 import Logout from 'app/pages/login/logout';
 import Event from 'app/pages/events/event';
 import EventDetail from 'app/pages/events/event/event-detail';
+import EventNew from 'app/pages/events/event/event-new';
 import Profile from 'app/pages/profile/profile';
 import Rank from 'app/pages/rank/rank';
 import Announce from 'app/pages/announce/announce';
@@ -56,6 +57,7 @@ const Routes = () => (
             <ErrorBoundaryLayoutRoute path="/demo" component={ Hello }/>
             <ErrorBoundaryLayoutRoute path="/announce" component={ Announce }/>
             <ErrorBoundaryLayoutRoute path="/event/detail/:id" component={ EventDetail }/>
+            <ErrorBoundaryLayoutRoute path="/event/new" component={ EventNew }/>
             <ErrorBoundaryLayoutRoute path="/event" component={ Event }/>
             <ErrorBoundaryLayoutRoute path="/rank" component={ Rank }/>
             <ErrorBoundaryLayoutRoute path="/profile" component={ Profile }/>

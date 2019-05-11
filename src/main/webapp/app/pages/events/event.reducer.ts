@@ -1,14 +1,19 @@
 import axios from 'axios';
 
 import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
+import { IUser } from 'app/shared/model/user.model';
+import { getUsers } from 'app/pages/administration/user-management/user-management.reducer';
 
 export const ACTION_TYPES = {
+    CREATE_EVENT: 'event/CREATE_EVENT',
+    GET_EVENTS: 'event/GET_EVENTS',
     GET_EVENT: 'event/GET_EVENT',
     GET_EVENT_PARTICIPATIONS: 'event/GET_EVENT_PARTICIPATIONS'
 };
 
 const initialState = {
     loading: false,
+    events: {},
     event: {
         '_id': '1',
         'title': '',
@@ -30,6 +35,23 @@ export type EventState = Readonly<typeof initialState>;
 // Reducer
 export default (state: EventState = initialState, action): EventState => {
     switch (action.type) {
+        case REQUEST(ACTION_TYPES.GET_EVENTS):
+            return {
+                ...state,
+                loading: true
+            };
+        case FAILURE(ACTION_TYPES.GET_EVENTS):
+            return {
+                ...initialState,
+                loading: false,
+                errorMessage: action.payload
+            };
+        case SUCCESS(ACTION_TYPES.GET_EVENTS):
+            return {
+                ...initialState,
+                loading: false,
+                events: action.payload.data
+            };
         case REQUEST(ACTION_TYPES.GET_EVENT):
             return {
                 ...state,
@@ -68,6 +90,21 @@ export default (state: EventState = initialState, action): EventState => {
             return state;
     }
 };
+
+export const createEvent = (groupId, event) => async dispatch => {
+    // title, description, tokens, startDate, finishDate
+    const result = await dispatch({
+        type: ACTION_TYPES.CREATE_EVENT,
+        payload: axios.post(`v1/groups/${groupId}/events`, event)
+    });
+    dispatch(getEvents(groupId));
+    return result;
+};
+
+export const getEvents = groupId => ({
+    type: ACTION_TYPES.GET_EVENTS,
+    payload: axios.get(`v1/groups/${groupId}/events`)
+});
 
 // Actions
 export const getEvent = (groupId, eventId) => ({

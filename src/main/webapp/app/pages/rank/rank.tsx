@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { createStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import RankerList from './components/ranker-list';
 
@@ -67,11 +67,11 @@ const gridContainer = (classes, leftXs, rightXs) => (
     </Grid>
 );
 
-export interface IHomeProp extends StateProps, DispatchProps {
+export interface IRankProp extends StateProps, DispatchProps {
     classes: any;
 }
 
-export class EventPage extends React.Component<IHomeProp> {
+export class RankPage extends React.Component<IRankProp> {
     componentDidMount() {
         this.props.getSession();
     }
@@ -99,4 +99,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withStyles(styles)(EventPage));
+)(withStyles(styles)(RankPage));

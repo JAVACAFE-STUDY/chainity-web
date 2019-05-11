@@ -23,21 +23,21 @@ const styles = theme => ({
     }
 });
 
-export interface IHomeCardProp {
+export interface IMemberRankProp {
     classes: any;
 }
 
-export class MemberRank extends React.Component<IHomeCardProp> {
+export class MemberRank extends React.Component<IMemberRankProp> {
     render() {
         const { classes } = this.props;
         return (
             <Card>
                 <CardActions>
                     <Grid container>
-                        <Grid item sm={8}>
+                        <Grid item sm={ 8 }>
                             <p>이달의 멤버</p>
                         </Grid>
-                        <Grid item sm={4}>
+                        <Grid item sm={ 4 }>
                             <Link to={ '/rank' }>더보기</Link>
                         </Grid>
                     </Grid>

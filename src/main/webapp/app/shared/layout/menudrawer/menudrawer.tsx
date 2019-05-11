@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import classNames from 'classnames';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -108,7 +108,7 @@ interface IDrawerState {
     anchorEl?: any;
 }
 
-interface IDrawerProps extends StateProps, DispatchProps, WithStyles {
+interface IDrawerProps extends StateProps, DispatchProps, WithStyles, RouteComponentProps {
 }
 
 class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
