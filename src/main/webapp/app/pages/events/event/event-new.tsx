@@ -90,13 +90,14 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
         e.preventDefault();
         const { title, contents, reward, date } = this.state;
         console.log('handleSubmit ===>', title, contents, reward, date);
-        // this.props.createEvent(title, contents, reward, date);
+        this.props.createEvent('1', { 'title': title, 'description': contents, 'tokens': reward, 'startDate': date[ 0 ], 'finishDate': date[ 1 ] });
     };
 
     render() {
         const { classes } = this.props;
         // match.params.id
         const multiline = true;
+        const clearable = true;
         return (
             <div>
                 <Grid container spacing={ 24 }>
@@ -106,7 +107,7 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
                                 <form onSubmit={ this.handleSubmit }>
                                     <CustomFormControl title={ '제목' } onChange={ this.onChange('title') }/>
                                     <CustomFormControl title={ '보상금' } type={ 'number' } onChange={ this.onChange('reward') }/>
-                                    <DateRangePicker onChange={ this.handleRangeDateChange }/>
+                                    <DateRangePicker onChange={ this.handleRangeDateChange } clearable={ clearable }/>
                                     <CustomFormControl title={ '내용' } onChange={ this.onChange('contents') } multiline={ multiline } rows={ 8 }/>
                                     <div>
                                         <Link to={ '/event' }>

@@ -14,6 +14,7 @@ const styles = theme =>
 export interface IDateRangePickerProp {
     classes?: any;
     onChange: any;
+    clearable?: boolean;
 }
 
 class DateRangePicker extends React.PureComponent<IDateRangePickerProp> {
@@ -39,7 +40,7 @@ class DateRangePicker extends React.PureComponent<IDateRangePickerProp> {
     };
 
     render() {
-        const { classes } = this.props;
+        const { classes, clearable } = this.props;
         const { selectedStartDate, selectedEndDate } = this.state;
 
         return (
@@ -47,12 +48,14 @@ class DateRangePicker extends React.PureComponent<IDateRangePickerProp> {
                 <Grid container className={ classes.grid } justify="space-around">
                     <MuiPickersUtilsProvider utils={ DateFnsUtils }>
                         <DatePicker
+                            clearable={ clearable }
                             margin="normal"
                             label={ '시작일' }
                             value={ selectedStartDate }
                             onChange={ this.handleDateChange('start') }
                         />
                         <DatePicker
+                            clearable={ clearable }
                             margin="normal"
                             minDate={ selectedStartDate }
                             label={ '종료일' }
