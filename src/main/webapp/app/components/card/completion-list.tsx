@@ -33,9 +33,6 @@ export class CompletionList extends React.Component<IHomeCardProp> {
       <Card>
         <CardHeader
           title="참여완료"
-          action={
-            <Button size="small">더보기</Button>
-          }
         />
         <CardContent>
           <List className={classes.root}>

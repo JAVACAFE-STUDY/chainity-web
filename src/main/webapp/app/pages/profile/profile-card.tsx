@@ -1,7 +1,6 @@
 import React, { createRef } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import ProfileDialog from 'app/pages/profile/profile-dialog';
@@ -90,7 +89,8 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
     };
 
     handleUpdateProfile = () => {
-        this.props.updateUser(this.state.name, this.state.email);
+        const { account } = this.props;
+        this.props.updateUser('1', account.id, this.state.name, account.status, account.role);
     };
 
     handleNameChange = e => {
@@ -144,7 +144,7 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
                                 />
                                 <Button color="secondary" onClick={ this.handleUpdateProfile }
                                         style={ { fontSize: 10 } }
-                                        className={ classes.button }>+수정</Button>
+                                        className={ classes.button }>프로파일 정보수정</Button>
                             </div>
                             <div>
                                 <TextField
