@@ -216,6 +216,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
 
     componentDidMount() {
         this.props.getUsers('1');
+        this.search();
         window.addEventListener('scroll', this.scrollEvent);
     }
 
