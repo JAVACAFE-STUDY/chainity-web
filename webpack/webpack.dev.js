@@ -58,8 +58,9 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
         },
       // 자바 코인 백엔드 api
       '/v1/': {
-        target: 'http://localhost:8090',
+        target: 'https://api.javacafe.co.kr',
         secure: false,
+        changeOrigin: true
       }
     },
     watchOptions: {
