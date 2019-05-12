@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import CustomFormControl from 'app/components/form/custom-form-control';
 import DateRangePicker from 'app/components/form/date-range-picker';
 
-const styles = theme =>
+export const styles = theme =>
     createStyles({
         root: {
             flexGrow: 1
