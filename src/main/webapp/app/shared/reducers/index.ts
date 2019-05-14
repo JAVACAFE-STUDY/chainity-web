@@ -13,6 +13,7 @@ import settings, { SettingsState } from 'app/pages/account/settings/settings.red
 import passwordReset, { PasswordResetState } from 'app/pages/account/password-reset/password-reset.reducer';
 import event, { EventState } from 'app/pages/events/event.reducer';
 import users, { UsersState } from 'app/pages/users/users.reducer';
+import groups, { GroupsState } from 'app/pages/group/groups.reducer';
 
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
@@ -28,6 +29,7 @@ export interface IRootState {
     readonly settings: SettingsState;
     readonly event: EventState;
     readonly users: UsersState;
+    readonly groups: GroupsState;
     /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
     readonly loadingBar: any;
 }
@@ -44,6 +46,7 @@ const rootReducer = combineReducers<IRootState>({
     settings,
     event,
     users,
+    groups,
     /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
     loadingBar
 });

@@ -18,7 +18,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { HomeStatus } from 'app/components/card/home-status';
+import HomeStatus from 'app/components/card/home-status';
 import MemberRank from 'app/components/card/memebr-rank';
 import { getSession } from 'app/shared/reducers/authentication';
 import { getEvent } from 'app/pages/events/event.reducer';
@@ -325,7 +325,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                     </Grid>
                     <Grid item xs={ 3 }>
                         { /* 전체 통계를 호출하는 API 필요 */ }
-                        <HomeStatus classes={ classes }/>
+                        <HomeStatus/>
                         <Divider variant="middle"/>
                         { /* 이달의 멥버 통계 호출하는 API 필요 */ }
                         <MemberRank/>
