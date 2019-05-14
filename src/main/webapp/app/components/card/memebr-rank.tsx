@@ -28,6 +28,7 @@ export interface IMemberRankProp {
 }
 
 export class MemberRank extends React.Component<IMemberRankProp> {
+
     render() {
         const { classes } = this.props;
         return (

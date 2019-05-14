@@ -1,10 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
+import { getSession } from 'app/shared/reducers/authentication';
+import { getGroup } from 'app/pages/group/groups.reducer';
 
-const styles = createStyles({
+const styles = {
     card: {
         minWidth: 275
     },
@@ -13,22 +16,25 @@ const styles = createStyles({
     },
     pos: {
         marginBottom: 12
-    },
-    text: {
-        textAlign: 'left'
     }
-});
+};
 
-export interface IHomeStatusProp {
-    classes: any;
+export interface IHomeStatusProp extends StateProps, DispatchProps {
+    classes?: any;
 }
 
 export class HomeStatus extends React.Component<IHomeStatusProp> {
+
+    componentDidMount() {
+        this.props.getGroup('1');
+    }
+
     render() {
-        const { classes } = this.props;
+        const { classes, group } = this.props;
+        console.log('group  => ', group);
         return (
             <Card>
-                <CardContent className={ classes.text }>
+                <CardContent>
                     <Typography variant="h5" component="h2" color="textSecondary" gutterBottom>
                         JAVACAFE 상태
                     </Typography>
@@ -60,4 +66,13 @@ export class HomeStatus extends React.Component<IHomeStatusProp> {
     }
 }
 
-export default withStyles(styles)(HomeStatus);
+const mapStateToProps = storeState => ({
+    group: storeState.groups.group
+});
+
+const mapDispatchToProps = { getSession, getGroup };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(HomeStatus));

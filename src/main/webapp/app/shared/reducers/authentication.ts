@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Storage } from 'react-jhipster';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
+import { getLoggers } from 'app/pages/administration/administration.reducer';
 
 export const ACTION_TYPES = {
     LOGIN: 'authentication/LOGIN',
@@ -108,7 +109,7 @@ export default (state: AuthenticationState = initialState, action): Authenticati
 export const displayAuthError = message => ({ type: ACTION_TYPES.ERROR_MESSAGE, message });
 
 function parseJwt(token) {
-    const base64Url = token.split('.')[1];
+    const base64Url = token.split('.')[ 1 ];
     const base64 = decodeURIComponent(atob(base64Url)
         .split('')
         .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
@@ -122,7 +123,7 @@ export const getSession = () => async dispatch => {
     if (jwt) {
         await dispatch({
             type: ACTION_TYPES.GET_SESSION,
-            payload: axios.get('/v1/groups/1/users/' + jwt['_id'])
+            payload: axios.get('/v1/groups/1/users/' + jwt[ '_id' ])
         });
     }
 };
@@ -167,9 +168,18 @@ export const clearAuthentication = messageKey => dispatch => {
     });
 };
 
-export const updateUser = (username, useremail) => dispatch => {
-    dispatch({
-        type: ACTION_TYPES.UPDATE_USER,
-        payload: { name: username, email: useremail }
-    });
+export const updateUser = (groupId, userId, name, status, role) => {
+    // TODO body 에 들어가는 값들은 optional 형태로 처리 하도록 할 것
+    const body = {
+        'name': name,
+        'status': status,
+        'role': role
+    };
+    return async dispatch => {
+        await dispatch({
+            type: ACTION_TYPES.UPDATE_USER,
+            payload: axios.put(`/v1/groups/${groupId}/users/${userId}`, body)
+        });
+        dispatch(getSession());
+    };
 };
