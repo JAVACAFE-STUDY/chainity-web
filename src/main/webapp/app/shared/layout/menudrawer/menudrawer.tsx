@@ -102,7 +102,7 @@ const styles = theme => createStyles({
     profile: {
       width: '50px',
       height: '50px',
-      'border-radius': '3px'
+      'border-radius': '50%'
     }
 });
 
@@ -118,6 +118,33 @@ interface IDrawerState {
 
 interface IDrawerProps extends StateProps, DispatchProps, WithStyles, RouteComponentProps {
 }
+
+const defaultAvatar = classes =>
+    (
+        <img
+            className={ classes.profile }
+            src={ '/content/images/default-avatar.png' }
+        />
+    );
+
+const profileImageElement = ({ classes, account }) => {
+    if (!account.avatar) {
+        return defaultAvatar(classes);
+    }
+
+    const userImage = new Image();
+    userImage.onerror = () => {
+        return defaultAvatar(classes);
+    };
+    userImage.src = account.avatar;
+
+    return (
+        <img
+            className={ classes.profile }
+            src={ account.avatar }
+        />
+    );
+};
 
 class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
     state: IDrawerState = {
@@ -167,10 +194,10 @@ class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
                     <div>
                         <IconButton aria-owns={ open ? 'menu-appbar' : undefined } aria-haspopup="true"
                                     onClick={ this.handleMenu } color="inherit">
-                            <img
-                                className={ classes.profile }
-                                src={ this.props.account.avatar }
-                            />
+                            {
+                                profileImageElement(this.props)
+                            }
+
                         </IconButton>
                     </div>
                 </Toolbar>

@@ -88,6 +88,12 @@ class Login extends React.Component<ILoginProps, ILoginState> {
         });
     };
 
+    enterPassword = (e: React.KeyboardEvent) => {
+        if (e.key.toUpperCase() === 'ENTER') {
+            this.handleLogin();
+        }
+    };
+
     changePassword = e => {
         this.setState({
             password: e.target.value
@@ -96,6 +102,8 @@ class Login extends React.Component<ILoginProps, ILoginState> {
 
     render() {
         const { classes } = this.props;
+        const hostname = window.location.host;
+
         return (
             <Grid
                 container
@@ -108,9 +116,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                     <Card className={ classNames(classes.form) }>
                         <CardContent>
                             <Typography className={ classNames(classes.loginHeader) }>자바카페에 로그인</Typography>
-                            <Typography
-                                className={ classNames(classes.loginSubHeader) }>javacafe.cryptoband.com
-                            </Typography>
+                            <Typography className={ classNames(classes.loginSubHeader) }>{hostname}</Typography>
                             <FormControl
                                 fullWidth
                             >
@@ -131,6 +137,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                                     placeholder="패스워드"
                                     type="password"
                                     className={ classNames(classes.input) }
+                                    onKeyDown={this.enterPassword}
                                     onChange={ this.changePassword }
                                 />
                             </FormControl>
@@ -160,7 +167,6 @@ const mapDispatchToProps = { login };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-// @ts-ignore
 export default connect(
     mapStateToProps,
     mapDispatchToProps
