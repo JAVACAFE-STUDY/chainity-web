@@ -1,7 +1,7 @@
 /* tslint:disable:ter-arrow-body-style */
 import './event.css';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import { Card, createStyles, WithStyles, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -17,7 +17,6 @@ import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import HomeStatus from 'app/components/card/home-status';
 import MemberRank from 'app/components/card/memebr-rank';
 import { getSession } from 'app/shared/reducers/authentication';
@@ -73,7 +72,8 @@ export const styles = theme =>
             margin: theme.spacing.unit
         },
         input: {
-            marginLeft: 8,
+            padding: '10px',
+            marginLeft: '8px',
             flex: 1
         },
         iconButton: {
@@ -82,20 +82,26 @@ export const styles = theme =>
         noData: {
             textAlign: 'center'
         },
+        listItemLink: {
+            '&:hover': {
+                'text-decoration': 'none'
+            }
+        },
         listItem: {
-            height: '300px',
+            height: '200px',
             margin: '20px 0',
             padding: '20px'
+
         },
         listItemTitle: {
             'font-size': '1.5em',
-            margin: '20px 10px'
+            margin: '10px 0'
         },
         listItemContent: {
             display: '-webkit-box',
             overflow: 'hidden',
             'text-overflow': 'ellipsis',
-            '-webkit-line-clamp': 4,
+            '-webkit-line-clamp': 2,
             '-webkit-box-orient': 'vertical',
             'font-size': '1.2rem',
             'line-height': '2rem',
@@ -109,7 +115,8 @@ export const styles = theme =>
         },
         listItemTokens: {
             display: 'inline',
-            padding: '0 5px'
+            padding: '0 5px',
+            width: '50px'
         },
         listItemStartDate: {
             display: 'inline',
@@ -123,7 +130,8 @@ export const styles = theme =>
                 flexGrow: 1
             },
             input: {
-                marginLeft: 8,
+                padding: '10px',
+                'marge-left': '8px',
                 flex: 1
             },
             iconButton: {
@@ -151,14 +159,13 @@ const searchBar = (classes, { changeEvent, enterEvent, clickSearch }) => {
         <Paper className={ classes.search.root } elevation={ 1 }>
             <FormControl fullWidth>
                 <Input
-                    className={ classes.search.input } placeholder=" 이벤트 검색 키워드를 입력해주세요. "
+                    className={ classes.search.input }
+                    placeholder=" 이벤트 검색 키워드를 입력해주세요. "
                     onChange={ changeEvent }
                     onKeyUp={ enterEvent }
                     endAdornment={
                         <IconButton className={ classes.search.iconButton } aria-label="Search">
-                            <SearchIcon
-                                onClick={ clickSearch }
-                            />
+                            <SearchIcon onClick={ clickSearch } />
                         </IconButton>
                     }
                 />
@@ -169,7 +176,7 @@ const searchBar = (classes, { changeEvent, enterEvent, clickSearch }) => {
 
 const listItem = (classes, { event, index }, calcDate) => {
     return (
-        <Link to={ `/event/detail/${ event._id }` } key={ index }>
+        <Link to={ `/event/detail/${ event._id }` } key={ index } className={ classes.listItemLink }>
             <Card className={ classes.listItem }>
                 <Typography component="p" className={ classes.listItemTitle }>
                     { event.title }
@@ -184,7 +191,7 @@ const listItem = (classes, { event, index }, calcDate) => {
                 </Typography>
                 <Typography component="span"
                             className={ classes.listItemStartDate }>
-                    { calcDate(event.startDate) }
+                    { calcDate(event.createdAt) }
                 </Typography>
             </Card>
         </Link>
@@ -215,7 +222,6 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
     };
 
     componentDidMount() {
-        this.props.getUsers('1');
         this.search();
         window.addEventListener('scroll', this.scrollEvent);
     }
@@ -250,7 +256,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
         });
         this.setState({
             ...this.state,
-            isNext: (res.data.limit + res.data.offset) < res.data.totalDocs,
+            isNext: (Number(res.data.offset) + res.data.docs.length) < res.data.totalDocs,
             data: res.data,
             list: res.data.docs.reduce((previousValue, currentValue) => {
                 previousValue.push(currentValue);
@@ -289,17 +295,24 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
         });
     };
 
-    calcDate = (regDate: string) => {
-        const regDateObject = new Date(regDate) || new Date();
-        const secondDate = (this.state.nowDate.valueOf() - regDateObject.valueOf()) / 1000;
-        if ((secondDate / 60) <= 1) {
-            return `${ (secondDate).toFixed(0) } 초 전`;
-        } else if ((secondDate / 60 / 60) <= 1) {
-            return `${ (secondDate / 60).toFixed(0) } 분 전`;
-        } else if ((secondDate / 60 / 60 / 24) <= 1) {
-            return `${ (secondDate / 60 / 60).toFixed(0) } 시간 전`;
+    calcDate = (startDate: string) => {
+        if (!startDate) {
+            return '';
         }
-        return `${ regDateObject.getFullYear() }-${ regDateObject.getMonth() + 1 }-${ regDateObject.getDate() }`;
+        try {
+            const startDateObject = new Date(startDate);
+            const secondDate = (this.state.nowDate.valueOf() - startDateObject.valueOf()) / 1000;
+            if ((secondDate / 60) <= 1) {
+                return `${ (secondDate).toFixed(0) } 초 전`;
+            } else if ((secondDate / 60 / 60) <= 1) {
+                return `${ (secondDate / 60).toFixed(0) } 분 전`;
+            } else if ((secondDate / 60 / 60 / 24) <= 1) {
+                return `${ (secondDate / 60 / 60).toFixed(0) } 시간 전`;
+            }
+            return `${ startDateObject.getFullYear() }-${ startDateObject.getMonth() + 1 }-${ startDateObject.getDate() }`;
+        } catch (e) {
+            return '';
+        }
     };
 
     handleClick = () => {
@@ -313,15 +326,21 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                 <Grid container spacing={ 24 }>
                     <Grid item xs={ 9 }>
                         { searchBar(classes, this) }
-                        <Paper>
-                            { listWrapper(classes, this.state.list, this) }
-                            { this.state.list.length
-                                ? <Button onClick={ this.nextPageSearch } disabled={ !this.state.isNext }>
-                                    더보기
-                                </Button>
-                                : <Card className={ classes.noData }>조회된 데이터가 없습니다.</Card>
-                            }
-                        </Paper>
+                        { listWrapper(classes, this.state.list, this) }
+                        { this.state.list.length
+                            ? <Grid container justify="center">
+                                <Grid item justify="center">
+                                    <Button
+                                        variant="outlined"
+                                        onClick={ this.nextPageSearch }
+                                        disabled={ !this.state.isNext }
+                                    >
+                                        더보기
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                            : <Card className={ classes.noData }>조회된 데이터가 없습니다.</Card>
+                        }
                     </Grid>
                     <Grid item xs={ 3 }>
                         { /* 전체 통계를 호출하는 API 필요 */ }
