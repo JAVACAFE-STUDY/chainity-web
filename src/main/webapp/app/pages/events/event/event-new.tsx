@@ -90,7 +90,6 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
         e.preventDefault();
         const { title, contents, reward, date } = this.state;
         console.log('handleSubmit ===>', title, contents, reward, date);
-        debugger
         this.props.createEvent('1', { 'title': title, 'description': contents, 'tokens': reward, 'startDate': date.start, 'finishDate': date.end });
     };
 
