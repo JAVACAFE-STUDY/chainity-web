@@ -27,11 +27,11 @@ class DateRangePicker extends React.PureComponent<IDateRangePickerProp> {
     handleDateChange = type => e => {
         switch (type) {
             case 'start':
-                this.props.onChange({ value: [ e, this.state.selectedEndDate ] });
+                this.props.onChange({ start: e });
                 this.setState({ selectedStartDate: e });
                 break;
             case 'end':
-                this.props.onChange({ value: [ this.state.selectedEndDate, e ] });
+                this.props.onChange({ end: e });
                 this.setState({ selectedEndDate: e });
                 break;
             default:

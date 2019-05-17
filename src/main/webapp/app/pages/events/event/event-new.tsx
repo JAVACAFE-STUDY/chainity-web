@@ -59,7 +59,7 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
         title: '',
         reward: 0,
         contents: '',
-        date: [ null, null ]
+        date: {}
     };
 
     componentDidMount() {
@@ -67,7 +67,7 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
     }
 
     handleRangeDateChange = value => {
-        this.setState({ date: value });
+        this.setState({ date: { ...this.state.date, ...value } });
     };
 
     onChange = type => value => {
@@ -90,7 +90,7 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
         e.preventDefault();
         const { title, contents, reward, date } = this.state;
         console.log('handleSubmit ===>', title, contents, reward, date);
-        this.props.createEvent('1', { 'title': title, 'description': contents, 'tokens': reward, 'startDate': date[ 0 ], 'finishDate': date[ 1 ] });
+        this.props.createEvent('1', { 'title': title, 'description': contents, 'tokens': reward, 'startDate': date.start, 'finishDate': date.end });
     };
 
     render() {
