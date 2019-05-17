@@ -3,7 +3,7 @@ import '../event.css';
 import React from 'react';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
-import { getEvents, createEvent } from '../event.reducer';
+import { createEvent, getEvents } from '../event.reducer';
 import ApplyList from '../../../components/card/apply-list';
 import CompletionList from '../../../components/card/completion-list';
 import Paper from '@material-ui/core/Paper';
@@ -14,6 +14,7 @@ import { createStyles, withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import CustomFormControl from 'app/components/form/custom-form-control';
 import DateRangePicker from 'app/components/form/date-range-picker';
+import { convertDate } from 'app/shared/util/date-utils';
 
 export const styles = theme =>
     createStyles({
@@ -67,7 +68,9 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
     }
 
     handleRangeDateChange = value => {
+        console.log('handleRangeDateChange ==> ', value);
         this.setState({ date: { ...this.state.date, ...value } });
+        console.log('handleRangeDateChange this.state.date :==> ', this.state.date);
     };
 
     onChange = type => value => {
@@ -89,8 +92,10 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
     handleSubmit = e => {
         e.preventDefault();
         const { title, contents, reward, date } = this.state;
-        console.log('handleSubmit ===>', title, contents, reward, date);
-        this.props.createEvent('1', { 'title': title, 'description': contents, 'tokens': reward, 'startDate': date.start, 'finishDate': date.end });
+        console.log('handleSubmit ===>', title, contents, reward, date.start, date.end);
+        const startDate = convertDate(date.start);
+        const finishDate = convertDate(date.end);
+        this.props.createEvent('1', { 'title': title, 'description': contents, 'tokens': reward, 'startDate': startDate, 'finishDate': finishDate });
     };
 
     render() {

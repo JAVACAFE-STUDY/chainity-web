@@ -15,7 +15,7 @@ const ErrorBoundaryLayoutRoute = ({ component: Component, ...rest }: RouteProps)
             <ErrorBoundary>
                 {/*
                 // @ts-ignore */}
-                <MenuDrawer component={ Component }/>
+                <MenuDrawer component={ Component } {...rest}/>
             </ErrorBoundary>
         );
 

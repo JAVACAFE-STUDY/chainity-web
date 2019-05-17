@@ -1,7 +1,7 @@
 /* tslint:disable:ter-arrow-body-style */
 import './event.css';
 import React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { withRouter, Link, RouteComponentProps } from 'react-router-dom';
 import { Card, createStyles, WithStyles, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -69,7 +69,12 @@ export const styles = theme =>
             color: theme.palette.text.secondary
         },
         fab: {
-            margin: theme.spacing.unit
+            margin: 0,
+            top: 'auto',
+            left: 20,
+            bottom: 50,
+            right: 'auto',
+            position: 'fixed'
         },
         input: {
             padding: '10px',
@@ -165,7 +170,7 @@ const searchBar = (classes, { changeEvent, enterEvent, clickSearch }) => {
                     onKeyUp={ enterEvent }
                     endAdornment={
                         <IconButton className={ classes.search.iconButton } aria-label="Search">
-                            <SearchIcon onClick={ clickSearch } />
+                            <SearchIcon onClick={ clickSearch }/>
                         </IconButton>
                     }
                 />
@@ -176,7 +181,7 @@ const searchBar = (classes, { changeEvent, enterEvent, clickSearch }) => {
 
 const listItem = (classes, { event, index }, calcDate) => {
     return (
-        <Link to={ `/event/detail/${ event._id }` } key={ index } className={ classes.listItemLink }>
+        <Link to={ { pathname: `/event/detail/${ event._id }`, search: `id=${event._id}` } } key={ index } className={ classes.listItemLink }>
             <Card className={ classes.listItem }>
                 <Typography component="p" className={ classes.listItemTitle }>
                     { event.title }
@@ -320,7 +325,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
     };
 
     render() {
-        const { classes } = this.props;
+        const { classes, users } = this.props;
         return (
             <React.Fragment>
                 <Grid container spacing={ 24 }>
@@ -347,13 +352,11 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                         <HomeStatus/>
                         <Divider variant="middle"/>
                         { /* 이달의 멥버 통계 호출하는 API 필요 */ }
-                        <MemberRank/>
+                        <MemberRank members={ users }/>
                     </Grid>
                 </ Grid>
-                <Fab color="primary" aria-label="Add" className={ classes.fab }>
-                    <Link to={ '/event/new' }>
-                        <AddIcon/>
-                    </Link>
+                <Fab color="primary" aria-label="Add" className={ classes.fab } onClick={ this.handleClick }>
+                    <AddIcon/>
                 </Fab>
             </React.Fragment>
         );
@@ -371,6 +374,6 @@ const mapDispatchToProps = { getSession, getEvent, getUsers };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps, mapDispatchToProps
-)(withStyles(styles, { withTheme: true })(EventPage));
+)(withStyles(styles, { withTheme: true })(EventPage)));
