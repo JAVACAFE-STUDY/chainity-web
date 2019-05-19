@@ -107,7 +107,7 @@ export class RewardList extends React.Component<IRewardListProp> {
                     <Table className={ classes.table }>
                         <TableHead>
                             <TableRow>
-                                <TableCell/>
+                                <TableCell align="right">이름</TableCell>
                                 <TableCell align="right">보상금</TableCell>
                                 <TableCell align="right">일시</TableCell>
                                 <TableCell align="right">원장 기록</TableCell>
