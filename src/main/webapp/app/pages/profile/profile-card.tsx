@@ -39,7 +39,7 @@ const styles = theme =>
     });
 
 export interface IProfileCardProp extends StateProps, DispatchProps {
-    classes: any;
+    classes?: any;
 }
 
 export interface IProfileCardState {
@@ -124,7 +124,7 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
                             className={ classes.button }
                         > +수정하기
                         </Button>
-                        <ProfileDialog classes={ classes } onClose={ this.onClose }
+                        <ProfileDialog onClose={ this.onClose }
                                        open={ this.state.open } src={ this.state.src }
                                        saveCroppedImg={ this.saveCroppedImg }
                         />

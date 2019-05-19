@@ -15,12 +15,11 @@ const styles = theme => ({
 });
 
 export interface IWalletCardProp {
-    classes: any;
+    classes?: any;
 }
 
 export class Wallet extends React.Component<IWalletCardProp> {
     render() {
-        const { classes } = this.props;
         return (
             <Card style={ { textAlign: 'left' } }>
                 <CardHeader title="지갑"/>

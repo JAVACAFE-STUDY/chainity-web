@@ -1,15 +1,15 @@
 import axios from 'axios';
 
+import _ from 'lodash';
 import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
-import { IUser } from 'app/shared/model/user.model';
-import { getUsers } from 'app/pages/administration/user-management/user-management.reducer';
 
 export const ACTION_TYPES = {
     CREATE_EVENT: 'event/CREATE_EVENT',
     GET_EVENTS: 'event/GET_EVENTS',
     GET_EVENT: 'event/GET_EVENT',
     GET_EVENT_PARTICIPATIONS: 'event/GET_EVENT_PARTICIPATIONS',
-    GET_EVENT_REWARDS: 'event/GET_EVENT_REWARDS'
+    GET_EVENT_REWARDS: 'event/GET_EVENT_REWARDS',
+    GET_AGGS_PARTICIPATIONS: 'event/GET_AGGS_PARTICIPATIONS'
 };
 
 const initialState = {
@@ -28,6 +28,7 @@ const initialState = {
         'createdBy': 'admin'
     },
     participations: [],
+    aggsParticipations: {},
     rewards: {},
     errorMessage: ''
 };
@@ -94,6 +95,12 @@ export default (state: EventState = initialState, action): EventState => {
                 loading: false,
                 rewards: action.payload.data
             };
+        case SUCCESS(ACTION_TYPES.GET_AGGS_PARTICIPATIONS):
+            return {
+                ...state,
+                loading: false,
+                aggsParticipations: action.payload.data
+            };
         default:
             return state;
     }
@@ -130,3 +137,17 @@ export const getEventRewards = (groupId, eventId) => ({
     type: ACTION_TYPES.GET_EVENT_REWARDS,
     payload: axios.get(`v1/groups/${groupId}/events/${eventId}/rewards`)
 });
+
+// GET /v1/groups/:groupId/aggs/participations (optional: startDate, endDate, limit)
+export const getAggsParticipations = (groupId, startDate?, endDate?, limit?) => {
+    let requestUrl = `v1/groups/${groupId}/aggs/participations`;
+    let params = '';
+    if (!_.isEmpty(startDate)) params = params.concat(`&startDate=${startDate}`);
+    if (!_.isEmpty(endDate)) params = params.concat(`&endDate=${endDate}`);
+    if (!_.isEmpty(limit)) params = params.concat(`&limit=${limit}`);
+    if (!_.isEmpty(params)) requestUrl = requestUrl.concat('?').concat(params);
+    return {
+        type: ACTION_TYPES.GET_AGGS_PARTICIPATIONS,
+        payload: axios.get(requestUrl)
+    };
+};
