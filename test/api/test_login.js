@@ -5,17 +5,20 @@ require('dotenv').config({
     path: './.env.test'
 });
 
-const url = process.env.API_SERVER_DOMAIN + ':' + process.env.API_SERVER_PORT;
+const url = `${process.env.PROTOCOL}://${process.env.API_SERVER_DOMAIN}${process.env.API_PREFIX}/${process.env.GROUP_ID}`;
 const userId = process.env.USER_ID;
 const userPwd = process.env.USER_PASSWORD;
 const urlLogin = process.env.URL_LOGIN;
 const urlGetUserInfo = process.env.URL_GET_USER_INFO;
+const urlGetRewards = process.env.URL_GET_REWARDS;
 
-console.log(`url : ${url}
-userId : ${userId}
-userPwd : ${userPwd}
-loginUrl : ${urlLogin}
-urlGetUserInfo : ${urlGetUserInfo}
+console.log(`
+  url : ${url}
+  userId : ${userId}
+  userPwd : ${userPwd}
+  loginUrl : ${urlLogin}
+  urlGetUserInfo : ${urlGetUserInfo}
+  urlGetRewards : ${urlGetRewards}
 `);
 
 describe('api server test', function() {
@@ -38,7 +41,7 @@ describe('api server test', function() {
             });
     });
 
-    it('responds with json', function(done) {
+    it('get users info', function(done) {
         // console.dir(result);
         request(url)
             .get(urlGetUserInfo)
@@ -52,9 +55,24 @@ describe('api server test', function() {
                 done();
             });
     });
+
+    it('get reward list', function(done) {
+        // console.dir(result);
+        request(url)
+            .get(urlGetRewards)
+            .set('Accept', 'application/json')
+            .set('Authorization', 'Bearer '+token)
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(err, res) {
+                if (err) return done(err);
+                console.dir(res.body);
+                done();
+            });
+    });
 });
 
-
+/*
 describe('api server test using async', function() {
     it('responds with json', function(done) {
         async.waterfall([
@@ -94,3 +112,4 @@ describe('api server test using async', function() {
         });
     });
 });
+*/
