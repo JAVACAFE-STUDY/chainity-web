@@ -10,6 +10,7 @@ const path = require('path');
 const utils = require('./utils.js');
 const commonConfig = require('./webpack.common.js');
 
+require('dotenv').config();
 const ENV = 'development';
 
 module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
@@ -58,7 +59,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
         },
       // 자바 코인 백엔드 api
       '/v1/': {
-        target: 'https://api.javacafe.co.kr',
+        target: `https://${process.env.API_SERVER_DOMAIN}`,
         secure: false,
         changeOrigin: true
       }
