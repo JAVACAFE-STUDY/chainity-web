@@ -100,9 +100,9 @@ const styles = theme => createStyles({
         'margin-left': '20px'
     },
     profile: {
-      width: '50px',
-      height: '50px',
-      'border-radius': '50%'
+        width: '50px',
+        height: '50px',
+        'border-radius': '50%'
     }
 });
 
@@ -241,7 +241,7 @@ class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
                 <main className={ classes.content }>
                     <Card className="jh-card">
                         <ErrorBoundary>
-                            <RouterComponent/>
+                            <RouterComponent location={ this.props.location } history={ this.props.history }/>
                         </ErrorBoundary>
                     </Card>
                 </main>
