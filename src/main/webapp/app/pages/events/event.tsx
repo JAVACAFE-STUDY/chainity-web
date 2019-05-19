@@ -352,6 +352,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                         <HomeStatus/>
                         <Divider variant="middle"/>
                         { /* 이달의 멥버 통계 호출하는 API 필요 */ }
+                        // @ts-ignore
                         <MemberRank members={ users }/>
                     </Grid>
                 </ Grid>
