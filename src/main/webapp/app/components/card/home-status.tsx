@@ -38,26 +38,34 @@ export class HomeStatus extends React.Component<IHomeStatusProp> {
                     <Typography variant="h5" component="h2" color="textSecondary" gutterBottom>
                         JAVACAFE 상태
                     </Typography>
-                    <Typography component="p">
+                    <Typography variant="subtitle1" component="p">
                         총 토큰 발생
-                        <br/>
+                    </Typography>
+                    <Typography component="p">
                         { '560' }
                     </Typography>
-                    <Typography component="p">
+                    <Typography variant="subtitle1" component="p">
                         토큰 보상
-                        <br/>
+                    </Typography>
+                    <Typography component="p">
                         { '160' }
                     </Typography>
+                    <Typography variant="subtitle1" component="p">
+                        사용자 수
+                    </Typography>
                     <Typography component="p">
-                        사용자 수<br/>
                         { '460' }
                     </Typography>
-                    <Typography component="p">
-                        이벤트 수<br/>
-                        { '60' }
+                    <Typography variant="subtitle1" component="p">
+                        이벤트 수
                     </Typography>
                     <Typography component="p">
-                        참여 수<br/>
+                        { '60' }
+                    </Typography>
+                    <Typography variant="subtitle1" component="p">
+                        참여 수
+                    </Typography>
+                    <Typography component="p">
                         { '260' }
                     </Typography>
                 </CardContent>

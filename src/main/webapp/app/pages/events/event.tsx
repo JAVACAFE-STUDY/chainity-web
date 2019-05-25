@@ -147,6 +147,10 @@ export const styles = theme =>
                 height: 28,
                 margin: 4
             }
+        },
+        'divider-margin': {
+            margin: '10px',
+            'background-color': 'transparent'
         }
     });
 
@@ -350,9 +354,8 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                     <Grid item xs={ 3 }>
                         { /* 전체 통계를 호출하는 API 필요 */ }
                         <HomeStatus/>
-                        <Divider variant="middle"/>
+                        <Divider variant="middle" className={ classes['divider-margin']}/>
                         { /* 이달의 멥버 통계 호출하는 API 필요 */ }
-                        // @ts-ignore
                         <MemberRank members={ users }/>
                     </Grid>
                 </ Grid>

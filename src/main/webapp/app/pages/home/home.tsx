@@ -35,6 +35,10 @@ const styles = theme =>
             padding: theme.spacing.unit * 2,
             textAlign: 'center',
             color: theme.palette.text.secondary
+        },
+        'divider-margin': {
+            margin: '10px',
+            'background-color': 'transparent'
         }
     });
 
@@ -75,7 +79,7 @@ const mainContent = classes => (
 const sidebarContent = classes => (
     <Paper className={ classes.paper }>
         <HomeStatus/>
-        <Divider variant="middle"/>
+        <Divider variant="middle" className={ classes['divider-margin'] }/>
         <MemberRank/>
     </Paper>
 );

@@ -15,6 +15,8 @@ import { Link } from 'react-router-dom';
 import CustomFormControl from 'app/components/form/custom-form-control';
 import DateRangePicker from 'app/components/form/date-range-picker';
 import { convertDate } from 'app/shared/util/date-utils';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl/FormControl';
 
 export const styles = theme =>
     createStyles({
@@ -31,6 +33,13 @@ export const styles = theme =>
         },
         margin: {
             margin: theme.spacing.unit
+        },
+        customMargin: {
+            margin: theme.spacing.unit,
+            width: '100%'
+        },
+        bootstrapFormLabel: {
+            fontSize: 18
         }
     });
 
@@ -112,7 +121,14 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
                                 <form onSubmit={ this.handleSubmit }>
                                     <CustomFormControl title={ '제목' } onChange={ this.onChange('title') }/>
                                     <CustomFormControl title={ '보상금' } type={ 'number' } onChange={ this.onChange('reward') }/>
-                                    <DateRangePicker onChange={ this.handleRangeDateChange } clearable={ clearable }/>
+                                    <div>
+                                        <FormControl className={ classes.customMargin }>
+                                          <InputLabel shrink htmlFor="bootstrap-input" className={ classes.bootstrapFormLabel }>
+                                            { '참여 신청 기간 (시작일 ~ 종료일)' }
+                                          </InputLabel>
+                                        </FormControl>
+                                        <DateRangePicker onChange={ this.handleRangeDateChange } clearable={ clearable }/>
+                                    </div>
                                     <CustomFormControl title={ '내용' } onChange={ this.onChange('contents') } multiline={ multiline } rows={ 8 }/>
                                     <div>
                                         <Link to={ '/event' }>
