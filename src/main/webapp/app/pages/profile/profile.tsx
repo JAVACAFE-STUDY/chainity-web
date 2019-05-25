@@ -37,20 +37,20 @@ const styles = theme =>
 const mainContent = classes => (
     <React.Fragment>
         <Paper className={ classes.paper }>
-            <ProfileCard classes={ classes }/>
+            <ProfileCard/>
         </Paper>
         <Paper className={ classes.paper }>
-            <RewardList classes={ classes } eventId={ '1' }/>
+            <RewardList eventId={ '1' }/>
         </Paper>
     </React.Fragment>
 );
 
 const sidebarContent = classes => (
     <React.Fragment>
-        <Paper className={ classes }>
-            <Wallet classes={ classes }/>
+        <Paper className={ classes.paper }>
+            <Wallet/>
             <Divider variant="middle"/>
-            <Events classes={ classes }/>
+            <Events/>
         </Paper>
     </React.Fragment>
 );
