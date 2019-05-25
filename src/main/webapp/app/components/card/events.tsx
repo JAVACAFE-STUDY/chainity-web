@@ -25,7 +25,7 @@ const styles = createStyles({
 });
 
 export interface IHomeCardProp {
-    classes: any;
+    classes?: any;
 }
 
 export class Events extends React.Component<IHomeCardProp> {

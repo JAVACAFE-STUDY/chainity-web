@@ -22,14 +22,6 @@ const styles = theme => createStyles({
     }
 });
 
-let id = 0;
-
-function createData(name, calories, fat, carbs, protein) {
-    id += 1;
-    return { id, name, calories, fat, carbs, protein };
-}
-
-
 /*
 const rewardListItem = classes => {
   let a = 1;
@@ -52,12 +44,12 @@ const rewardListItem = classes => {
 };
 */
 
-export interface IHomeCardProp {
-    classes: any;
+export interface IRewardListProp {
+    classes?: any;
     items: any;
 }
 
-export class RewardList extends React.Component<IHomeCardProp> {
+export class RewardList extends React.Component<IRewardListProp> {
     constructor(props) {
         super(props);
         this.state = {
@@ -135,7 +127,7 @@ export class RewardList extends React.Component<IHomeCardProp> {
                 </CardContent>
             </Card>
         );
-        //}
+        // }
     }
 }
 

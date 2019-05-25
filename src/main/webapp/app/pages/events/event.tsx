@@ -20,7 +20,7 @@ import axios from 'axios';
 import HomeStatus from 'app/components/card/home-status';
 import MemberRank from 'app/components/card/memebr-rank';
 import { getSession } from 'app/shared/reducers/authentication';
-import { getEvent } from 'app/pages/events/event.reducer';
+import { getAggsParticipations, getEvent } from 'app/pages/events/event.reducer';
 import { getUsers } from 'app/pages/users/users.reducer';
 import { connect } from 'react-redux';
 
@@ -174,6 +174,7 @@ const searchBar = (classes, { changeEvent, enterEvent, clickSearch }) => {
                     onKeyUp={ enterEvent }
                     endAdornment={
                         <IconButton className={ classes.search.iconButton } aria-label="Search">
+                            { /* 추후 처리 필요. SearchIcon onClick 이벤트로 발생하는 warning */ }
                             <SearchIcon onClick={ clickSearch }/>
                         </IconButton>
                     }
@@ -233,6 +234,8 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
     componentDidMount() {
         this.search();
         window.addEventListener('scroll', this.scrollEvent);
+        this.props.getAggsParticipations('1');
+
     }
 
     componentWillUnmount() {
@@ -338,7 +341,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                         { listWrapper(classes, this.state.list, this) }
                         { this.state.list.length
                             ? <Grid container justify="center">
-                                <Grid item justify="center">
+                                <Grid item>
                                     <Button
                                         variant="outlined"
                                         onClick={ this.nextPageSearch }
@@ -356,7 +359,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                         <HomeStatus/>
                         <Divider variant="middle" className={ classes['divider-margin']}/>
                         { /* 이달의 멥버 통계 호출하는 API 필요 */ }
-                        <MemberRank members={ users }/>
+                        <MemberRank members={ this.props.aggsParticipations }/>
                     </Grid>
                 </ Grid>
                 <Fab color="primary" aria-label="Add" className={ classes.fab } onClick={ this.handleClick }>
@@ -370,10 +373,11 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
 const mapStateToProps = storeState => ({
     account: storeState.authentication.account,
     isAuthenticated: storeState.authentication.isAuthenticated,
-    users: storeState.users.data.docs
+    users: storeState.users.data.docs,
+    aggsParticipations: storeState.event.aggsParticipations.docs
 });
 
-const mapDispatchToProps = { getSession, getEvent, getUsers };
+const mapDispatchToProps = { getSession, getEvent, getUsers, getAggsParticipations };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

@@ -36,7 +36,7 @@ function Transition(props) {
 }
 
 export interface IProfileDialogProp {
-    classes: any;
+    classes?: any;
     open: boolean;
     src: boolean;
     onClose: any;
