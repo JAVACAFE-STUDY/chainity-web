@@ -87,13 +87,21 @@ const styles = theme => createStyles({
         '& a:hover': {
             'text-decoration': 'none'
         },
+        '& a:focus': {
+            'outline': 'none'
+        },
         color: '#ffffff'
     },
     'app-bar-button': {
-        padding: '20px',
+        padding: '22px',
         color: 'rgb(255, 255, 255)',
         'font-size': '17px',
-        'margin-top': '-1px'
+        'margin-top': '-1px',
+        '&:focus': {
+            'background-color': '#2074f3c4',
+            'outline': 'none'
+        },
+        'border-radius': '0px'
     },
     logo: {
         height: '50px',

@@ -7,7 +7,13 @@ import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
 const styles = theme =>
     createStyles({
         grid: {
-            width: '30%'
+            width: '100%',
+            'margin-top': '16px',
+            'margin-bottom': '8px'
+        },
+        datePicker: {
+            width: '45%',
+            'margin-top': '-20px'
         }
     });
 
@@ -48,13 +54,16 @@ class DateRangePicker extends React.PureComponent<IDateRangePickerProp> {
                 <Grid container className={ classes.grid } justify="space-around">
                     <MuiPickersUtilsProvider utils={ DateFnsUtils }>
                         <DatePicker
+                            className={ classes.datePicker }
                             clearable={ clearable }
                             margin="normal"
                             label={ '시작일' }
                             value={ selectedStartDate }
                             onChange={ this.handleDateChange('start') }
                         />
+                        <span>~</span>
                         <DatePicker
+                          className={ classes.datePicker }
                             clearable={ clearable }
                             margin="normal"
                             minDate={ selectedStartDate }

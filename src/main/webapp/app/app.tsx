@@ -34,7 +34,8 @@ const deafultTheme = createMuiTheme({
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"'
     ].join(',')
-  },
+  }/*
+  ,
   palette: {
     primary: {
       // light: will be calculated from palette.primary.main,
@@ -50,6 +51,7 @@ const deafultTheme = createMuiTheme({
     }
     // error: will use the default color
   }
+  */
   /*
   ,
   palette: {
