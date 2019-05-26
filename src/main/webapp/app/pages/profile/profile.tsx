@@ -11,6 +11,7 @@ import Wallet from '../../components/card/wallet';
 import Events from '../../components/card/events';
 import ProfileCard from './profile-card';
 import RewardList from 'app/components/card/reward-list';
+import { getUser } from 'app/pages/users/users.reducer';
 
 const styles = theme =>
     createStyles({
@@ -81,7 +82,10 @@ export class ProfilePage extends React.Component<IProfileProp, IProfileState> {
     };
 
     componentDidMount() {
-        // this.props.getSession();
+        const { account } = this.props;
+        console.log('ProfilePage ===>', account);
+        this.props.getUser('1', account.id, account.status, account.role);
+        // console.log('getUser ===>', this.props.user);
     }
 
     render() {
@@ -98,10 +102,11 @@ export class ProfilePage extends React.Component<IProfileProp, IProfileState> {
 
 const mapStateToProps = storeState => ({
     account: storeState.authentication.account,
-    isAuthenticated: storeState.authentication.isAuthenticated
+    isAuthenticated: storeState.authentication.isAuthenticated,
+    user: storeState.users.user
 });
 
-const mapDispatchToProps = { getSession };
+const mapDispatchToProps = { getSession, getUser };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

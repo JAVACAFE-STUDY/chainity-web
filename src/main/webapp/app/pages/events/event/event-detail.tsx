@@ -1,7 +1,7 @@
 import '../event.css';
 
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import { convertDate } from 'app/shared/util/date-utils';
 import queryString from 'query-string';
+import { getUser } from 'app/pages/users/users.reducer';
 
 const styles = theme =>
     createStyles({
@@ -33,7 +34,7 @@ const styles = theme =>
         }
     });
 
-const mainContent = (classes, event) => (
+const mainContent = (classes, event, user) => (
     <React.Fragment>
         <Paper className={ classes.paper }>
             <Typography component="h2" variant="h1">
@@ -43,7 +44,7 @@ const mainContent = (classes, event) => (
                 <Grid item className={ classes.item }>
                     <Avatar style={ { float: 'left' } }>H</Avatar>
                     <Typography component="h5" variant="h5">
-                        { event.createdBy }
+                        { user.name }
                     </Typography>
                     <Typography variant="subtitle1" color="textSecondary">
                         { convertDate(event.createdAt) }
@@ -74,10 +75,10 @@ const sidebarContent = classes => (
     </Paper>
 );
 
-const gridContainer = (classes, leftXs, rightXs, event, rewards) => (
+const gridContainer = (classes, leftXs, rightXs, event, rewards, user) => (
     <Grid container spacing={ 24 }>
         <Grid item xs={ leftXs }>
-            { mainContent(classes, event) }
+            { mainContent(classes, event, user) }
             <RewardList items={ rewards }/>
         </Grid>
         <Grid item xs={ rightXs }>
@@ -97,6 +98,8 @@ export class EventDetailPage extends React.Component<IEventDetailPageProp> {
     componentDidMount() {
         const eventId = queryString.parse(this.props.location.search).id;
         this.props.getEvent('1', eventId);
+        // TODO 유저정보 조회시 status, role 파라미터가 필수로 되어있음. 이벤트 상세정보에서 어떠한 사용자가 생성한 정보인지 조회시에는 불필요한정보임. 임시로 고정처리
+        this.props.getUser('1', this.props.event.createdBy, 'active', 'system');
         this.props.getEventParticipations('1', eventId);
         this.props.getEventRewards('1', eventId);
     }
@@ -106,14 +109,15 @@ export class EventDetailPage extends React.Component<IEventDetailPageProp> {
     };
 
     render() {
-        const { account, classes, event, rewards, participations } = this.props;
+        const { user, classes, event, rewards, participations } = this.props;
 
         console.log('event', event);
         console.log('participations', participations);
+        console.log('user', user);
 
         return (
             <div>
-                { gridContainer(classes, 9, 3, event, rewards) }
+                { gridContainer(classes, 9, 3, event, rewards, user) }
                 <Button variant="outlined" className={ classes.button } onClick={ this.moveToList }>
                     &lt; 목록으로 돌아가기
                 </Button>
@@ -127,10 +131,11 @@ const mapStateToProps = storeState => ({
     isAuthenticated: storeState.authentication.isAuthenticated,
     participations: storeState.event.participations,
     event: storeState.event.event,
-    rewards: storeState.event.rewards
+    rewards: storeState.event.rewards,
+    user: storeState.users.user
 });
 
-const mapDispatchToProps = { getSession, getEvent, getEventParticipations, getEventRewards };
+const mapDispatchToProps = { getSession, getEvent, getEventParticipations, getEventRewards, getUser };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

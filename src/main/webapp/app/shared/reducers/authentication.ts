@@ -10,7 +10,8 @@ export const ACTION_TYPES = {
     LOGOUT: 'authentication/LOGOUT',
     CLEAR_AUTH: 'authentication/CLEAR_AUTH',
     ERROR_MESSAGE: 'authentication/ERROR_MESSAGE',
-    UPDATE_USER: 'authentication/UPDATE_USER'
+    UPDATE_USER: 'authentication/UPDATE_USER',
+    UPLOAD_FILE: 'authentication/UPLOAD_FILE'
 };
 
 const AUTH_TOKEN_KEY = 'jhi-authenticationToken';
@@ -101,6 +102,10 @@ export default (state: AuthenticationState = initialState, action): Authenticati
                     email: action.payload.email
                 }
             };
+        case ACTION_TYPES.UPLOAD_FILE:
+            return {
+                ...state
+            };
         default:
             return state;
     }
@@ -179,6 +184,25 @@ export const updateUser = (groupId, userId, name, status, role) => {
         await dispatch({
             type: ACTION_TYPES.UPDATE_USER,
             payload: axios.put(`/v1/groups/${groupId}/users/${userId}`, body)
+        });
+        dispatch(getSession());
+    };
+};
+
+// PUT /v1/groups/:groupId/users/:userId/avatar
+export const uploadFile = (groupId, userId, file) => {
+    console.log('uploadFile groupId, userId, file ==>', groupId, userId, file);
+    const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    };
+    const formData = new FormData();
+    formData.append('file', file);
+    return async dispatch => {
+        await dispatch({
+            type: ACTION_TYPES.UPLOAD_FILE,
+            payload: axios.put(`/v1/groups/${groupId}/users/${userId}/avatar`, formData, config)
         });
         dispatch(getSession());
     };
