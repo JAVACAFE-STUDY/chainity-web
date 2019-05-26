@@ -4,9 +4,10 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import ProfileDialog from 'app/pages/profile/profile-dialog';
-import { getSession, updateUser } from 'app/shared/reducers/authentication';
+import { getSession, updateUser, uploadFile } from 'app/shared/reducers/authentication';
 import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 const styles = theme =>
     createStyles({
@@ -85,6 +86,9 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
     };
 
     saveCroppedImg = croppedImg => {
+        const file = new File([ croppedImg ], 'avatar');
+        console.log('saveCroppedImg ==>', file);
+        this.props.uploadFile('1', this.props.account.id, file);
         this.setState({ open: false, img: croppedImg });
     };
 
@@ -104,12 +108,19 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
     render() {
         const { classes, account } = this.props;
         const emailDisable = true;
+        let thumbnail = 'content/images/default-avatar.png';
+        if (!_.isEmpty(account.thumbnail)) {
+            thumbnail = account.thumbnail;
+        }
+
+        console.log(this.state.img);
+
         return (
             <React.Fragment>
                 <Card className={ classes.card }>
                     <div>
                         <div className={ classes.imgContainer }>
-                            <img src={ this.state.img ? this.state.img : account.thumbnail }
+                            <img src={ this.state.img ? this.state.img : thumbnail }
                                  height="200px"
                                  width="200px"
                                  alt="Cropped"
@@ -172,7 +183,7 @@ const mapStateToProps = storeState => ({
     isAuthenticated: storeState.authentication.isAuthenticated
 });
 
-const mapDispatchToProps = { getSession, updateUser };
+const mapDispatchToProps = { getSession, updateUser, uploadFile };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
