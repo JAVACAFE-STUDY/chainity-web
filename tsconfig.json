@@ -1,6 +1,7 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "strict": false,
     "jsx": "react",
     "target": "es5",
     "module": "esnext",

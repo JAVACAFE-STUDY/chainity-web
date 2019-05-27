@@ -6,7 +6,7 @@ import axios from 'axios';
 import sinon from 'sinon';
 import { TranslatorContext } from 'react-jhipster';
 
-import account, { ACTION_TYPES, saveAccountSettings, reset } from 'app/modules/account/settings/settings.reducer';
+import account, { ACTION_TYPES, saveAccountSettings, reset } from 'app/pages/account/settings/settings.reducer';
 import { ACTION_TYPES as authActionTypes } from 'app/shared/reducers/authentication';
 import { ACTION_TYPES as localeActionTypes } from 'app/shared/reducers/locale';
 
@@ -17,6 +17,7 @@ describe('Settings reducer tests', () => {
 
   describe('Common tests', () => {
     it('should return the initial state', () => {
+      // @ts-ignore
       const toTest = account(undefined, {});
       expect(toTest).toMatchObject({
         loading: false,
@@ -29,6 +30,7 @@ describe('Settings reducer tests', () => {
 
   describe('Settings update', () => {
     it('should detect a request', () => {
+      // @ts-ignore
       const toTest = account(undefined, { type: REQUEST(ACTION_TYPES.UPDATE_ACCOUNT) });
       expect(toTest).toMatchObject({
         updateSuccess: false,
@@ -37,6 +39,7 @@ describe('Settings reducer tests', () => {
       });
     });
     it('should detect a success', () => {
+      // @ts-ignore
       const toTest = account(undefined, { type: SUCCESS(ACTION_TYPES.UPDATE_ACCOUNT) });
       expect(toTest).toMatchObject({
         updateSuccess: true,
@@ -45,6 +48,7 @@ describe('Settings reducer tests', () => {
       });
     });
     it('should detect a failure', () => {
+      // @ts-ignore
       const toTest = account(undefined, { type: FAILURE(ACTION_TYPES.UPDATE_ACCOUNT) });
       expect(toTest).toMatchObject({
         updateSuccess: false,
@@ -61,6 +65,7 @@ describe('Settings reducer tests', () => {
         updateFailure: false
       };
       expect(
+        // @ts-ignore
         account(
           { ...initialState, loading: true },
           {

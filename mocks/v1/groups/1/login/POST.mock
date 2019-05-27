@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Content-Type: application/json;
+
+{
+    "token": "testToken12312431312141249837482374892374892365896349739816491641",
+    "email": "test@gamil.com",
+    "name": "test"
+}
