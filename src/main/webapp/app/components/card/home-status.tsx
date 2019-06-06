@@ -9,6 +9,7 @@ import { getGroup } from 'app/pages/group/groups.reducer';
 import { getEventParticipations, getEvents } from 'app/pages/events/event.reducer';
 import { getUsers } from 'app/pages/users/users.reducer';
 import _ from 'lodash';
+import { Link } from "react-router-dom";
 
 const styles = {
     card: {
@@ -19,6 +20,9 @@ const styles = {
     },
     pos: {
         marginBottom: 12
+    },
+    logo: {
+        height: '50px'
     }
 };
 
@@ -35,7 +39,7 @@ export class HomeStatus extends React.Component<IHomeStatusProp> {
     }
 
     render() {
-        const { group, events, participations, users } = this.props;
+        const { classes, group, events, participations, users } = this.props;
         console.log('group, events, participations, users  => ', group, events, participations, users);
         let initialTokens = 0;
         let usedTokens = 0;
@@ -52,7 +56,7 @@ export class HomeStatus extends React.Component<IHomeStatusProp> {
             <Card>
                 <CardContent>
                     <Typography variant="h5" component="h2" color="textSecondary" gutterBottom>
-                        { name } 상태
+                      <img src={ '/content/images/logo.png' } className={ classes.logo } />{ name } 상태
                     </Typography>
                     <Typography variant="subtitle1" component="p">
                         총 토큰 발생
