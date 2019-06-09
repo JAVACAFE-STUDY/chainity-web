@@ -57,12 +57,6 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
           changeOrigin: options.tls,
           headers: { host: 'localhost:9000' }
         },
-      // 자바 코인 백엔드 api
-      '/v1/': {
-        target: `https://${process.env.API_SERVER_DOMAIN}`,
-        secure: false,
-        changeOrigin: true
-      }
     },
     watchOptions: {
       ignored: /node_modules/
