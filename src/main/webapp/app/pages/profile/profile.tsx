@@ -1,14 +1,117 @@
-import React from 'react';
-import { Alert, Col, Row } from 'reactstrap';
+import './profile.css';
 
-export class Profile extends React.Component {
-  render() {
-    return (
-      <Row>
-        <h2>Profile</h2>
-      </Row>
-    );
-  }
+import React from 'react';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Divider from '@material-ui/core/Divider';
+import { connect } from 'react-redux';
+import { getSession } from 'app/shared/reducers/authentication';
+import { createStyles, withStyles } from '@material-ui/core/styles';
+import Wallet from '../../components/card/wallet';
+import Events from '../../components/card/events';
+import ProfileCard from './profile-card';
+import RewardList from 'app/components/card/reward-list';
+import { getUser } from 'app/pages/users/users.reducer';
+
+const styles = theme =>
+    createStyles({
+        root: {
+            flexGrow: 1
+        },
+        paper: {
+            padding: theme.spacing.unit * 2,
+            textAlign: 'center',
+            color: theme.palette.text.secondary
+        },
+        button: {
+            borderRadius: '3px',
+            fontSize: '14px',
+            fontWeight: 400,
+            padding: '6px 10px',
+            backgroundColor: '#fff',
+            borderColor: '#e5e5e5',
+            color: '#2e2e2e',
+            whiteSpace: 'nowrap'
+        }
+    });
+
+const mainContent = classes => (
+    <React.Fragment>
+        <Paper className={ classes.paper }>
+            <ProfileCard/>
+        </Paper>
+        <Paper className={ classes.paper }>
+            <RewardList eventId={ '1' }/>
+        </Paper>
+    </React.Fragment>
+);
+
+const sidebarContent = classes => (
+    <React.Fragment>
+        <Paper className={ classes.paper }>
+            <Wallet/>
+            <Divider variant="middle"/>
+            <Events/>
+        </Paper>
+    </React.Fragment>
+);
+
+const gridContainer = (classes, leftXs, rightXs) => (
+    <Grid container spacing={ 24 }>
+        <Grid item xs={ leftXs }>
+            { mainContent(classes) }
+        </Grid>
+        <Grid item xs={ rightXs }>
+            { sidebarContent(classes) }
+        </Grid>
+    </Grid>
+);
+
+export interface IProfileProp extends StateProps, DispatchProps {
+    classes: any;
 }
 
-export default Profile;
+export interface IProfileState {
+    profile: any;
+}
+
+export class ProfilePage extends React.Component<IProfileProp, IProfileState> {
+
+    state: IProfileState = {
+        profile: null
+    };
+
+    componentDidMount() {
+        const { account } = this.props;
+        console.log('ProfilePage ===>', account);
+        this.props.getUser('1', account.id, account.status, account.role);
+        // console.log('getUser ===>', this.props.user);
+    }
+
+    render() {
+        const { classes } = this.props;
+        return (
+            <div>
+                <div>
+                    { gridContainer(classes, 9, 3) }
+                </div>
+            </div>
+        );
+    }
+}
+
+const mapStateToProps = storeState => ({
+    account: storeState.authentication.account,
+    isAuthenticated: storeState.authentication.isAuthenticated,
+    user: storeState.users.user
+});
+
+const mapDispatchToProps = { getSession, getUser };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withStyles(styles)(ProfilePage));

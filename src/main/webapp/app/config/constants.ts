@@ -5,6 +5,7 @@ const config = {
 export default config;
 
 export const SERVER_API_URL = process.env.SERVER_API_URL;
+export const API_SERVER_URL = `${process.env.PROTOCOL}://${process.env.API_SERVER_DOMAIN}${process.env.API_PREFIX}/${process.env.GROUP_ID}`;
 
 export const AUTHORITIES = {
   ADMIN: 'ROLE_ADMIN',
@@ -15,6 +16,7 @@ export const messages = {
   DATA_ERROR_ALERT: 'Internal Error'
 };
 
+export const DATE_FORMAT = 'YYYY-MM-DD';
 export const APP_DATE_FORMAT = 'DD/MM/YY HH:mm';
 export const APP_TIMESTAMP_FORMAT = 'DD/MM/YY HH:mm:ss';
 export const APP_LOCAL_DATE_FORMAT = 'DD/MM/YYYY';
