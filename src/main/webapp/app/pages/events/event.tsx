@@ -335,7 +335,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
         const { classes, users } = this.props;
         return (
             <React.Fragment>
-                <Grid container spacing={ 24 }>
+                <Grid container xs={ 12 } spacing={ 24 }>
                     <Grid item xs={ 9 }>
                         { searchBar(classes, this) }
                         { listWrapper(classes, this.state.list, this) }

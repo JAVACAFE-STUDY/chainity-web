@@ -22,6 +22,10 @@ const styles = theme => ({
     },
     inline: {
         display: 'inline'
+    },
+    textAlignRight: {
+        'text-align': 'right',
+        'padding-right': '5px'
     }
 });
 
@@ -49,16 +53,21 @@ export class MemberRank extends React.Component<IMemberRankProp> {
 
         return (
             <Card>
-                <CardActions>
+
+                <CardContent>
+                {/*<CardActions>*/}
                     <Grid container>
                         <Grid item sm={ 8 }>
-                            <p>이달의 멤버</p>
+                            <Typography variant="h5" component="h2" color="textSecondary" gutterBottom>
+                                이달의 멤버
+                            </Typography>
                         </Grid>
-                        <Grid item sm={ 4 }>
+                        <Grid item sm={ 4 } className={classes.textAlignRight}>
                             <Link to={ '/rank' }>더보기</Link>
                         </Grid>
                     </Grid>
-                </CardActions>
+                {/*</CardActions>*/}
+                </CardContent>
                 <CardContent>
                     { !_.isEmpty(membersTemp)
                         ? membersTemp.map((member, idx) => (
