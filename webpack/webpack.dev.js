@@ -58,8 +58,9 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
           headers: { host: 'localhost:9000' }
         },
       // 자바 코인 백엔드 api
+      // /v1으로 시작하는 request를 target url로 proxy
       '/v1/': {
-        target: `https://${process.env.API_SERVER_DOMAIN}`,
+        target: `http${options.tls ? 's' : ''}://${process.env.API_SERVER_DOMAIN}${process.env.NODE_ENV === 'development' ? ':'+process.env.API_SERVER_PORT : ''}`,
         secure: false,
         changeOrigin: true
       }
