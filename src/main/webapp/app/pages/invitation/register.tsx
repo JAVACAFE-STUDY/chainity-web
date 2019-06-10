@@ -66,9 +66,7 @@ interface IRegisterState {
 function decode(encodedData) {
     try {
         const decipher = crypto.createDecipher('aes-256-cbc', 'CHANGE_THIS_TO_SOMETHING_RANDOM');
-        let decodedData = decipher.update(encodedData, 'base64', 'utf8');
-        decodedData += decipher.final('utf8');
-        return decodedData;
+        return decipher.update(encodedData, 'base64', 'utf8');
     } catch (e) {
         return '';
     }
