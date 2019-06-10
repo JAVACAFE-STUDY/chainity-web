@@ -202,27 +202,19 @@ export const updateUser = (groupId, userId, name, status, role) => {
 
 // PUT /v1/groups/:groupId/users/:userId/avatar
 export const uploadFile = (groupId, userId, croppedImg) => async dispatch => {
-    console.log('uploadFile groupId, userId, croppedImg ==>', groupId, userId, croppedImg);
-
-    // const response = async dispatch => {
-    //     const res = await dispatch({
-    //         type: ACTION_TYPES.GET_AVATAR,
-    //         payload: axios.get(croppedImg)
-    //     });
-    //     console.log('uploadFile res res res', res);
-    // };
-    // console.log('uploadFile response', response);
-
-    const image = await dispatch({
-        type: ACTION_TYPES.GET_AVATAR,
-        payload: axios.get(croppedImg)
-    });
-
-    console.log('uploadFile response image', image);
+    // TODO extract function dataUrlToBlob
+    const arr = croppedImg.split(',');
+    const mime = arr[ 0 ].match(/:(.*?);/)[ 1 ];
+    const bstr = atob(arr[ 1 ]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[ n ] = bstr.charCodeAt(n);
+    }
+    const blobFile = new Blob([ u8arr ], { type: mime });
 
     const formData = new FormData();
-    // formData.append('file', new File([ croppedImg ], 'avatar.jpg'));
-    formData.append('file', image.value.data);
+    formData.append('file', blobFile);
 
     await dispatch({
         type: ACTION_TYPES.UPLOAD_FILE,
