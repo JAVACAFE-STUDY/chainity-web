@@ -5,7 +5,18 @@ const config = {
 export default config;
 
 export const SERVER_API_URL = process.env.SERVER_API_URL;
-export const API_SERVER_URL = `${process.env.PROTOCOL}://${process.env.API_SERVER_DOMAIN}${process.env.API_PREFIX}/${process.env.GROUP_ID}`;
+export const PROTOCOL = process.env.PROTOCOL;
+export const API_SERVER_DOMAIN = process.env.API_SERVER_DOMAIN;
+export const API_SERVER_PORT = process.env.API_SERVER_PORT;
+export const API_PREFIX = process.env.API_PREFIX;
+// TODO : 동적으로 groupId를 받아오도록 설계되면 GROUP_ID 제거
+export const GROUP_ID = process.env.GROUP_ID;
+// export const API_SERVER_URL = `${PROTOCOL}://${API_SERVER_DOMAIN}:${API_SERVER_PORT}${API_PREFIX}`;
+export const URL_LOGIN = process.env.URL_LOGIN;
+export const URL_USERS = process.env.URL_USERS;
+export const URL_REWARDS = process.env.URL_REWARDS;
+
+export const API_URL = process.env.API_URL;
 
 export const AUTHORITIES = {
   ADMIN: 'ROLE_ADMIN',

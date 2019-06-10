@@ -35,11 +35,7 @@ const mainLeftContent = classes => {
     const range: SearchRange = 'month';
 
     return (
-        <Paper className={ classes.paper }>
-            <Typography color="textSecondary" variant="h1">
-                <RankerList title={ title } range={ range }/>
-            </Typography>
-        </Paper>
+        <RankerList title={ title } range={ range }/>
     );
 };
 
@@ -48,11 +44,7 @@ const mainRightContent = classes => {
     const range: SearchRange = 'total';
 
     return (
-        <Paper className={ classes.paper }>
-            <Typography color="textSecondary" variant="h1">
-                <RankerList title={ title } range={ range }/>
-            </Typography>
-        </Paper>
+        <RankerList title={ title } range={ range }/>
     );
 };
 

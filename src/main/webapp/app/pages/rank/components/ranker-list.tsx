@@ -8,9 +8,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { createStyles, withStyles } from '@material-ui/core/styles';
-import { API_SERVER_URL } from 'app/config/constants';
+import { API_PREFIX, URL_REWARDS } from 'app/config/constants';
 import axios from 'axios';
-const URL_GET_REWARDS = process.env.URL_GET_REWARDS;
 
 const styles = theme => createStyles({
   root: {
@@ -47,7 +46,7 @@ export class RankerList extends React.Component<IHomeCardProp> {
   search = async () => {
     // @ts-ignore
     const { range } = this.props;
-    const url = API_SERVER_URL + URL_GET_REWARDS;
+    const url = API_PREFIX + URL_REWARDS;
     // const url = 'http://localhost:8090/groups/1/rewards';
 
     const res = await axios.get(url, {

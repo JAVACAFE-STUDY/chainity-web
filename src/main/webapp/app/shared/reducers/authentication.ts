@@ -3,6 +3,8 @@ import { Storage } from 'react-jhipster';
 
 import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
 
+import config, { API_PREFIX, URL_LOGIN, URL_USERS, GROUP_ID } from 'app/config/constants';
+
 export const ACTION_TYPES = {
     LOGIN: 'authentication/LOGIN',
     GET_SESSION: 'authentication/GET_SESSION',
@@ -135,7 +137,8 @@ export const getSession = () => async dispatch => {
     if (jwt) {
         await dispatch({
             type: ACTION_TYPES.GET_SESSION,
-            payload: axios.get('/v1/groups/1/users/' + jwt[ '_id' ])
+            // payload: axios.get('/v1/groups/1/users/' + jwt[ '_id' ])
+            payload: axios.get(`${API_PREFIX}/${GROUP_ID}${URL_USERS}/` + jwt[ '_id' ])
         });
     }
 };
@@ -143,7 +146,8 @@ export const getSession = () => async dispatch => {
 export const login = (username, password) => async dispatch => {
     const result = await dispatch({
         type: ACTION_TYPES.LOGIN,
-        payload: axios.post('/v1/groups/1/login', { email: username, password })
+        // payload: axios.post('/v1/groups/1/login', { email: username, password })
+        payload: axios.post(`${API_PREFIX}/${GROUP_ID}${URL_LOGIN}`, { email: username, password })
     });
     Storage.session.set(AUTH_INFO, JSON.stringify(result.value.data));
     Storage.session.set(AUTH_TOKEN_KEY, result.value.data.token);
@@ -190,7 +194,7 @@ export const updateUser = (groupId, userId, name, status, role) => {
     return async dispatch => {
         await dispatch({
             type: ACTION_TYPES.UPDATE_USER,
-            payload: axios.put(`/v1/groups/${groupId}/users/${userId}`, body)
+            payload: axios.put(`${API_PREFIX}/${groupId}${URL_USERS}/${userId}`, body)
         });
         dispatch(getSession());
     };
@@ -222,7 +226,8 @@ export const uploadFile = (groupId, userId, croppedImg) => async dispatch => {
 
     await dispatch({
         type: ACTION_TYPES.UPLOAD_FILE,
-        payload: axios.put(`/v1/groups/${groupId}/users/${userId}/avatar`, formData)
+        payload: axios.put(`${API_PREFIX}/${groupId}${URL_USERS}/${userId}/avatar`, formData)
+        // payload: axios.put(`${API_PREFIX}/${groupId}${URL_USERS}/${userId}/avatar`, formData, config)
     });
     dispatch(getSession());
 };
