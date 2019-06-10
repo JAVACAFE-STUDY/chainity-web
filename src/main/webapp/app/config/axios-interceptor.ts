@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { getBasePath, Storage } from 'react-jhipster';
+import { Storage } from 'react-jhipster';
 
-import { SERVER_API_URL } from 'app/config/constants';
+import { API_URL } from 'app/config/constants';
 
 const TIMEOUT = 1 * 60 * 1000;
 axios.defaults.timeout = TIMEOUT;
-axios.defaults.baseURL = SERVER_API_URL;
+axios.defaults.baseURL = API_URL;
 
 const setupAxiosInterceptors = onUnauthenticated => {
   const onRequestSuccess = config => {

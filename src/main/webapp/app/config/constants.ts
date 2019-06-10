@@ -16,6 +16,8 @@ export const URL_LOGIN = process.env.URL_LOGIN;
 export const URL_USERS = process.env.URL_USERS;
 export const URL_REWARDS = process.env.URL_REWARDS;
 
+export const API_URL = process.env.API_URL;
+
 export const AUTHORITIES = {
   ADMIN: 'ROLE_ADMIN',
   USER: 'ROLE_USER'
