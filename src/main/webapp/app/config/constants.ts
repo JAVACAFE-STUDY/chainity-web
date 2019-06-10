@@ -5,7 +5,6 @@ const config = {
 export default config;
 
 export const SERVER_API_URL = process.env.SERVER_API_URL;
-console.log('######## SERVER_API_URL', SERVER_API_URL);
 export const PROTOCOL = process.env.PROTOCOL;
 export const API_SERVER_DOMAIN = process.env.API_SERVER_DOMAIN;
 export const API_SERVER_PORT = process.env.API_SERVER_PORT;

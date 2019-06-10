@@ -110,7 +110,15 @@ const styles = theme => createStyles({
     profile: {
         width: '50px',
         height: '50px',
-        'border-radius': '50%'
+        'border-radius': '50%',
+        '& button:focus': {
+            'outline': 'none'
+        }
+    },
+    profileArea: {
+        '& button:focus': {
+            'outline': 'none'
+        }
     }
 });
 
@@ -186,7 +194,7 @@ class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
                 <Toolbar disableGutters={ !this.state.open }>
                     <Link to={ '/event' }>
                         <img
-                            src={ '/content/images/javacafe_logo2.png' }
+                            src={ '/content/images/chainity_logo.png' }
                             className={ classes.logo }
                         />
                     </Link>
@@ -199,7 +207,7 @@ class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
                         </Link>
                     </div>
                     <div className={ classes.grow }/>
-                    <div>
+                    <div className={ classes.profileArea }>
                         <IconButton aria-owns={ open ? 'menu-appbar' : undefined } aria-haspopup="true"
                                     onClick={ this.handleMenu } color="inherit">
                             {
