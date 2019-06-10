@@ -8,7 +8,9 @@ export const ACTION_TYPES = {
     GET_EVENTS: 'event/GET_EVENTS',
     GET_EVENT: 'event/GET_EVENT',
     GET_EVENT_PARTICIPATIONS: 'event/GET_EVENT_PARTICIPATIONS',
+    GET_EVENT_PARTICIPATIONS_BY_USER: 'event/GET_EVENT_PARTICIPATIONS_BY_USER',
     GET_EVENT_REWARDS: 'event/GET_EVENT_REWARDS',
+    GET_EVENT_REWARDS_BY_USER: 'event/GET_EVENT_REWARDS_BY_USER',
     GET_AGGS_PARTICIPATIONS: 'event/GET_AGGS_PARTICIPATIONS'
 };
 
@@ -28,8 +30,13 @@ const initialState = {
         'createdBy': 'admin'
     },
     participations: [],
+    userParticipations: {},
     aggsParticipations: {},
     rewards: {},
+    userRewards: {
+        totalDocs: 0,
+        docs: []
+    },
     errorMessage: ''
 };
 
@@ -89,11 +96,23 @@ export default (state: EventState = initialState, action): EventState => {
                 loading: false,
                 participations: action.payload.data
             };
+        case SUCCESS(ACTION_TYPES.GET_EVENT_PARTICIPATIONS_BY_USER):
+            return {
+                ...state,
+                loading: false,
+                userParticipations: action.payload.data
+            };
         case SUCCESS(ACTION_TYPES.GET_EVENT_REWARDS):
             return {
                 ...state,
                 loading: false,
                 rewards: action.payload.data
+            };
+        case SUCCESS(ACTION_TYPES.GET_EVENT_REWARDS_BY_USER):
+            return {
+                ...state,
+                loading: false,
+                userRewards: action.payload.data
             };
         case SUCCESS(ACTION_TYPES.GET_AGGS_PARTICIPATIONS):
             return {
@@ -133,9 +152,20 @@ export const getEventParticipations = (groupId, eventId) => ({
     payload: axios.get(`v1/groups/${groupId}/events/${eventId}/participations`)
 });
 
+export const getEventParticipationByUser = (groupId, userId) => ({
+    type: ACTION_TYPES.GET_EVENT_PARTICIPATIONS_BY_USER,
+    payload: axios.get(`v1/groups/${groupId}/users/${userId}/participations`)
+});
+
 export const getEventRewards = (groupId, eventId) => ({
     type: ACTION_TYPES.GET_EVENT_REWARDS,
     payload: axios.get(`v1/groups/${groupId}/events/${eventId}/rewards`)
+});
+
+// GET /v1/groups/:groupId/users/:userId/rewards
+export const getEventRewardsByUser = (groupId, userId) => ({
+    type: ACTION_TYPES.GET_EVENT_REWARDS_BY_USER,
+    payload: axios.get(`v1/groups/${groupId}/users/${userId}/rewards`)
 });
 
 // GET /v1/groups/:groupId/aggs/participations (optional: startDate, endDate, limit)
