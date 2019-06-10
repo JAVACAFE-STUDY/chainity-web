@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { Storage } from 'react-jhipster';
 
-import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { getLoggers } from 'app/pages/administration/administration.reducer';
+import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
 
 export const ACTION_TYPES = {
     LOGIN: 'authentication/LOGIN',
@@ -11,7 +10,8 @@ export const ACTION_TYPES = {
     CLEAR_AUTH: 'authentication/CLEAR_AUTH',
     ERROR_MESSAGE: 'authentication/ERROR_MESSAGE',
     UPDATE_USER: 'authentication/UPDATE_USER',
-    UPLOAD_FILE: 'authentication/UPLOAD_FILE'
+    UPLOAD_FILE: 'authentication/UPLOAD_FILE',
+    GET_AVATAR: 'authentication/GET_AVATAR'
 };
 
 const AUTH_TOKEN_KEY = 'jhi-authenticationToken';
@@ -26,7 +26,8 @@ const initialState = {
     account: {} as any,
     errorMessage: null as string, // Errors returned from server side
     redirectMessage: null as string,
-    sessionHasBeenFetched: false
+    sessionHasBeenFetched: false,
+    image: null
 };
 
 export type AuthenticationState = Readonly<typeof initialState>;
@@ -105,6 +106,12 @@ export default (state: AuthenticationState = initialState, action): Authenticati
         case ACTION_TYPES.UPLOAD_FILE:
             return {
                 ...state
+            };
+        case SUCCESS(ACTION_TYPES.GET_AVATAR):
+            console.log('ACTION_TYPES.GET_AVATAR =>', action.payload.response);
+            return {
+                ...state,
+                image: action.payload.response
             };
         default:
             return state;
@@ -190,20 +197,32 @@ export const updateUser = (groupId, userId, name, status, role) => {
 };
 
 // PUT /v1/groups/:groupId/users/:userId/avatar
-export const uploadFile = (groupId, userId, file) => {
-    console.log('uploadFile groupId, userId, file ==>', groupId, userId, file);
-    const config = {
-        headers: {
-            'content-type': 'multipart/form-data'
-        }
-    };
+export const uploadFile = (groupId, userId, croppedImg) => async dispatch => {
+    console.log('uploadFile groupId, userId, croppedImg ==>', groupId, userId, croppedImg);
+
+    // const response = async dispatch => {
+    //     const res = await dispatch({
+    //         type: ACTION_TYPES.GET_AVATAR,
+    //         payload: axios.get(croppedImg)
+    //     });
+    //     console.log('uploadFile res res res', res);
+    // };
+    // console.log('uploadFile response', response);
+
+    const image = await dispatch({
+        type: ACTION_TYPES.GET_AVATAR,
+        payload: axios.get(croppedImg)
+    });
+
+    console.log('uploadFile response image', image);
+
     const formData = new FormData();
-    formData.append('file', file);
-    return async dispatch => {
-        await dispatch({
-            type: ACTION_TYPES.UPLOAD_FILE,
-            payload: axios.put(`/v1/groups/${groupId}/users/${userId}/avatar`, formData, config)
-        });
-        dispatch(getSession());
-    };
+    // formData.append('file', new File([ croppedImg ], 'avatar.jpg'));
+    formData.append('file', image.value.data);
+
+    await dispatch({
+        type: ACTION_TYPES.UPLOAD_FILE,
+        payload: axios.put(`/v1/groups/${groupId}/users/${userId}/avatar`, formData)
+    });
+    dispatch(getSession());
 };

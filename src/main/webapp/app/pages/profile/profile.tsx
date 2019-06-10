@@ -10,8 +10,9 @@ import { createStyles, withStyles } from '@material-ui/core/styles';
 import Wallet from '../../components/card/wallet';
 import Events from '../../components/card/events';
 import ProfileCard from './profile-card';
-import RewardList from 'app/components/card/reward-list';
 import { getUser } from 'app/pages/users/users.reducer';
+import { getEventParticipationByUser } from 'app/pages/events/event.reducer';
+import ProfileRewardList from 'app/pages/profile/profile-reward-list';
 
 const styles = theme =>
     createStyles({
@@ -35,34 +36,34 @@ const styles = theme =>
         }
     });
 
-const mainContent = classes => (
+const mainContent = (classes, user) => (
     <React.Fragment>
         <Paper className={ classes.paper }>
             <ProfileCard/>
         </Paper>
         <Paper className={ classes.paper }>
-            <RewardList eventId={ '1' }/>
+            <ProfileRewardList userId={ user.id }/>
         </Paper>
     </React.Fragment>
 );
 
-const sidebarContent = classes => (
+const sidebarContent = (classes, user, userParticipations) => (
     <React.Fragment>
         <Paper className={ classes.paper }>
-            <Wallet/>
+            <Wallet user={ user }/>
             <Divider variant="middle"/>
-            <Events/>
+            <Events userParticipations={ userParticipations }/>
         </Paper>
     </React.Fragment>
 );
 
-const gridContainer = (classes, leftXs, rightXs) => (
+const gridContainer = (classes, leftXs, rightXs, user, userParticipations) => (
     <Grid container spacing={ 24 }>
         <Grid item xs={ leftXs }>
-            { mainContent(classes) }
+            { mainContent(classes, user) }
         </Grid>
         <Grid item xs={ rightXs }>
-            { sidebarContent(classes) }
+            { sidebarContent(classes, user, userParticipations) }
         </Grid>
     </Grid>
 );
@@ -83,17 +84,16 @@ export class ProfilePage extends React.Component<IProfileProp, IProfileState> {
 
     componentDidMount() {
         const { account } = this.props;
-        console.log('ProfilePage ===>', account);
         this.props.getUser('1', account.id, account.status, account.role);
-        // console.log('getUser ===>', this.props.user);
+        this.props.getEventParticipationByUser('1', account.id);
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, user, userParticipations } = this.props;
         return (
             <div>
                 <div>
-                    { gridContainer(classes, 9, 3) }
+                    { gridContainer(classes, 9, 3, user, userParticipations) }
                 </div>
             </div>
         );
@@ -103,10 +103,11 @@ export class ProfilePage extends React.Component<IProfileProp, IProfileState> {
 const mapStateToProps = storeState => ({
     account: storeState.authentication.account,
     isAuthenticated: storeState.authentication.isAuthenticated,
-    user: storeState.users.user
+    user: storeState.users.user,
+    userParticipations: storeState.event.userParticipations
 });
 
-const mapDispatchToProps = { getSession, getUser };
+const mapDispatchToProps = { getSession, getUser, getEventParticipationByUser };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
