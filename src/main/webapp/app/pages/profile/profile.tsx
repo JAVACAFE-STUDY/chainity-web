@@ -13,6 +13,7 @@ import ProfileCard from './profile-card';
 import { getUser } from 'app/pages/users/users.reducer';
 import { getEventParticipationByUser } from 'app/pages/events/event.reducer';
 import ProfileRewardList from 'app/pages/profile/profile-reward-list';
+import HomeStatus from "app/components/card/home-status";
 
 const styles = theme =>
     createStyles({
@@ -33,6 +34,10 @@ const styles = theme =>
             borderColor: '#e5e5e5',
             color: '#2e2e2e',
             whiteSpace: 'nowrap'
+        },
+        'divider-margin': {
+            margin: '10px',
+            backgroundColor: 'transparent'
         }
     });
 
@@ -40,8 +45,7 @@ const mainContent = (classes, user) => (
     <React.Fragment>
         <Paper className={ classes.paper }>
             <ProfileCard/>
-        </Paper>
-        <Paper className={ classes.paper }>
+            <Divider variant="middle" className={ classes['divider-margin']}/>
             <ProfileRewardList userId={ user.id }/>
         </Paper>
     </React.Fragment>
@@ -51,7 +55,7 @@ const sidebarContent = (classes, user, userParticipations) => (
     <React.Fragment>
         <Paper className={ classes.paper }>
             <Wallet user={ user }/>
-            <Divider variant="middle"/>
+            <Divider variant="middle" className={ classes['divider-margin']}/>
             <Events userParticipations={ userParticipations }/>
         </Paper>
     </React.Fragment>

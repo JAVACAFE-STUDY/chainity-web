@@ -48,6 +48,10 @@ export const styles = theme =>
         },
         rightButton: {
             float: 'right'
+        },
+        'divider-margin': {
+            margin: '10px',
+            backgroundColor: 'transparent'
         }
     });
 

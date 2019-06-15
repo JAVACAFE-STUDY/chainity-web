@@ -150,7 +150,7 @@ export const styles = theme =>
         },
         'divider-margin': {
             margin: '10px',
-            'background-color': 'transparent'
+            backgroundColor: 'transparent'
         }
     });
 
@@ -191,7 +191,7 @@ const listItem = (classes, { event, index }, calcDate) => {
                 <Typography component="p" className={ classes.listItemTitle }>
                     { event.title }
                 </Typography>
-                <Typography className={ classes.listItemContent }>
+                <Typography className={ classes.listItemContent } component="span" color="textSecondary" >
                     { event.description }
                 </Typography>
                 <BlurCircular className={ classes.listItemCoinIcon }/>
@@ -359,7 +359,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                         <Divider variant="middle" className={ classes['divider-margin']}/>
                         <MemberRank members={ this.props.aggsParticipations }/>
                     </Grid>
-                </ Grid>
+                </Grid>
                 <Fab color="primary" aria-label="Add" className={ classes.fab } onClick={ this.handleClick }>
                     <AddIcon/>
                 </Fab>
