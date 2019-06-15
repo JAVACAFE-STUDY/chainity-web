@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { Storage } from 'react-jhipster';
 
-import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { getLoggers } from 'app/pages/administration/administration.reducer';
+import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
+
+import config, { API_PREFIX, URL_LOGIN, URL_USERS, GROUP_ID } from 'app/config/constants';
 
 export const ACTION_TYPES = {
     LOGIN: 'authentication/LOGIN',
@@ -11,7 +12,8 @@ export const ACTION_TYPES = {
     CLEAR_AUTH: 'authentication/CLEAR_AUTH',
     ERROR_MESSAGE: 'authentication/ERROR_MESSAGE',
     UPDATE_USER: 'authentication/UPDATE_USER',
-    UPLOAD_FILE: 'authentication/UPLOAD_FILE'
+    UPLOAD_FILE: 'authentication/UPLOAD_FILE',
+    GET_AVATAR: 'authentication/GET_AVATAR'
 };
 
 const AUTH_TOKEN_KEY = 'jhi-authenticationToken';
@@ -26,7 +28,8 @@ const initialState = {
     account: {} as any,
     errorMessage: null as string, // Errors returned from server side
     redirectMessage: null as string,
-    sessionHasBeenFetched: false
+    sessionHasBeenFetched: false,
+    image: null
 };
 
 export type AuthenticationState = Readonly<typeof initialState>;
@@ -106,6 +109,12 @@ export default (state: AuthenticationState = initialState, action): Authenticati
             return {
                 ...state
             };
+        case SUCCESS(ACTION_TYPES.GET_AVATAR):
+            console.log('ACTION_TYPES.GET_AVATAR =>', action.payload.response);
+            return {
+                ...state,
+                image: action.payload.response
+            };
         default:
             return state;
     }
@@ -128,7 +137,8 @@ export const getSession = () => async dispatch => {
     if (jwt) {
         await dispatch({
             type: ACTION_TYPES.GET_SESSION,
-            payload: axios.get('/v1/groups/1/users/' + jwt[ '_id' ])
+            // payload: axios.get('/v1/groups/1/users/' + jwt[ '_id' ])
+            payload: axios.get(`${API_PREFIX}/${GROUP_ID}${URL_USERS}/` + jwt[ '_id' ])
         });
     }
 };
@@ -136,7 +146,8 @@ export const getSession = () => async dispatch => {
 export const login = (username, password) => async dispatch => {
     const result = await dispatch({
         type: ACTION_TYPES.LOGIN,
-        payload: axios.post('/v1/groups/1/login', { email: username, password })
+        // payload: axios.post('/v1/groups/1/login', { email: username, password })
+        payload: axios.post(`${API_PREFIX}/${GROUP_ID}${URL_LOGIN}`, { email: username, password })
     });
     Storage.session.set(AUTH_INFO, JSON.stringify(result.value.data));
     Storage.session.set(AUTH_TOKEN_KEY, result.value.data.token);
@@ -183,27 +194,32 @@ export const updateUser = (groupId, userId, name, status, role) => {
     return async dispatch => {
         await dispatch({
             type: ACTION_TYPES.UPDATE_USER,
-            payload: axios.put(`/v1/groups/${groupId}/users/${userId}`, body)
+            payload: axios.put(`${API_PREFIX}/${groupId}${URL_USERS}/${userId}`, body)
         });
         dispatch(getSession());
     };
 };
 
 // PUT /v1/groups/:groupId/users/:userId/avatar
-export const uploadFile = (groupId, userId, file) => {
-    console.log('uploadFile groupId, userId, file ==>', groupId, userId, file);
-    const config = {
-        headers: {
-            'content-type': 'multipart/form-data'
-        }
-    };
+export const uploadFile = (groupId, userId, croppedImg) => async dispatch => {
+    // TODO extract function dataUrlToBlob
+    const arr = croppedImg.split(',');
+    const mime = arr[ 0 ].match(/:(.*?);/)[ 1 ];
+    const bstr = atob(arr[ 1 ]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[ n ] = bstr.charCodeAt(n);
+    }
+    const blobFile = new Blob([ u8arr ], { type: mime });
+
     const formData = new FormData();
-    formData.append('file', file);
-    return async dispatch => {
-        await dispatch({
-            type: ACTION_TYPES.UPLOAD_FILE,
-            payload: axios.put(`/v1/groups/${groupId}/users/${userId}/avatar`, formData, config)
-        });
-        dispatch(getSession());
-    };
+    formData.append('file', blobFile);
+
+    await dispatch({
+        type: ACTION_TYPES.UPLOAD_FILE,
+        payload: axios.put(`${API_PREFIX}/${groupId}${URL_USERS}/${userId}/avatar`, formData)
+        // payload: axios.put(`${API_PREFIX}/${groupId}${URL_USERS}/${userId}/avatar`, formData, config)
+    });
+    dispatch(getSession());
 };

@@ -62,3 +62,12 @@ export const getUser = (groupId, userId, status, role) => ({
     type: ACTION_TYPES.GET_USER,
     payload: axios.get(`v1/groups/${groupId}/users/${userId}?status=${status}&role=${role}`)
 });
+
+// export const createUser: ICrudPutAction<IUser> = user => async dispatch => {
+//     const result = await dispatch({
+//         type: ACTION_TYPES.CREATE_USER,
+//         payload: axios.post(apiUrl, user)
+//     });
+//     dispatch(getUsers());
+//     return result;
+// };

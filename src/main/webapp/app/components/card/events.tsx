@@ -26,21 +26,22 @@ const styles = createStyles({
 
 export interface IHomeCardProp {
     classes?: any;
+    userParticipations: any;
 }
 
 export class Events extends React.Component<IHomeCardProp> {
     render() {
-        const { classes } = this.props;
+        const { classes, userParticipations } = this.props;
         return (
             <Card>
                 <CardHeader title="이벤트"/>
                 <CardActions className={ classes.text }>
                     <CardContent className={ classes.margin }>
                         <Typography color="textSecondary" component="p">
-                            첨여
+                            참여
                         </Typography>
                         <Typography component="p">
-                            { '13' }
+                            { userParticipations && userParticipations.totalDocs }
                         </Typography>
                     </CardContent>
                 </CardActions>
