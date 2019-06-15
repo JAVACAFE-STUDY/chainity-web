@@ -4,6 +4,7 @@ import Loadable from 'react-loadable';
 
 import Login from 'app/pages/login/login';
 import Register from 'app/pages/account/register/register';
+import InvitationRegister from 'app/pages/invitation/register';
 import Activate from 'app/pages/account/activate/activate';
 import PasswordResetInit from 'app/pages/account/password-reset/init/password-reset-init';
 import PasswordResetFinish from 'app/pages/account/password-reset/finish/password-reset-finish';
@@ -61,6 +62,7 @@ const Routes = () => (
             <ErrorBoundaryLayoutRoute path="/event" component={ Event }/>
             <ErrorBoundaryLayoutRoute path="/rank" component={ Rank }/>
             <ErrorBoundaryLayoutRoute path="/profile" component={ Profile }/>
+            <ErrorBoundaryRoute path="/invitation/:token" component={ InvitationRegister }/>
             <ErrorBoundaryRoute path="/" component={ Login }/>
         </Switch>
     </div>

@@ -108,7 +108,10 @@ module.exports = options => ({
         SERVER_API_URL: `''`
       }
     }),
-    new Dotenv(),
+    new Dotenv({
+      patpuh: options.env === 'development' ? './.env' : './.env.production',
+      expand: true,
+    }),
     /*new ForkTsCheckerWebpackPlugin({ tslint: true }),*/
     new CopyWebpackPlugin([
       { from: './src/main/webapp/static/', to: 'content' },

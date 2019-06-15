@@ -5,6 +5,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import _ from 'lodash';
 
 const styles = theme => ({
     root: {
@@ -16,10 +17,16 @@ const styles = theme => ({
 
 export interface IWalletCardProp {
     classes?: any;
+    user: any;
 }
 
 export class Wallet extends React.Component<IWalletCardProp> {
     render() {
+
+        const { user } = this.props;
+        const keyStore = user.keyStore;
+        const tokens = !_.isEmpty(user.tokens) ? user.tokens : 0;
+
         return (
             <Card style={ { textAlign: 'left' } }>
                 <CardHeader title="지갑"/>
@@ -29,13 +36,13 @@ export class Wallet extends React.Component<IWalletCardProp> {
                             주소
                         </Typography>
                         <Typography component="p">
-                            { '0x7bf53cf03d0j3f8dd' }
+                            { keyStore && keyStore.address }
                         </Typography>
                         <Typography color="textSecondary" component="p">
                             토큰
                         </Typography>
                         <Typography component="p">
-                            { '300,000' }
+                            { tokens }
                         </Typography>
                     </CardContent>
                 </CardActions>

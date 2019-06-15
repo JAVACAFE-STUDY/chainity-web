@@ -9,6 +9,7 @@ import { getGroup } from 'app/pages/group/groups.reducer';
 import { getEventParticipations, getEvents } from 'app/pages/events/event.reducer';
 import { getUsers } from 'app/pages/users/users.reducer';
 import _ from 'lodash';
+import { Link } from "react-router-dom";
 
 const styles = {
     card: {
@@ -19,6 +20,12 @@ const styles = {
     },
     pos: {
         marginBottom: 12
+    },
+    logo: {
+        height: '50px'
+    },
+    subtitle: {
+        'margin-top': '5px'
     }
 };
 
@@ -35,7 +42,7 @@ export class HomeStatus extends React.Component<IHomeStatusProp> {
     }
 
     render() {
-        const { group, events, participations, users } = this.props;
+        const { classes, group, events, participations, users } = this.props;
         console.log('group, events, participations, users  => ', group, events, participations, users);
         let initialTokens = 0;
         let usedTokens = 0;
@@ -52,33 +59,33 @@ export class HomeStatus extends React.Component<IHomeStatusProp> {
             <Card>
                 <CardContent>
                     <Typography variant="h5" component="h2" color="textSecondary" gutterBottom>
-                        { name } 상태
+                      <img src={ '/content/images/logo.png' } className={ classes.logo } />{ name } 상태
                     </Typography>
-                    <Typography variant="subtitle1" component="p">
+                    <Typography variant="subtitle1" className={classes.subtitle} component="p">
                         총 토큰 발생
                     </Typography>
                     <Typography component="p">
                         { initialTokens }
                     </Typography>
-                    <Typography variant="subtitle1" component="p">
+                    <Typography variant="subtitle1" className={classes.subtitle} component="p">
                         토큰 보상
                     </Typography>
                     <Typography component="p">
                         { usedTokens }
                     </Typography>
-                    <Typography variant="subtitle1" component="p">
+                    <Typography variant="subtitle1" className={classes.subtitle}component="p">
                         사용자 수
                     </Typography>
                     <Typography component="p">
                         { users.totalDocs }
                     </Typography>
-                    <Typography variant="subtitle1" component="p">
+                    <Typography variant="subtitle1" className={classes.subtitle} component="p">
                         이벤트 수
                     </Typography>
                     <Typography component="p">
                         { events.totalDocs }
                     </Typography>
-                    <Typography variant="subtitle1" component="p">
+                    <Typography variant="subtitle1" className={classes.subtitle} component="p">
                         참여 수
                     </Typography>
                     <Typography component="p">

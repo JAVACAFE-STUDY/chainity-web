@@ -1,6 +1,6 @@
 {
   "name": "blockchain",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Description for blockchain",
   "private": true,
   "license": "UNLICENSED",
@@ -139,7 +139,7 @@
     "lint": "tslint --project tsconfig.json -e 'node_modules/**'",
     "lint:fix": "npm run lint -- --fix",
     "cleanup": "rimraf build/www",
-    "start": "npm run webpack:dev & ./node_modules/.bin/mockserver -p 8090 -m mocks",
+    "start": "npm run webpack:dev",
     "start-tls": "npm run webpack:dev -- --env.tls",
     "test": "npm run lint && jest --coverage --logHeapUsage -w=2 --config src/test/javascript/jest.config.js",
     "test:watch": "npm run lint && jest --coverage --logHeapUsage -w=2 --config src/test/javascript/jest.config.js --watch",
