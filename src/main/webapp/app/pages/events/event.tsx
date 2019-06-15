@@ -355,10 +355,8 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                         }
                     </Grid>
                     <Grid item xs={ 3 }>
-                        { /* 전체 통계를 호출하는 API 필요 */ }
                         <HomeStatus/>
                         <Divider variant="middle" className={ classes['divider-margin']}/>
-                        { /* 이달의 멥버 통계 호출하는 API 필요 */ }
                         <MemberRank members={ this.props.aggsParticipations }/>
                     </Grid>
                 </ Grid>
