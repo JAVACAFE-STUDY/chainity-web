@@ -44,16 +44,14 @@ export class HomeStatus extends React.Component<IHomeStatusProp> {
 
     render() {
         const { classes, group, events, groupParticipations, users } = this.props;
-        console.log('group, events, participations, users  => ', group, events, users);
-        console.log('groupParticipations => ', groupParticipations);
+        // console.log('group, events, participations, users  => ', group, events, users);
+        // console.log('groupParticipations => ', groupParticipations);
         let initialTokens = 0;
         let usedTokens = 0;
         let name = '';
 
         if (!_.isEmpty(group)) {
-            // TODO initialTokens 값은 api 에서 전달되는 값 수정필요. ( number 가 아닌 hash 값이 전달됨)
-            // initialTokens = group.initialTokens;
-            initialTokens = 0;
+            initialTokens = group.initialTokens;
             usedTokens = group.usedTokens;
             name = group.name;
         }

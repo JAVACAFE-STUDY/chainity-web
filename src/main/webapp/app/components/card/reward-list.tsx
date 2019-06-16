@@ -59,7 +59,14 @@ export class RewardList extends React.Component<IRewardListProp, IRewardListStat
         let tableBody;
 
         if (_.isEmpty(items)) {
-            tableBody = '';
+            return (<Card>
+                <CardHeader
+                    title="보상 내역"
+                />
+                <CardContent>
+                    데이터가 없습니다.
+                </CardContent>
+            </Card>);
         } else {
             tableBody = (<TableBody>
                 { items.docs.map(row => (
