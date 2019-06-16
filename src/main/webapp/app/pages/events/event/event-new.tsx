@@ -137,7 +137,7 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
                                     <div>
                                         <FormControl className={ classes.customMargin }>
                                             <InputLabel shrink htmlFor="bootstrap-input" className={ classes.bootstrapFormLabel }>
-                                                { '참여 신청 기간 (시작일 ~ 종료일)' }
+                                                { '참여 신청 기간' }
                                             </InputLabel>
                                         </FormControl>
                                         <DateRangePicker onChange={ this.handleRangeDateChange } clearable={ clearable } />
