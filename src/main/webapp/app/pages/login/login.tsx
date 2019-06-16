@@ -4,14 +4,19 @@ import { RouteComponentProps } from 'react-router-dom';
 import classNames from 'classnames';
 import { IRootState } from 'app/shared/reducers';
 import { login } from 'app/shared/reducers/authentication';
-import { Card, createStyles, WithStyles, withStyles } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import Button from '@material-ui/core/Button';
+import {
+    Avatar,
+    Button,
+    createStyles,
+    CssBaseline,
+    FormControl,
+    Input,
+    InputLabel,
+    Paper,
+    Typography,
+    WithStyles,
+    withStyles
+} from '@material-ui/core';
 
 export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}>, WithStyles {
 }
@@ -21,41 +26,39 @@ interface ILoginState {
     password: string;
 }
 
-const styles = () => createStyles({
+const styles = theme => createStyles({
+    main: {
+        width: 'auto',
+        display: 'block',
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,
+        [ theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2) ]: {
+            width: 400,
+            marginLeft: 'auto',
+            marginRight: 'auto'
+        }
+    },
+    paper: {
+        marginTop: theme.spacing.unit * 8,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`
+    },
+    avatar: {
+        margin: theme.spacing.unit,
+        backgroundColor: theme.palette.secondary.main
+    },
     form: {
-        minWidth: '600px',
-        textAlign: 'center'
+        width: '100%',
+        marginTop: theme.spacing.unit
     },
-    loginHeader: {
-        'margin': '25px 0 0 0',
-        'display': 'inline-block',
-        'text-align': 'left',
-        'border-left': '3px solid',
-        'padding-left': '35px',
-        'width': '100%',
-        'font-weight': '200',
-        'color': '#ED2553',
-        'font-size': '40px'
-    },
-    loginSubHeader: {
-        'margin': '0 0 45px',
-        'display': 'inline-block',
-        'text-align': 'left',
-        'border-left': '3px solid',
-        'padding-left': '35px',
-        'width': '100%',
-        'font-weight': '100',
-        'color': '#ED2553'
-    },
-    input: {
-        margin: '10px 0'
-    },
-    button: {
-        margin: '15px 0 30px 0',
-        width: '100%'
+    submit: {
+        marginTop: theme.spacing.unit * 3
     },
     errorMessage: {
-        height: '30px'
+        height: '30px',
+        marginTop: '20px'
     }
 });
 
@@ -74,7 +77,12 @@ class Login extends React.Component<ILoginProps, ILoginState> {
         }
     }
 
-    handleLogin = async () => {
+    handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        this.login();
+    };
+
+    login = async () => {
         await this.props.login(this.state.userName, this.state.password);
 
         if (this.props.loginSuccess) {
@@ -90,7 +98,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
 
     enterPassword = (e: React.KeyboardEvent) => {
         if (e.key.toUpperCase() === 'ENTER') {
-            this.handleLogin();
+            this.login();
         }
     };
 
@@ -105,53 +113,50 @@ class Login extends React.Component<ILoginProps, ILoginState> {
         const hostname = window.location.host;
 
         return (
-            <Grid
-                container
-                spacing={ 0 }
-                direction="column"
-                alignItems="center"
-                justify="center"
-            >
-                <Grid item xs={ 5 }>
-                    <Card className={ classNames(classes.form) }>
-                        <CardContent>
-                            <Typography className={ classNames(classes.loginHeader) }>자바카페에 로그인</Typography>
-                            <Typography className={ classNames(classes.loginSubHeader) }>{hostname}</Typography>
-                            <FormControl
-                                fullWidth
-                            >
-                                <InputLabel htmlFor="user-id-input">유저ID</InputLabel>
-                                <Input
-                                    id="user-id-input"
-                                    placeholder="유저ID( Email )"
-                                    className={ classNames(classes.input) }
-                                    onChange={ this.changeUserName }
-                                />
-                            </FormControl>
-                            <FormControl
-                                fullWidth
-                            >
-                                <InputLabel htmlFor="user-password">패스워드</InputLabel>
-                                <Input
-                                    id="user-password"
-                                    placeholder="패스워드"
-                                    type="password"
-                                    className={ classNames(classes.input) }
-                                    onKeyDown={this.enterPassword}
-                                    onChange={ this.changePassword }
-                                />
-                            </FormControl>
-                            <Button variant="contained" color="primary" className={ classNames(classes.button) }
-                                    onClick={ this.handleLogin }
-                            >로그인
-                            </Button>
-                            <Typography className={ classNames(classes.errorMessage) }>
-                                { this.props.errorMessage }
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-            </Grid>
+            <main className={ classes.main }>
+                <CssBaseline/>
+                <Paper className={classes.paper}>
+                    <Avatar className={classes.avatar}/>
+                    <Typography component="h1" variant="h5">자바카페에 로그인</Typography>
+                    <Typography component="h1" variant="h5">{hostname}</Typography>
+                    <form className={classes.form}
+                          onSubmit={ this.handleSubmit }
+                    >
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="user-id">유저ID</InputLabel>
+                            <Input
+                                id="user-id"
+                                name="user-id"
+                                placeholder="유저ID( Email )"
+                                className={ classNames(classes.input) }
+                                onChange={ this.changeUserName }
+                            />
+                        </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="user-password">패스워드</InputLabel>
+                            <Input
+                                id="user-password"
+                                placeholder="패스워드"
+                                type="password"
+                                className={ classNames(classes.input) }
+                                onKeyDown={ this.enterPassword }
+                                onChange={ this.changePassword }
+                            />
+                        </FormControl>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={ classNames(classes.submit) }
+                        >로그인
+                        </Button>
+                        <Typography className={ classNames(classes.errorMessage) }>
+                            { this.props.errorMessage }
+                        </Typography>
+                    </form>
+                </Paper>
+            </main>
         );
     }
 }
