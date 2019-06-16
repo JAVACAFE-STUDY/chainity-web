@@ -222,7 +222,7 @@ interface IEventPageProp extends StateProps, DispatchProps, RouteComponentProps<
 export class EventPage extends React.Component<IEventPageProp, IEventListState> {
     state: IEventListState = {
         param: {
-            limit: 3,
+            limit: 10,
             offset: 0
         },
         nowDate: new Date(),
