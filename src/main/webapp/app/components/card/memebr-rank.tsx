@@ -31,7 +31,7 @@ const styles = theme => ({
 
 export interface IMemberRankProp {
     classes?: any;
-    members: any;
+    members?: any;
 }
 
 export class MemberRank extends React.Component<IMemberRankProp> {
