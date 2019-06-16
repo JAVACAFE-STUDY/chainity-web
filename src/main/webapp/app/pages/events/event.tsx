@@ -150,7 +150,7 @@ export const styles = theme =>
         },
         'divider-margin': {
             margin: '10px',
-            'background-color': 'transparent'
+            backgroundColor: 'transparent'
         }
     });
 
@@ -191,7 +191,7 @@ const listItem = (classes, { event, index }, calcDate) => {
                 <Typography component="p" className={ classes.listItemTitle }>
                     { event.title }
                 </Typography>
-                <Typography className={ classes.listItemContent }>
+                <Typography className={ classes.listItemContent } component="span" color="textSecondary" >
                     { event.description }
                 </Typography>
                 <BlurCircular className={ classes.listItemCoinIcon }/>
@@ -355,13 +355,11 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                         }
                     </Grid>
                     <Grid item xs={ 3 }>
-                        { /* 전체 통계를 호출하는 API 필요 */ }
                         <HomeStatus/>
                         <Divider variant="middle" className={ classes['divider-margin']}/>
-                        { /* 이달의 멥버 통계 호출하는 API 필요 */ }
                         <MemberRank members={ this.props.aggsParticipations }/>
                     </Grid>
-                </ Grid>
+                </Grid>
                 <Fab color="primary" aria-label="Add" className={ classes.fab } onClick={ this.handleClick }>
                     <AddIcon/>
                 </Fab>
