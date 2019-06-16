@@ -54,6 +54,8 @@ export class ProfileRewardList extends React.Component<IProfileRewardListProp, I
     render() {
         const { classes, userRewards } = this.props;
 
+        // TODO check if txUrl will be changed.
+        const txUrl = 'https://rinkeby.etherscan.io/tx';
         let tableBody;
 
         if (_.isEmpty(userRewards)) {
@@ -69,7 +71,7 @@ export class ProfileRewardList extends React.Component<IProfileRewardListProp, I
                         <TableCell component="th" scope="row"> <Link to={ `/event/detail/${row._id}` } className="alert-link">{ row._id }</Link></TableCell>
                         <TableCell align="right">{ row.tokens }</TableCell>
                         <TableCell align="right">{ row.createdAt }</TableCell>
-                        <TableCell align="right"> <Link to={ `/${row.tx}` } className="alert-link">상세보기</Link></TableCell>
+                        <TableCell align="right"> <Link to={ `${txUrl}/${row.tx}` } className="alert-link">상세보기</Link></TableCell>
                     </TableRow>
                 )) }
             </TableBody>);
