@@ -1,7 +1,7 @@
 /* tslint:disable:ter-arrow-body-style */
 import './event.css';
 import React from 'react';
-import { withRouter, Link, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { Card, createStyles, WithStyles, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -156,9 +156,7 @@ export const styles = theme =>
 
 const stateParamToParam = (param: IEventListParam) => {
     return Object.keys(param).reduce((pv, cv) => {
-        if (param[ cv ]) {
-            Object.assign(pv, { [ cv ]: param[ cv ] });
-        }
+        Object.assign(pv, { [ cv ]: param[ cv ] });
         return pv;
     }, {});
 };
@@ -225,7 +223,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
     state: IEventListState = {
         param: {
             limit: 3,
-            offset: 1
+            offset: 0
         },
         nowDate: new Date(),
         list: []
@@ -253,7 +251,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
             ...this.state,
             param: {
                 ...this.state.param,
-                offset: 1
+                offset: 0
             },
             list: []
         });
