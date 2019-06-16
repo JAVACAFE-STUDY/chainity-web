@@ -18,6 +18,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { convertDate } from 'app/shared/util/date-utils';
 import queryString from 'query-string';
 import { getUser } from 'app/pages/users/users.reducer';
+import HomeStatus from "app/components/card/home-status";
 
 const styles = theme =>
     createStyles({
@@ -31,38 +32,46 @@ const styles = theme =>
         },
         item: {
             marginTop: '20px'
+        },
+        'divider-margin': {
+            margin: '10px',
+            backgroundColor: 'transparent'
         }
     });
 
 const mainContent = (classes, event, user) => (
     <React.Fragment>
         <Paper className={ classes.paper }>
-            <Typography component="h2" variant="h1">
+            <Typography component="h2" variant="h2">
                 { event.title }
             </Typography>
             <Grid>
                 <Grid item className={ classes.item }>
                     <Avatar style={ { float: 'left' } }>H</Avatar>
-                    <Typography component="h5" variant="h5">
-                        { user.name }
-                    </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                        { convertDate(event.createdAt) }
-                    </Typography>
+                    <div style={ { float: 'left', paddingLeft: '10px' } }>
+                        <Typography component="h6" variant="h6">
+                            { user.name }
+                        </Typography>
+                        <Typography variant="subtitle1" color="textSecondary">
+                            { convertDate(event.createdAt) }
+                        </Typography>
+                    </div>
                 </Grid>
             </Grid>
-            <Typography className={ classes.item } variant="h5" color="textSecondary">보상금</Typography>
-            <Typography variant="h5">
-                { event.tokens }
-            </Typography>
-            <Typography className={ classes.item } variant="h5" color="textSecondary">참여신청기간</Typography>
-            <Typography variant="h6">
-                { convertDate(event.startDate) } ~ { convertDate(event.finishDate) }
-            </Typography>
-            <Typography className={ classes.item } variant="h5" color="textSecondary">내용</Typography>
-            <Typography variant="h5">
-                { event.description }
-            </Typography>
+            <div style={ { clear: 'both', paddingTop: '15px' } }>
+                <Typography className={ classes.item } variant="h6" color="textSecondary">보상금</Typography>
+                <Typography variant="h6">
+                    { event.tokens }
+                </Typography>
+                <Typography className={ classes.item } variant="h6" color="textSecondary">참여신청기간</Typography>
+                <Typography variant="h6">
+                    { convertDate(event.startDate) } ~ { convertDate(event.finishDate) }
+                </Typography>
+                <Typography className={ classes.item } variant="h6" color="textSecondary">내용</Typography>
+                <Typography variant="h6">
+                    { event.description }
+                </Typography>
+            </div>
         </Paper>
     </React.Fragment>
 );
@@ -70,7 +79,7 @@ const mainContent = (classes, event, user) => (
 const sidebarContent = classes => (
     <Paper className={ classes.paper }>
         <ApplyList participations={ [] }/>
-        <Divider variant="middle"/>
+        <Divider variant="middle" className={ classes['divider-margin']}/>
         <CompletionList/>
     </Paper>
 );
@@ -79,12 +88,12 @@ const gridContainer = (classes, leftXs, rightXs, event, rewards, user) => (
     <Grid container spacing={ 24 }>
         <Grid item xs={ leftXs }>
             { mainContent(classes, event, user) }
+            <Divider variant="middle" className={ classes['divider-margin']}/>
             <RewardList items={ rewards }/>
         </Grid>
         <Grid item xs={ rightXs }>
             { sidebarContent(classes) }
         </Grid>
-
     </Grid>
 );
 

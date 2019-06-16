@@ -109,7 +109,7 @@ module.exports = options => ({
       }
     }),
     new Dotenv({
-      patpuh: options.env === 'development' ? './.env' : './.env.production',
+      path: options.env === 'development' ? './.env' : './.env.production',
       expand: true,
     }),
     /*new ForkTsCheckerWebpackPlugin({ tslint: true }),*/

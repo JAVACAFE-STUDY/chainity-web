@@ -37,7 +37,7 @@ export class Events extends React.Component<IHomeCardProp> {
                 <CardHeader title="이벤트"/>
                 <CardActions className={ classes.text }>
                     <CardContent className={ classes.margin }>
-                        <Typography color="textSecondary" component="p">
+                        <Typography variant="subtitle1" component="p" color="textSecondary">
                             참여
                         </Typography>
                         <Typography component="p">

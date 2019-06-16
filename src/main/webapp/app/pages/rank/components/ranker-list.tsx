@@ -27,7 +27,10 @@ const styles = theme => createStyles({
 export interface IRankerListProp {
     classes: any;
     title: string;
-    range: number;
+    range: {
+        startDate: string,
+        endDate: string
+    };
 }
 
 export interface IRankerListState {
@@ -49,13 +52,8 @@ export class RankerList extends React.Component<IRankerListProp, IRankerListStat
     search = async () => {
         const { range } = this.props;
         const url = API_PREFIX + URL_REWARDS;
-        // const url = 'http://localhost:8090/groups/1/rewards';
-
-        const res = await axios.get(url, {
-            params: {
-                range
-            }
-        });
+        const config = range ? { params: { startDate: range.startDate, endDate: range.endDate } } : null;
+        const res = await axios.get(url, config);
 
         this.setState({
             isLoaded: true,
@@ -100,7 +98,7 @@ export class RankerList extends React.Component<IRankerListProp, IRankerListStat
 
         const { error, isLoaded, items } = this.state;
 
-        console.log(items);
+        // console.log(items);
 
         if (error) {
             return <div>Error: { error.message }</div>;
@@ -114,9 +112,6 @@ export class RankerList extends React.Component<IRankerListProp, IRankerListStat
                         <Table className={ classes.table }>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell/>
-                                    <TableCell align="right"/>
-                                    <TableCell align="right"/>
                                     <TableCell align="right">참여 수</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -140,9 +135,9 @@ export class RankerList extends React.Component<IRankerListProp, IRankerListStat
                             <TableHead>
                                 { _.isEmpty(items) ? (<TableRow><TableCell/></TableRow>) : (
                                     <TableRow>
-                                        <TableCell/>
-                                        <TableCell align="right"/>
-                                        <TableCell align="right"/>
+                                        <TableCell />
+                                        <TableCell align="right">이름</TableCell>
+                                        <TableCell align="right">보상</TableCell>
                                         <TableCell align="right">참여 수</TableCell>
                                     </TableRow>
                                 ) }
@@ -151,9 +146,9 @@ export class RankerList extends React.Component<IRankerListProp, IRankerListStat
                                 { _.isEmpty(items) ? (<TableRow><TableCell align="center">데이터가 없습니다.</TableCell></TableRow>) : items.map((row, i) => (
                                     <TableRow key={ range + row[ '_id' ] + i }>
                                         <TableCell component="th" scope="row">#{ row[ '_id' ] }</TableCell>
-                                        <TableCell align="right">{ row.rewardedUser }</TableCell>
+                                        <TableCell align="right">{ row.name }</TableCell>
                                         <TableCell align="right">{ row.tokens }</TableCell>
-                                        <TableCell align="right">{ row.event.length }</TableCell>
+                                        <TableCell align="right">{ row.countOfPartipations }</TableCell>
                                     </TableRow>
                                 )) }
                             </TableBody>

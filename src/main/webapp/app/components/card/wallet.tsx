@@ -12,6 +12,9 @@ const styles = theme => ({
         width: '100%',
         maxWidth: 360,
         backgroundColor: theme.palette.background.paper
+    },
+    subtitle: {
+        'margin-top': '5px'
     }
 });
 
@@ -23,7 +26,7 @@ export interface IWalletCardProp {
 export class Wallet extends React.Component<IWalletCardProp> {
     render() {
 
-        const { user } = this.props;
+        const { user, classes } = this.props;
         const keyStore = user.keyStore;
         const tokens = !_.isEmpty(user.tokens) ? user.tokens : 0;
 
@@ -31,14 +34,14 @@ export class Wallet extends React.Component<IWalletCardProp> {
             <Card style={ { textAlign: 'left' } }>
                 <CardHeader title="지갑"/>
                 <CardActions>
-                    <CardContent style={ { marginLeft: 10 } }>
-                        <Typography color="textSecondary" component="p">
+                    <CardContent style={ { marginLeft: 10, overflow: 'hidden' } }>
+                        <Typography variant="subtitle1" className={classes.subtitle} component="p" color="textSecondary">
                             주소
                         </Typography>
                         <Typography component="p">
                             { keyStore && keyStore.address }
                         </Typography>
-                        <Typography color="textSecondary" component="p">
+                        <Typography variant="subtitle1" className={classes.subtitle} component="p" color="textSecondary">
                             토큰
                         </Typography>
                         <Typography component="p">
