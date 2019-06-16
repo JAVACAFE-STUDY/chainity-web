@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { getSession } from 'app/shared/reducers/authentication';
 import { getGroup } from 'app/pages/group/groups.reducer';
-import { getEventParticipations, getEvents } from 'app/pages/events/event.reducer';
+import { getEventParticipations, getEvents, getGroupParticipations } from 'app/pages/events/event.reducer';
 import { getUsers } from 'app/pages/users/users.reducer';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
@@ -39,11 +39,13 @@ export class HomeStatus extends React.Component<IHomeStatusProp> {
         this.props.getGroup('1');
         this.props.getEvents('1');
         this.props.getUsers('1');
+        this.props.getGroupParticipations('1');
     }
 
     render() {
-        const { classes, group, events, participations, users } = this.props;
-        console.log('group, events, participations, users  => ', group, events, participations, users);
+        const { classes, group, events, groupParticipations, users } = this.props;
+        console.log('group, events, participations, users  => ', group, events, users);
+        console.log('groupParticipations => ', groupParticipations);
         let initialTokens = 0;
         let usedTokens = 0;
         let name = '';
@@ -89,7 +91,7 @@ export class HomeStatus extends React.Component<IHomeStatusProp> {
                         참여 수
                     </Typography>
                     <Typography component="p">
-                        { participations.length }
+                        { groupParticipations.totalDocs }
                     </Typography>
                 </CardContent>
             </Card>
@@ -100,11 +102,11 @@ export class HomeStatus extends React.Component<IHomeStatusProp> {
 const mapStateToProps = storeState => ({
     group: storeState.groups.group,
     events: storeState.event.events,
-    participations: storeState.event.participations,
+    groupParticipations: storeState.event.groupParticipations,
     users: storeState.users.data
 });
 
-const mapDispatchToProps = { getSession, getGroup, getEvents, getEventParticipations, getUsers };
+const mapDispatchToProps = { getSession, getGroup, getEvents, getGroupParticipations, getEventParticipations, getUsers };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

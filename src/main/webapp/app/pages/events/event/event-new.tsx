@@ -1,6 +1,7 @@
 import '../event.css';
 
 import React from 'react';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
 import { createEvent, getEvents, getAggsParticipations } from '../event.reducer';
@@ -11,7 +12,6 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import { createStyles, withStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
 import CustomFormControl from 'app/components/form/custom-form-control';
 import DateRangePicker from 'app/components/form/date-range-picker';
 import { convertDate } from 'app/shared/util/date-utils';
@@ -63,7 +63,7 @@ const sidebarContent = classes => (
     </Paper>
 );
 
-export interface IEventNewPageProp extends StateProps, DispatchProps {
+export interface IEventNewPageProp extends StateProps, DispatchProps, RouteComponentProps {
     classes: any;
     match: any;
 }
@@ -89,9 +89,9 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
     }
 
     handleRangeDateChange = value => {
-        console.log('handleRangeDateChange ==> ', value);
+        // console.log('handleRangeDateChange ==> ', value);
         this.setState({ date: { ...this.state.date, ...value } });
-        console.log('handleRangeDateChange this.state.date :==> ', this.state.date);
+        // console.log('handleRangeDateChange this.state.date :==> ', this.state.date);
     };
 
     onChange = type => value => {
@@ -113,10 +113,11 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
     handleSubmit = e => {
         e.preventDefault();
         const { title, contents, reward, date } = this.state;
-        console.log('handleSubmit ===>', title, contents, reward, date.start, date.end);
+        // console.log('handleSubmit ===>', title, contents, reward, date.start, date.end);
         const startDate = convertDate(date.start);
         const finishDate = convertDate(date.end);
         this.props.createEvent('1', { 'title': title, 'description': contents, 'tokens': reward, 'startDate': startDate, 'finishDate': finishDate });
+        this.props.history.push('/event');
     };
 
     render() {
@@ -178,4 +179,4 @@ const mapDispatchToProps = { getSession, getEvents, createEvent, getAggsParticip
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EventNewPage));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EventNewPage)));
