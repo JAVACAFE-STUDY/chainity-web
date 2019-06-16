@@ -39,38 +39,26 @@ export class MemberRank extends React.Component<IMemberRankProp> {
     render() {
         const { classes, members } = this.props;
 
-        let membersTemp = [];
-
-        if (_.isArray(members)) {
-            // TODO 전달되는 데이터가 없어 임시로 리스트 생성, members 만 사용하도록 변경할 것
-            membersTemp = _.clone(members);
-            membersTemp.push({
-                'name': '테스트',
-                'avatar': '',
-                'tokens': '2000'
-            });
-        }
-
         return (
             <Card>
 
                 <CardContent>
-                {/*<CardActions>*/}
+                    { /*<CardActions>*/ }
                     <Grid container>
                         <Grid item sm={ 8 }>
                             <Typography variant="h5" component="h2" color="textSecondary" gutterBottom>
                                 이달의 멤버
                             </Typography>
                         </Grid>
-                        <Grid item sm={ 4 } className={classes.textAlignRight}>
+                        <Grid item sm={ 4 } className={ classes.textAlignRight }>
                             <Link to={ '/rank' }>더보기</Link>
                         </Grid>
                     </Grid>
-                {/*</CardActions>*/}
+                    { /*</CardActions>*/ }
                 </CardContent>
                 <CardContent>
-                    { !_.isEmpty(membersTemp)
-                        ? membersTemp.map((member, idx) => (
+                    { !_.isEmpty(members)
+                        ? members.map((member, idx) => (
                             <List key={ idx } className={ classes.root }>
                                 <ListItem alignItems="flex-start">
                                     <ListItemAvatar>
