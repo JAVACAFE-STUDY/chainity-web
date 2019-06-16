@@ -63,10 +63,9 @@ interface IRegisterState {
     userRegisterInfo?: IUserRegisterInfo;
 }
 
-function decode(urlSearch) {
+function decode() {
     try {
-        const searchParams = new URLSearchParams(urlSearch);
-        const token = searchParams.get('token');
+        const token = window.location.href.substr(window.location.href.indexOf('token')).replace('token=', '');
         const decipher = crypto.createDecipher('aes-256-cbc', 'CHANGE_THIS_TO_SOMETHING_RANDOM');
         return decipher.update(token, 'base64', 'utf8');
     } catch (e) {
@@ -88,6 +87,7 @@ class Register extends React.Component<IRegisterProps, IRegisterState> {
     };
 
     componentDidMount(): void {
+        debugger
         !this.state.decodeToken[1] && this.goLoginPage();
 
         this.setState({
