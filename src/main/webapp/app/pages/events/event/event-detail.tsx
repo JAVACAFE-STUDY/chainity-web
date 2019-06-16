@@ -18,7 +18,6 @@ import Avatar from '@material-ui/core/Avatar';
 import { convertDate } from 'app/shared/util/date-utils';
 import queryString from 'query-string';
 import { getUser } from 'app/pages/users/users.reducer';
-import HomeStatus from "app/components/card/home-status";
 
 const styles = theme =>
     createStyles({
@@ -47,7 +46,7 @@ const mainContent = (classes, event, user) => (
             </Typography>
             <Grid>
                 <Grid item className={ classes.item }>
-                    <Avatar style={ { float: 'left' } }>H</Avatar>
+                    <Avatar src={ user.avatar } style={ { float: 'left' } }>{user.name}</Avatar>
                     <div style={ { float: 'left', paddingLeft: '10px' } }>
                         <Typography component="h6" variant="h6">
                             { user.name }
@@ -79,7 +78,7 @@ const mainContent = (classes, event, user) => (
 const sidebarContent = classes => (
     <Paper className={ classes.paper }>
         <ApplyList participations={ [] }/>
-        <Divider variant="middle" className={ classes['divider-margin']}/>
+        <Divider variant="middle" className={ classes[ 'divider-margin' ] }/>
         <CompletionList/>
     </Paper>
 );
@@ -88,7 +87,7 @@ const gridContainer = (classes, leftXs, rightXs, event, rewards, user) => (
     <Grid container spacing={ 24 }>
         <Grid item xs={ leftXs }>
             { mainContent(classes, event, user) }
-            <Divider variant="middle" className={ classes['divider-margin']}/>
+            <Divider variant="middle" className={ classes[ 'divider-margin' ] }/>
             <RewardList items={ rewards }/>
         </Grid>
         <Grid item xs={ rightXs }>
@@ -127,7 +126,7 @@ export class EventDetailPage extends React.Component<IEventDetailPageProp> {
         return (
             <div>
                 { gridContainer(classes, 9, 3, event, rewards, user) }
-                <Button variant="outlined" className={ classes.button } onClick={ this.moveToList }>
+                <Button variant="outlined" style={ { marginTop: '10px' } } className={ classes.button } onClick={ this.moveToList }>
                     &lt; 목록으로 돌아가기
                 </Button>
             </div>
