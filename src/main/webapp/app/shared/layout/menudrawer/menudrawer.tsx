@@ -185,6 +185,9 @@ class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
         const { classes } = this.props;
         const open = Boolean(this.state.anchorEl);
 
+        // TODO get report url from server
+        const bugReportUrl = 'https://github.com/JAVACAFE-STUDY/chainity/issues/new?assignees=rygh4775&labels=bug&template=bug_report.md';
+
         const appBar = (
             <AppBar
                 position="fixed"
@@ -205,6 +208,10 @@ class MenuDrawer extends React.Component<IDrawerProps, IDrawerState> {
                         <Link className={ classes.appBarLink } to={ '/rank' }>
                             <Button className={ classes[ 'app-bar-button' ] }>랭킹</Button>
                         </Link>
+                        <a className={ classes.appBarLink } target="_blank" rel="noopener noreferrer"
+                           href={ bugReportUrl }>
+                            <Button className={ classes[ 'app-bar-button' ] }>버그 리포트</Button>
+                        </a>
                     </div>
                     <div className={ classes.grow }/>
                     <div className={ classes.profileArea }>

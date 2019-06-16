@@ -45,8 +45,8 @@ const mainContent = (classes, user) => (
     <React.Fragment>
         <Paper className={ classes.paper }>
             <ProfileCard/>
-            <Divider variant="middle" className={ classes['divider-margin']}/>
-            <ProfileRewardList userId={ user.id }/>
+            <Divider variant="middle" className={ classes[ 'divider-margin' ] }/>
+            <ProfileRewardList userId={ user._id }/>
         </Paper>
     </React.Fragment>
 );
@@ -55,7 +55,7 @@ const sidebarContent = (classes, user, userParticipations) => (
     <React.Fragment>
         <Paper className={ classes.paper }>
             <Wallet user={ user }/>
-            <Divider variant="middle" className={ classes['divider-margin']}/>
+            <Divider variant="middle" className={ classes[ 'divider-margin' ] }/>
             <Events userParticipations={ userParticipations }/>
         </Paper>
     </React.Fragment>
@@ -88,8 +88,8 @@ export class ProfilePage extends React.Component<IProfileProp, IProfileState> {
 
     componentDidMount() {
         const { account } = this.props;
-        this.props.getUser('1', account.id, account.status, account.role);
-        this.props.getEventParticipationByUser('1', account.id);
+        this.props.getUser('1', account._id, account.status, account.role);
+        this.props.getEventParticipationByUser('1', account._id);
     }
 
     render() {
