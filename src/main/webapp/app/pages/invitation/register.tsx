@@ -77,7 +77,7 @@ class Register extends React.Component<IRegisterProps, IRegisterState> {
 
     state: IRegisterState = {
         token: this.props.match.params.token,
-        decodeToken: decode(this.props.location.search).split('::'),
+        decodeToken: decode().split('::'),
         userRegisterInfo: {
             invitee: '',
             email: '',
@@ -87,7 +87,6 @@ class Register extends React.Component<IRegisterProps, IRegisterState> {
     };
 
     componentDidMount(): void {
-        debugger
         !this.state.decodeToken[1] && this.goLoginPage();
 
         this.setState({
