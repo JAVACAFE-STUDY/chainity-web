@@ -5,7 +5,6 @@ import classNames from 'classnames';
 import { IRootState } from 'app/shared/reducers';
 import { login } from 'app/shared/reducers/authentication';
 import {
-    Avatar,
     Button,
     createStyles,
     CssBaseline,
@@ -59,6 +58,10 @@ const styles = theme => createStyles({
     errorMessage: {
         height: '30px',
         marginTop: '20px'
+    },
+    logo: {
+        height: '60px',
+        marginBottom: '5px'
     }
 });
 
@@ -116,7 +119,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
             <main className={ classes.main }>
                 <CssBaseline/>
                 <Paper className={classes.paper}>
-                    <Avatar className={classes.avatar}/>
+                    <img src={ '/content/images/logo.png' } className={ classes.logo }/>
                     <Typography component="h1" variant="h5">자바카페에 로그인</Typography>
                     <Typography component="h1" variant="h5">{hostname}</Typography>
                     <form className={classes.form}
