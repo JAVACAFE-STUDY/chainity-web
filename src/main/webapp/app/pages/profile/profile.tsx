@@ -42,7 +42,7 @@ const mainContent = (classes, user) => (
             <ProfileCard/>
         </Paper>
         <Paper className={ classes.paper }>
-            <ProfileRewardList userId={ user.id }/>
+            <ProfileRewardList userId={ user._id }/>
         </Paper>
     </React.Fragment>
 );
@@ -84,8 +84,8 @@ export class ProfilePage extends React.Component<IProfileProp, IProfileState> {
 
     componentDidMount() {
         const { account } = this.props;
-        this.props.getUser('1', account.id, account.status, account.role);
-        this.props.getEventParticipationByUser('1', account.id);
+        this.props.getUser('1', account._id, account.status, account.role);
+        this.props.getEventParticipationByUser('1', account._id);
     }
 
     render() {
