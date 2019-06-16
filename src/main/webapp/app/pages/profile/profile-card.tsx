@@ -139,9 +139,9 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
                             <Button
                                 onClick={ this.handleSelectFile }
                                 variant="contained"
-                                color="primary"
+                                color="default"
                                 className={ classes.button }
-                            > +수정하기
+                            > 이미지 수정
                             </Button>
                             <ProfileDialog onClose={ this.onClose }
                                            open={ this.state.open } src={ this.state.src }
@@ -164,10 +164,10 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
                                 />
                                 <Button
                                     variant="contained"
-                                    color="secondary"
+                                    color="default"
                                     onClick={ this.handleUpdateProfile }
-                                    style={ { fontSize: 10, height: '70%', position: 'absolute', bottom: 0 } }
-                                    className={ classes.button }>프로파일 정보수정</Button>
+                                    style={ { height: '70%', position: 'absolute', bottom: 0 } }
+                                    className={ classes.button }>정보 수정</Button>
                             </div>
                             <div>
                                 <TextField
