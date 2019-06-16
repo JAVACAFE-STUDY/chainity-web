@@ -143,9 +143,11 @@ class Register extends React.Component<IRegisterProps, IRegisterState> {
                 password: this.state.userRegisterInfo.password
             });
 
+            alert('회원 가입되었습니다. 로그인 창으로 이동합니다.');
             this.goLoginPage();
         } catch (e) {
-            alert(e);
+            alert('시스템 에러가 발생하였습니다.');
+            console.error(e);
         }
     };
 
