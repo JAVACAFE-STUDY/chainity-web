@@ -85,9 +85,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
 
     handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        alert('오픈 준비 중 입니다. 잠시만 기다려주세요.');
-        window.location.href = 'https://chainity.co.kr/';
-        // this.login();
+        this.login();
     };
 
     login = async () => {
@@ -138,7 +136,6 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                                 placeholder="유저ID( Email )"
                                 className={ classNames(classes.input) }
                                 onChange={ this.changeUserName }
-                                disabled
                             />
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
@@ -150,7 +147,6 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                                 className={ classNames(classes.input) }
                                 onKeyDown={ this.enterPassword }
                                 onChange={ this.changePassword }
-                                disabled
                             />
                         </FormControl>
                         <Button
