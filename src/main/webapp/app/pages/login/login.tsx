@@ -98,7 +98,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
 
     changeUserName = e => {
         this.setState({
-            userName: e.target.value
+            userName: e.target.value.trim()
         });
     };
 
@@ -110,7 +110,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
 
     changePassword = e => {
         this.setState({
-            password: e.target.value
+            password: e.target.value.trim()
         });
     };
 
