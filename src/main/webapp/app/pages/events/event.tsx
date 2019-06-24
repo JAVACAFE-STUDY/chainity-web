@@ -233,7 +233,9 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
         await this.search();
         window.addEventListener('scroll', this.scrollEvent);
         this.props.getAggsParticipations('1');
-        this.betaAlertMessage();
+        if (this.props.account.name !== 'system') {
+            this.betaAlertMessage();
+        }
     }
 
     componentWillUnmount() {

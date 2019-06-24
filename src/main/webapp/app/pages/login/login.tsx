@@ -69,8 +69,8 @@ const styles = theme => createStyles({
 });
 
 const removeSpace = (value: string) => {
-    return value.replace(/\s/g, '')
-}
+    return value.replace(/\s/g, '');
+};
 
 class Login extends React.Component<ILoginProps, ILoginState> {
     state: ILoginState = {
