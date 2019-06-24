@@ -28,12 +28,32 @@ const styles = theme =>
         }
     });
 
-type SearchRange = 'month' | 'total';
+interface ISearchRange {
+    startDate: string,
+    endDate: string
+}
 
 const mainLeftContent = classes => {
-    const title = '이번 달 랭킹';
-    const range: SearchRange = 'month';
 
+    function pad(number) {
+        if (number < 10) {
+            return '0' + number;
+        }
+        return number;
+    }
+
+    function dateFormat(date) {
+        return date.getFullYear() +
+            '-' + pad(date.getMonth() + 1) +
+            '-' + pad(date.getDate());
+    }
+
+    const title = '이번 달 랭킹',
+        now = new Date(),
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1),
+        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    const range: ISearchRange = { startDate: dateFormat(startDate), endDate: dateFormat(endDate) };
+    console.dir(range);
     return (
         <RankerList title={ title } range={ range }/>
     );
@@ -41,10 +61,9 @@ const mainLeftContent = classes => {
 
 const mainRightContent = classes => {
     const title = '전체 랭킹';
-    const range: SearchRange = 'total';
 
     return (
-        <RankerList title={ title } range={ range }/>
+        <RankerList title={ title } />
     );
 };
 

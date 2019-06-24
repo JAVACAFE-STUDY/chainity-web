@@ -36,6 +36,12 @@ const styles = theme =>
         textField: {
             marginLeft: theme.spacing.unit,
             marginRight: theme.spacing.unit
+        },
+        emailField: {
+            width: 320
+        },
+        avatarContainer: {
+            marginTop: '13px'
         }
     });
 
@@ -119,44 +125,49 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
         return (
             <React.Fragment>
                 <Card className={ classes.card }>
-                    <div>
-                        <div className={ classes.imgContainer }>
-                            <img src={ this.state.img ? this.state.img : thumbnail }
-                                 height="200px"
-                                 width="200px"
-                                 alt="Cropped"
-                                 className={ classes.avatar }/>
-                        </div>
-                        <input type="file" ref={ this.selectFileRef } onChange={ this.onSelectFile }
-                               style={ { display: 'none' } }/>
-                        <Button
-                            onClick={ this.handleSelectFile }
-                            variant="contained"
-                            color="primary"
-                            className={ classes.button }
-                        > +수정하기
-                        </Button>
-                        <ProfileDialog onClose={ this.onClose }
-                                       open={ this.state.open } src={ this.state.src }
-                                       saveCroppedImg={ this.saveCroppedImg }
-                        />
+                    <div className={ classes.avatarContainer }>
+                        <CardContent className={ classes.content }>
+                            <div className={ classes.imgContainer }>
+                                <img src={ this.state.img ? this.state.img : thumbnail }
+                                     height="200px"
+                                     width="200px"
+                                     alt="Cropped"
+                                     className={ classes.avatar }/>
+                            </div>
+                            <input type="file" ref={ this.selectFileRef } onChange={ this.onSelectFile }
+                                   style={ { display: 'none' } }/>
+                            <Button
+                                onClick={ this.handleSelectFile }
+                                variant="contained"
+                                color="default"
+                                className={ classes.button }
+                            > 이미지 수정
+                            </Button>
+                            <ProfileDialog onClose={ this.onClose }
+                                           open={ this.state.open } src={ this.state.src }
+                                           saveCroppedImg={ this.saveCroppedImg }
+                            />
+                        </CardContent>
                     </div>
                     <div className={ classes.details }>
                         <CardContent className={ classes.content }>
-                            <div>
+                            <div style={ { position: 'relative' } }>
                                 <TextField
                                     required
                                     id="name"
                                     label="이름"
                                     defaultValue={ account.name }
-                                    className={ classes.textField }
+                                    className={ classes.textField + ' ' + classes.nameField }
                                     onChange={ this.handleNameChange }
                                     margin="normal"
                                     variant="outlined"
                                 />
-                                <Button color="secondary" onClick={ this.handleUpdateProfile }
-                                        style={ { fontSize: 10 } }
-                                        className={ classes.button }>프로파일 정보수정</Button>
+                                <Button
+                                    variant="contained"
+                                    color="default"
+                                    onClick={ this.handleUpdateProfile }
+                                    style={ { height: '70%', position: 'absolute', bottom: 0 } }
+                                    className={ classes.button }>정보 수정</Button>
                             </div>
                             <div>
                                 <TextField
@@ -166,7 +177,7 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
                                     label="이메일"
                                     defaultValue={ account.email }
                                     onChange={ this.handleEmailChange }
-                                    className={ classes.textField }
+                                    className={ classes.textField + ' ' + classes.emailField }
                                     margin="normal"
                                     variant="outlined"
                                 />

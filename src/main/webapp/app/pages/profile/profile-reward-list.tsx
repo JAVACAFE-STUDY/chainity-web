@@ -54,14 +54,21 @@ export class ProfileRewardList extends React.Component<IProfileRewardListProp, I
     render() {
         const { classes, userRewards } = this.props;
 
+        const txUrl = 'https://rinkeby.etherscan.io/tx';
         let tableBody;
 
-        if (_.isEmpty(userRewards)) {
+        if (userRewards.totalDocs === 0) {
             // TODO table row merge and paging
-            tableBody = (
-                <TableBody>
-                    <TableRow><TableCell align="right">보상내역 없음</TableCell></TableRow>
-                </TableBody>);
+            return (
+                <Card>
+                    <CardHeader
+                        title="보상 내역"
+                    />
+                    <CardContent>
+                        데이터가 없습니다.
+                    </CardContent>
+                </Card>
+            );
         } else {
             tableBody = (<TableBody>
                 { userRewards.docs.map(row => (
@@ -69,11 +76,12 @@ export class ProfileRewardList extends React.Component<IProfileRewardListProp, I
                         <TableCell component="th" scope="row"> <Link to={ `/event/detail/${row._id}` } className="alert-link">{ row._id }</Link></TableCell>
                         <TableCell align="right">{ row.tokens }</TableCell>
                         <TableCell align="right">{ row.createdAt }</TableCell>
-                        <TableCell align="right"> <Link to={ `/${row.tx}` } className="alert-link">상세보기</Link></TableCell>
+                        <TableCell align="right"> <Link to={ `${txUrl}/${row.tx}` } className="alert-link">상세보기</Link></TableCell>
                     </TableRow>
                 )) }
             </TableBody>);
         }
+
         return (
             <Card>
                 <CardHeader
