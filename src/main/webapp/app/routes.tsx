@@ -62,7 +62,7 @@ const Routes = () => (
             <ErrorBoundaryLayoutRoute path="/event" component={ Event }/>
             <ErrorBoundaryLayoutRoute path="/rank" component={ Rank }/>
             <ErrorBoundaryLayoutRoute path="/profile" component={ Profile }/>
-            <ErrorBoundaryRoute path="/invitation/:token" component={ InvitationRegister }/>
+            <ErrorBoundaryRoute path="/invitation" component={ InvitationRegister }/>
             <ErrorBoundaryRoute path="/" component={ Login }/>
         </Switch>
     </div>

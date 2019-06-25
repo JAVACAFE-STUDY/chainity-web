@@ -13,7 +13,10 @@ const styles = theme =>
         },
         datePicker: {
             width: '45%',
-            'margin-top': '-20px'
+            'margin-top': '-10px'
+        },
+        separator: {
+            'margin-top': '8px'
         }
     });
 
@@ -60,8 +63,9 @@ class DateRangePicker extends React.PureComponent<IDateRangePickerProp> {
                             label={ '시작일' }
                             value={ selectedStartDate }
                             onChange={ this.handleDateChange('start') }
+                            format="yyyy-MM-dd"
                         />
-                        <span>~</span>
+                        <span className={ classes.separator }>~</span>
                         <DatePicker
                           className={ classes.datePicker }
                             clearable={ clearable }
@@ -70,6 +74,7 @@ class DateRangePicker extends React.PureComponent<IDateRangePickerProp> {
                             label={ '종료일' }
                             value={ selectedEndDate }
                             onChange={ this.handleDateChange('end') }
+                            format="yyyy-MM-dd"
                         />
                     </MuiPickersUtilsProvider>
                 </Grid>

@@ -1,7 +1,7 @@
 /* tslint:disable:ter-arrow-body-style */
 import './event.css';
 import React from 'react';
-import { withRouter, Link, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { Card, createStyles, WithStyles, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -150,15 +150,13 @@ export const styles = theme =>
         },
         'divider-margin': {
             margin: '10px',
-            'background-color': 'transparent'
+            backgroundColor: 'transparent'
         }
     });
 
 const stateParamToParam = (param: IEventListParam) => {
     return Object.keys(param).reduce((pv, cv) => {
-        if (param[ cv ]) {
-            Object.assign(pv, { [ cv ]: param[ cv ] });
-        }
+        Object.assign(pv, { [ cv ]: param[ cv ] });
         return pv;
     }, {});
 };
@@ -191,7 +189,7 @@ const listItem = (classes, { event, index }, calcDate) => {
                 <Typography component="p" className={ classes.listItemTitle }>
                     { event.title }
                 </Typography>
-                <Typography className={ classes.listItemContent }>
+                <Typography className={ classes.listItemContent } component="span" color="textSecondary" >
                     { event.description }
                 </Typography>
                 <BlurCircular className={ classes.listItemCoinIcon }/>
@@ -224,23 +222,30 @@ interface IEventPageProp extends StateProps, DispatchProps, RouteComponentProps<
 export class EventPage extends React.Component<IEventPageProp, IEventListState> {
     state: IEventListState = {
         param: {
-            limit: 3,
-            offset: 1
+            limit: 10,
+            offset: 0
         },
         nowDate: new Date(),
         list: []
     };
 
-    componentDidMount() {
-        this.search();
+    async componentDidMount() {
+        await this.search();
         window.addEventListener('scroll', this.scrollEvent);
         this.props.getAggsParticipations('1');
-
+        if (this.props.account.name !== 'system') {
+            this.betaAlertMessage();
+        }
     }
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.scrollEvent);
     }
+
+    betaAlertMessage = () => {
+        alert('오프라인 데이터를 온라인으로 옮기는 작업이 진행 중입니다. 서비스 소개 페이지로 이동합니다.');
+        window.location.href = 'https://chainity.co.kr/';
+    };
 
     scrollEvent = () => {
         if ((window.scrollY + window.innerHeight) === document.body.offsetHeight) {
@@ -253,7 +258,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
             ...this.state,
             param: {
                 ...this.state.param,
-                offset: 1
+                offset: 0
             },
             list: []
         });
@@ -355,13 +360,11 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                         }
                     </Grid>
                     <Grid item xs={ 3 }>
-                        { /* 전체 통계를 호출하는 API 필요 */ }
                         <HomeStatus/>
                         <Divider variant="middle" className={ classes['divider-margin']}/>
-                        { /* 이달의 멥버 통계 호출하는 API 필요 */ }
                         <MemberRank members={ this.props.aggsParticipations }/>
                     </Grid>
-                </ Grid>
+                </Grid>
                 <Fab color="primary" aria-label="Add" className={ classes.fab } onClick={ this.handleClick }>
                     <AddIcon/>
                 </Fab>

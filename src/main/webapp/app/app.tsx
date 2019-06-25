@@ -68,11 +68,6 @@ export class App extends React.Component<IAppProps> {
             <MuiThemeProvider theme={deafultTheme}>
               <Router>
                 <div className="app-container" style={ { paddingTop } }>
-                  <ToastContainer
-                    position={ toast.POSITION.TOP_LEFT as ToastPosition }
-                    className="toastify-container"
-                    toastClassName="toastify-toast"
-                  />
                   <ErrorBoundary>
                     <AppRoutes/>
                   </ErrorBoundary>
