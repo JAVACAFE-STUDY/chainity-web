@@ -1,7 +1,7 @@
 /* tslint:disable:ter-arrow-body-style */
 import './event.css';
 import React from 'react';
-import { withRouter, Link, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { Card, createStyles, WithStyles, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -156,9 +156,7 @@ export const styles = theme =>
 
 const stateParamToParam = (param: IEventListParam) => {
     return Object.keys(param).reduce((pv, cv) => {
-        if (param[ cv ]) {
-            Object.assign(pv, { [ cv ]: param[ cv ] });
-        }
+        Object.assign(pv, { [ cv ]: param[ cv ] });
         return pv;
     }, {});
 };
@@ -224,23 +222,30 @@ interface IEventPageProp extends StateProps, DispatchProps, RouteComponentProps<
 export class EventPage extends React.Component<IEventPageProp, IEventListState> {
     state: IEventListState = {
         param: {
-            limit: 3,
-            offset: 1
+            limit: 10,
+            offset: 0
         },
         nowDate: new Date(),
         list: []
     };
 
-    componentDidMount() {
-        this.search();
+    async componentDidMount() {
+        await this.search();
         window.addEventListener('scroll', this.scrollEvent);
         this.props.getAggsParticipations('1');
-
+        if (this.props.account.name !== 'system') {
+            this.betaAlertMessage();
+        }
     }
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.scrollEvent);
     }
+
+    betaAlertMessage = () => {
+        alert('오프라인 데이터를 온라인으로 옮기는 작업이 진행 중입니다. 서비스 소개 페이지로 이동합니다.');
+        window.location.href = 'https://chainity.co.kr/';
+    };
 
     scrollEvent = () => {
         if ((window.scrollY + window.innerHeight) === document.body.offsetHeight) {
@@ -253,7 +258,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
             ...this.state,
             param: {
                 ...this.state.param,
-                offset: 1
+                offset: 0
             },
             list: []
         });

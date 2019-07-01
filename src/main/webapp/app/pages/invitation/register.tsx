@@ -63,10 +63,9 @@ interface IRegisterState {
     userRegisterInfo?: IUserRegisterInfo;
 }
 
-function decode(urlSearch) {
+function decode() {
     try {
-        const searchParams = new URLSearchParams(urlSearch);
-        const token = searchParams.get('token');
+        const token = window.location.href.substr(window.location.href.indexOf('token')).replace('token=', '');
         const decipher = crypto.createDecipher('aes-256-cbc', 'CHANGE_THIS_TO_SOMETHING_RANDOM');
         return decipher.update(token, 'base64', 'utf8');
     } catch (e) {
@@ -78,7 +77,7 @@ class Register extends React.Component<IRegisterProps, IRegisterState> {
 
     state: IRegisterState = {
         token: this.props.match.params.token,
-        decodeToken: decode(this.props.location.search).split('::'),
+        decodeToken: decode().split('::'),
         userRegisterInfo: {
             invitee: '',
             email: '',
@@ -143,9 +142,11 @@ class Register extends React.Component<IRegisterProps, IRegisterState> {
                 password: this.state.userRegisterInfo.password
             });
 
+            alert('회원 가입되었습니다. 로그인 창으로 이동합니다.');
             this.goLoginPage();
         } catch (e) {
-            alert(e);
+            alert('시스템 에러가 발생하였습니다.');
+            console.error(e);
         }
     };
 

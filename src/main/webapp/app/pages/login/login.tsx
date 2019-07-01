@@ -62,8 +62,15 @@ const styles = theme => createStyles({
     logo: {
         height: '60px',
         marginBottom: '5px'
+    },
+    input: {
+        cursor: 'not-allowed'
     }
 });
+
+const removeSpace = (value: string) => {
+    return value.replace(/\s/g, '');
+};
 
 class Login extends React.Component<ILoginProps, ILoginState> {
     state: ILoginState = {
@@ -95,7 +102,13 @@ class Login extends React.Component<ILoginProps, ILoginState> {
 
     changeUserName = e => {
         this.setState({
-            userName: e.target.value
+            userName: removeSpace(e.target.value)
+        });
+    };
+
+    changePassword = e => {
+        this.setState({
+            password: removeSpace(e.target.value)
         });
     };
 
@@ -103,12 +116,6 @@ class Login extends React.Component<ILoginProps, ILoginState> {
         if (e.key.toUpperCase() === 'ENTER') {
             this.login();
         }
-    };
-
-    changePassword = e => {
-        this.setState({
-            password: e.target.value
-        });
     };
 
     render() {
@@ -132,6 +139,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                                 name="user-id"
                                 placeholder="유저ID( Email )"
                                 className={ classNames(classes.input) }
+                                value={this.state.userName}
                                 onChange={ this.changeUserName }
                             />
                         </FormControl>
@@ -142,6 +150,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                                 placeholder="패스워드"
                                 type="password"
                                 className={ classNames(classes.input) }
+                                value={this.state.password}
                                 onKeyDown={ this.enterPassword }
                                 onChange={ this.changePassword }
                             />
