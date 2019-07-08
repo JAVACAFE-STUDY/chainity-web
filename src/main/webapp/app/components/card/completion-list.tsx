@@ -24,6 +24,7 @@ const styles = theme => ({
 
 export interface IHomeCardProp {
   classes?: any;
+  eventId: string;
 }
 
 export class CompletionList extends React.Component<IHomeCardProp> {
