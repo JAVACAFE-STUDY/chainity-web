@@ -2,19 +2,24 @@
 import './event.css';
 import React from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import { Card, createStyles, WithStyles, withStyles } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid';
-import Input from '@material-ui/core/Input';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
+import {
+    Button,
+    Card, CircularProgress,
+    createStyles,
+    Divider,
+    Fab,
+    FormControl,
+    Grid,
+    IconButton,
+    Input,
+    List,
+    Paper,
+    Typography,
+    WithStyles,
+    withStyles
+} from '@material-ui/core';
 import { BlurCircular } from '@material-ui/icons';
 import SearchIcon from '@material-ui/icons/Search';
-import Divider from '@material-ui/core/Divider';
-import Paper from '@material-ui/core/Paper';
-import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
 import HomeStatus from 'app/components/card/home-status';
@@ -56,6 +61,7 @@ interface IEventListState {
     list?: IEventListItem[];
     isNext?: Boolean;
     param: IEventListParam;
+    isRequest: boolean;
 }
 
 export const styles = theme =>
@@ -161,23 +167,28 @@ const stateParamToParam = (param: IEventListParam) => {
     }, {});
 };
 
-const searchBar = (classes, { changeEvent, enterEvent, clickSearch }) => {
+const searchBar = (classes, { changeEvent, enterEvent, clickSearch, state: { isRequest } }) => {
     return (
         <Paper className={ classes.search.root } elevation={ 1 }>
-            <FormControl fullWidth>
-                <Input
-                    className={ classes.search.input }
-                    placeholder=" 이벤트 검색 키워드를 입력해주세요. "
-                    onChange={ changeEvent }
-                    onKeyUp={ enterEvent }
-                    endAdornment={
-                        <IconButton className={ classes.search.iconButton } aria-label="Search">
-                            { /* 추후 처리 필요. SearchIcon onClick 이벤트로 발생하는 warning */ }
-                            <SearchIcon onClick={ clickSearch }/>
-                        </IconButton>
-                    }
-                />
-            </FormControl>
+                <FormControl fullWidth>
+                    <Input
+                        className={ classes.search.input }
+                        placeholder=" 이벤트 검색 키워드를 입력해주세요. "
+                        onChange={ changeEvent }
+                        onKeyUp={ enterEvent }
+                        disabled={isRequest}
+                        endAdornment={
+                            <IconButton className={ classes.search.iconButton } aria-label="Search">
+                                {
+                                    isRequest
+                                        ? <CircularProgress size={23} />
+                                        : <SearchIcon onClick={ clickSearch }/>
+                                }
+                            </IconButton>
+                        }
+                    />
+                </FormControl>
+
         </Paper>
     );
 };
@@ -226,27 +237,20 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
             offset: 0
         },
         nowDate: new Date(),
-        list: []
+        list: [],
+        isRequest: false
     };
 
     async componentDidMount() {
         await this.search();
         window.addEventListener('scroll', this.scrollEvent);
         this.props.getAggsParticipations('1');
-        if (this.props.account.name !== 'system') {
-            this.betaAlertMessage();
-        }
     }
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.scrollEvent);
     }
-
-    betaAlertMessage = () => {
-        alert('오프라인 데이터를 온라인으로 옮기는 작업이 진행 중입니다. 서비스 소개 페이지로 이동합니다.');
-        window.location.href = 'https://chainity.co.kr/';
-    };
-
+    
     scrollEvent = () => {
         if ((window.scrollY + window.innerHeight) === document.body.offsetHeight) {
             this.nextPageSearch();
@@ -266,20 +270,30 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
     };
 
     search = async () => {
-        const res = await axios.get('/v1/groups/1/events', {
-            params: {
-                ...stateParamToParam(this.state.param)
-            }
-        });
         this.setState({
-            ...this.state,
-            isNext: (Number(res.data.offset) + res.data.docs.length) < res.data.totalDocs,
-            data: res.data,
-            list: res.data.docs.reduce((previousValue, currentValue) => {
-                previousValue.push(currentValue);
-                return previousValue;
-            }, this.state.list)
+            isRequest: true
         });
+
+        try {
+            const res = await axios.get('/v1/groups/1/events', {
+                params: {
+                    ...stateParamToParam(this.state.param)
+                }
+            });
+            this.setState({
+                ...this.state,
+                isNext: (Number(res.data.offset) + res.data.docs.length) < res.data.totalDocs,
+                data: res.data,
+                list: res.data.docs.reduce((previousValue, currentValue) => {
+                    previousValue.push(currentValue);
+                    return previousValue;
+                }, this.state.list)
+            });
+        } finally {
+            this.setState({
+                isRequest: false
+            });
+        }
     };
 
     enterEvent = e => {
