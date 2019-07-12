@@ -24,6 +24,7 @@ const styles = theme => ({
 
 export interface IHomeCardProp {
   classes?: any;
+  eventId: string;
 }
 
 export class CompletionList extends React.Component<IHomeCardProp> {
@@ -35,7 +36,7 @@ export class CompletionList extends React.Component<IHomeCardProp> {
           title="참여완료"
         />
         <CardContent>
-          <List className={classes.root}>
+          {/*<List className={classes.root}>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
                 <Avatar>H</Avatar>
@@ -84,7 +85,7 @@ export class CompletionList extends React.Component<IHomeCardProp> {
                 }
               />
             </ListItem>
-          </List>
+          </List>*/}
         </CardContent>
       </Card>
     );
