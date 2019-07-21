@@ -28,6 +28,9 @@ const styles = createStyles({
     },
     text: {
         textAlign: 'left'
+    },
+    rewardButton: {
+        'margin-top': '5px'
     }
 });
 
@@ -101,16 +104,20 @@ export class ApplyList extends React.Component<IApplyListProp> {
         this.searchApplier();
     }
 
-    handleApply = async () => {
+    handleApply = () => {
         const url = `${API_PREFIX}/${GROUP_ID}${URL_EVENTS}/${this.props.eventId}${URL_PARTICIPATIONS}`;
-        const res = await axios.post(url);
-        this.setState({
-            isLoaded: true
-        });
-        this.searchApplier();
+        axios.post(url)
+            .then(res => {
+                this.setState({
+                    isLoaded: true
+                });
+                this.searchApplier();
+                alert('참여 신청되었습니다.');
+            });
+
     };
 
-    handleCancel = async () => {
+    handleCancel = () => {
 
         const { account } = this.props;
         // @ts-ignore
@@ -119,15 +126,21 @@ export class ApplyList extends React.Component<IApplyListProp> {
         const participation = participants.find(ele => ele._id === account._id);
         const participantId = participation.participantId;
         const url = `${API_PREFIX}/${GROUP_ID}${URL_EVENTS}/${this.props.eventId}${URL_PARTICIPATIONS}/${participantId}`;
-        const res = await axios.delete(url);
-        this.setState({
-            isLoaded: true
-        });
-        this.searchApplier();
+        axios.delete(url)
+            .then(res => {
+                this.setState({
+                    isLoaded: true
+                });
+                this.searchApplier();
+                alert('참여 신청이 취소되었습니다.');
+            });
     };
 
-    // TODO : 참여신청여부에 따라 신청하기/취소하기로 변경
-    // TODO : 취소기능 추가
+    giveReward = id => {
+        alert('보상 처리를 진행합니다. 원장에 반영되기까지 시간이 소요 될 수 있습니다.');
+    };
+
+    // TODO :
     render() {
 
         const { classes, account } = this.props;
@@ -166,6 +179,13 @@ export class ApplyList extends React.Component<IApplyListProp> {
                                             </React.Fragment>
                                         }
                                     />
+                                    {/*
+                                        (account.role === 'system' || account.role === 'admin') && (
+                                            <Button variant="outlined" className={ classes.button + ' ' + classes.rewardButton } onClick={ this.giveReward.bind(this, participant._id) }>
+                                                보상
+                                            </Button>
+                                        )
+                                    */}
                                 </ListItem>
                                 )
                             ) : (
