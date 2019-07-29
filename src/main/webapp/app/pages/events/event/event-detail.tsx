@@ -5,6 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
+import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
 import { getEvent, getEventParticipations, getEventRewards } from '../event.reducer';
@@ -35,6 +36,9 @@ const styles = theme =>
         'divider-margin': {
             margin: '10px',
             backgroundColor: 'transparent'
+        },
+        textField: {
+            fontSize: 20
         }
     });
 
@@ -46,7 +50,7 @@ const mainContent = (classes, event, user) => (
             </Typography>
             <Grid>
                 <Grid item className={ classes.item }>
-                    <Avatar src={ user.avatar } style={ { float: 'left' } }>{user.name}</Avatar>
+                    <Avatar src={ user.avatar } style={ { float: 'left' } }>{ user.name }</Avatar>
                     <div style={ { float: 'left', paddingLeft: '10px' } }>
                         <Typography component="h6" variant="h6">
                             { user.name }
@@ -67,9 +71,18 @@ const mainContent = (classes, event, user) => (
                     { convertDate(event.startDate) } ~ { convertDate(event.finishDate) }
                 </Typography>
                 <Typography className={ classes.item } variant="h6" color="textSecondary">내용</Typography>
-                <Typography variant="h6">
-                    { event.description }
-                </Typography>
+                <TextField
+                    InputProps={ {
+                        readOnly: true,
+                        classes: {
+                            input: classes.textField
+                        }
+                    } }
+                    margin="normal"
+                    fullWidth
+                    multiline
+                    rows="8"
+                    value={ event.description }/>
             </div>
         </Paper>
     </React.Fragment>
