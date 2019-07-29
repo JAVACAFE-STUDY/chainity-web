@@ -39,6 +39,9 @@ const styles = theme =>
         },
         textField: {
             fontSize: 20
+        },
+        'history-back-btn': {
+            'margin-top': '20px'
         }
     });
 
@@ -88,15 +91,15 @@ const mainContent = (classes, event, user) => (
     </React.Fragment>
 );
 
-const sidebarContent = classes => (
+const sidebarContent = (classes, user, eventId) => (
     <Paper className={ classes.paper }>
-        <ApplyList participations={ [] }/>
+        <ApplyList participations={ [] } eventId={ eventId }/>
         <Divider variant="middle" className={ classes[ 'divider-margin' ] }/>
-        <CompletionList/>
+        <CompletionList eventId={ eventId }/>
     </Paper>
 );
 
-const gridContainer = (classes, leftXs, rightXs, event, rewards, user) => (
+const gridContainer = (classes, leftXs, rightXs, event, rewards, user, eventId) => (
     <Grid container spacing={ 24 }>
         <Grid item xs={ leftXs }>
             { mainContent(classes, event, user) }
@@ -104,7 +107,7 @@ const gridContainer = (classes, leftXs, rightXs, event, rewards, user) => (
             <RewardList items={ rewards }/>
         </Grid>
         <Grid item xs={ rightXs }>
-            { sidebarContent(classes) }
+            { sidebarContent(classes, user, eventId) }
         </Grid>
     </Grid>
 );
@@ -123,6 +126,7 @@ export class EventDetailPage extends React.Component<IEventDetailPageProp> {
         this.props.getUser('1', this.props.event.createdBy, 'active', 'system');
         this.props.getEventParticipations('1', eventId);
         this.props.getEventRewards('1', eventId);
+
     }
 
     moveToList = () => {
@@ -130,16 +134,17 @@ export class EventDetailPage extends React.Component<IEventDetailPageProp> {
     };
 
     render() {
-        const { user, classes, event, rewards, participations } = this.props;
+        const { user, classes, event, rewards } = this.props;
 
         console.log('event', event);
-        console.log('participations', participations);
         console.log('user', user);
+        console.dir(this.props);
 
+        console.log(classes[ 'history-back-btn' ]);
         return (
             <div>
-                { gridContainer(classes, 9, 3, event, rewards, user) }
-                <Button variant="outlined" style={ { marginTop: '10px' } } className={ classes.button } onClick={ this.moveToList }>
+                { gridContainer(classes, 9, 3, event, rewards, user, queryString.parse(this.props.location.search).id) }
+                <Button variant="outlined" className={ classes.button + ' ' + classes['history-back-btn']} onClick={ this.moveToList }>
                     &lt; 목록으로 돌아가기
                 </Button>
             </div>

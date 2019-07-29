@@ -1,7 +1,7 @@
 {
-  "name": "blockchain",
-  "version": "0.6.0",
-  "description": "Description for blockchain",
+  "name": "chainity-web",
+  "version": "0.8.0",
+  "description": "Chainity web",
   "private": true,
   "license": "UNLICENSED",
   "cacheDirectories": [
