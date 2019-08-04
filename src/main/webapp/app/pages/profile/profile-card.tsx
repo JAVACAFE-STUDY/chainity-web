@@ -92,16 +92,13 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
     };
 
     saveCroppedImg = croppedImg => {
-        // const file = new File([ croppedImg ], 'avatar');
-        // console.log('saveCroppedImg ==>', file);
-        // this.props.uploadFile('1', this.props.account.id, file);
-        this.props.uploadFile('1', this.props.account.id, croppedImg);
+        this.props.uploadFile('1', this.props.account._id, croppedImg);
         this.setState({ open: false, img: croppedImg });
     };
 
     handleUpdateProfile = () => {
         const { account } = this.props;
-        this.props.updateUser('1', account.id, this.state.name, account.status, account.role);
+        this.props.updateUser('1', account._id, this.state.name, account.status, account.role);
     };
 
     handleNameChange = e => {
@@ -119,8 +116,6 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
         if (!_.isEmpty(account.thumbnail)) {
             thumbnail = account.thumbnail;
         }
-
-        // console.log(this.state.img);
 
         return (
             <React.Fragment>
