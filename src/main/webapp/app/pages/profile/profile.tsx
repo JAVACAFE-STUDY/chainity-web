@@ -1,7 +1,6 @@
 import './profile.css';
 
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';

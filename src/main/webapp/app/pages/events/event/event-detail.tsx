@@ -5,6 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
+import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
 import { getEvent, getEventParticipations, getEventRewards } from '../event.reducer';
@@ -18,7 +19,6 @@ import Avatar from '@material-ui/core/Avatar';
 import { convertDate } from 'app/shared/util/date-utils';
 import queryString from 'query-string';
 import { getUser } from 'app/pages/users/users.reducer';
-import HomeStatus from 'app/components/card/home-status';
 
 const styles = theme =>
     createStyles({
@@ -37,6 +37,9 @@ const styles = theme =>
             margin: '10px',
             backgroundColor: 'transparent'
         },
+        textField: {
+            fontSize: 20
+        },
         'history-back-btn': {
             'margin-top': '20px'
         }
@@ -50,7 +53,7 @@ const mainContent = (classes, event, user) => (
             </Typography>
             <Grid>
                 <Grid item className={ classes.item }>
-                    <Avatar style={ { float: 'left' } }>H</Avatar>
+                    <Avatar src={ user.avatar } style={ { float: 'left' } }>{ user.name }</Avatar>
                     <div style={ { float: 'left', paddingLeft: '10px' } }>
                         <Typography component="h6" variant="h6">
                             { user.name }
@@ -71,9 +74,18 @@ const mainContent = (classes, event, user) => (
                     { convertDate(event.startDate) } ~ { convertDate(event.finishDate) }
                 </Typography>
                 <Typography className={ classes.item } variant="h6" color="textSecondary">내용</Typography>
-                <Typography variant="h6">
-                    { event.description }
-                </Typography>
+                <TextField
+                    InputProps={ {
+                        readOnly: true,
+                        classes: {
+                            input: classes.textField
+                        }
+                    } }
+                    margin="normal"
+                    fullWidth
+                    multiline
+                    rows="8"
+                    value={ event.description }/>
             </div>
         </Paper>
     </React.Fragment>
@@ -82,7 +94,7 @@ const mainContent = (classes, event, user) => (
 const sidebarContent = (classes, user, eventId) => (
     <Paper className={ classes.paper }>
         <ApplyList participations={ [] } eventId={ eventId }/>
-        <Divider variant="middle" className={ classes['divider-margin']}/>
+        <Divider variant="middle" className={ classes[ 'divider-margin' ] }/>
         <CompletionList eventId={ eventId }/>
     </Paper>
 );
@@ -91,7 +103,7 @@ const gridContainer = (classes, leftXs, rightXs, event, rewards, user, eventId) 
     <Grid container spacing={ 24 }>
         <Grid item xs={ leftXs }>
             { mainContent(classes, event, user) }
-            <Divider variant="middle" className={ classes['divider-margin']}/>
+            <Divider variant="middle" className={ classes[ 'divider-margin' ] }/>
             <RewardList items={ rewards }/>
         </Grid>
         <Grid item xs={ rightXs }>
@@ -121,14 +133,20 @@ export class EventDetailPage extends React.Component<IEventDetailPageProp> {
         this.props.history.push('/event');
     };
 
+    componentWillUnmount(): void {
+        const { group } = this.props;
+        window.document.title = group.name;
+    }
+
     render() {
-        const { user, classes, event, rewards } = this.props;
+        const { user, classes, event, rewards, group } = this.props;
+        window.document.title = (`${group.name} - ${event.title}`) || group.name;
 
         console.log('event', event);
         console.log('user', user);
         console.dir(this.props);
 
-        console.log(classes['history-back-btn']);
+        console.log(classes[ 'history-back-btn' ]);
         return (
             <div>
                 { gridContainer(classes, 9, 3, event, rewards, user, queryString.parse(this.props.location.search).id) }
@@ -146,7 +164,8 @@ const mapStateToProps = storeState => ({
     participations: storeState.event.participations,
     event: storeState.event.event,
     rewards: storeState.event.rewards,
-    user: storeState.users.user
+    user: storeState.users.user,
+    group: storeState.groups.group
 });
 
 const mapDispatchToProps = { getSession, getEvent, getEventParticipations, getEventRewards, getUser };
