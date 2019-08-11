@@ -8,7 +8,9 @@ export const ACTION_TYPES = {
 
 const initialState = {
     loading: false,
-    group: {},
+    group: {
+        name: ''
+    },
     errorMessage: ''
 };
 
@@ -40,7 +42,9 @@ export default (state: GroupsState = initialState, action): GroupsState => {
 };
 
 // Actions
-export const getGroup = groupId => ({
-    type: ACTION_TYPES.GET_GROUP,
-    payload: axios.get(`v1/groups/${groupId}`)
-});
+export const getGroup = groupId => async dispatch => {
+    await dispatch({
+        type: ACTION_TYPES.GET_GROUP,
+        payload: axios.get(`v1/groups/${groupId}`)
+    });
+};

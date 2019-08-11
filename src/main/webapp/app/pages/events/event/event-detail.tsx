@@ -133,8 +133,14 @@ export class EventDetailPage extends React.Component<IEventDetailPageProp> {
         this.props.history.push('/event');
     };
 
+    componentWillUnmount(): void {
+        const { group } = this.props;
+        window.document.title = group.name;
+    }
+
     render() {
-        const { user, classes, event, rewards } = this.props;
+        const { user, classes, event, rewards, group } = this.props;
+        window.document.title = (`${group.name} - ${event.title}`) || group.name;
 
         console.log('event', event);
         console.log('user', user);
@@ -158,7 +164,8 @@ const mapStateToProps = storeState => ({
     participations: storeState.event.participations,
     event: storeState.event.event,
     rewards: storeState.event.rewards,
-    user: storeState.users.user
+    user: storeState.users.user,
+    group: storeState.groups.group
 });
 
 const mapDispatchToProps = { getSession, getEvent, getEventParticipations, getEventRewards, getUser };
