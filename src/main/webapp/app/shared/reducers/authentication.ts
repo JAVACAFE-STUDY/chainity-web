@@ -3,7 +3,7 @@ import { Storage } from 'react-jhipster';
 
 import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
 
-import config, { API_PREFIX, URL_LOGIN, URL_USERS, GROUP_ID } from 'app/config/constants';
+import { API_PREFIX, GROUP_ID, URL_LOGIN, URL_USERS } from 'app/config/constants';
 
 export const ACTION_TYPES = {
     LOGIN: 'authentication/LOGIN',
@@ -29,7 +29,8 @@ const initialState = {
     errorMessage: null as string, // Errors returned from server side
     redirectMessage: null as string,
     sessionHasBeenFetched: false,
-    image: null
+    image: null,
+    imageUploadSuccess: false
 };
 
 export type AuthenticationState = Readonly<typeof initialState>;
@@ -96,7 +97,7 @@ export default (state: AuthenticationState = initialState, action): Authenticati
                 showModalLogin: true,
                 isAuthenticated: false
             };
-        case ACTION_TYPES.UPDATE_USER:
+        case SUCCESS(ACTION_TYPES.UPDATE_USER):
             return {
                 ...state,
                 account: {
@@ -105,12 +106,23 @@ export default (state: AuthenticationState = initialState, action): Authenticati
                     email: action.payload.email
                 }
             };
-        case ACTION_TYPES.UPLOAD_FILE:
+        case REQUEST(ACTION_TYPES.UPLOAD_FILE):
             return {
-                ...state
+                ...state,
+                imageUploadSuccess: false
+            };
+        case SUCCESS(ACTION_TYPES.UPLOAD_FILE):
+            return {
+                ...state,
+                imageUploadSuccess: true
+            };
+        case FAILURE(ACTION_TYPES.UPLOAD_FILE):
+            return {
+                ...state,
+                imageUploadSuccess: false
             };
         case SUCCESS(ACTION_TYPES.GET_AVATAR):
-            console.log('ACTION_TYPES.GET_AVATAR =>', action.payload.response);
+            //console.log('ACTION_TYPES.GET_AVATAR =>', action.payload.response);
             return {
                 ...state,
                 image: action.payload.response
@@ -219,7 +231,7 @@ export const uploadFile = (groupId, userId, croppedImg) => async dispatch => {
     await dispatch({
         type: ACTION_TYPES.UPLOAD_FILE,
         payload: axios.put(`${API_PREFIX}/${groupId}${URL_USERS}/${userId}/avatar`, formData)
-        // payload: axios.put(`${API_PREFIX}/${groupId}${URL_USERS}/${userId}/avatar`, formData, config)
     });
+
     dispatch(getSession());
 };

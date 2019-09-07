@@ -8,6 +8,7 @@ import { getSession, updateUser, uploadFile } from 'app/shared/reducers/authenti
 import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { toast, ToastContainer } from 'react-toastify';
 
 const styles = theme =>
     createStyles({
@@ -84,6 +85,7 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
     };
 
     handleSelectFile = () => {
+        console.log('handleSelectFile => ', this.state);
         this.selectFileRef.current.click();
     };
 
@@ -91,8 +93,11 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
         this.setState({ open: false });
     };
 
-    saveCroppedImg = croppedImg => {
-        this.props.uploadFile('1', this.props.account._id, croppedImg);
+    saveCroppedImg = async croppedImg => {
+        await this.props.uploadFile('1', this.props.account._id, croppedImg);
+        if (this.props.imageUploadSuccess) {
+            toast('이미지가 등록되었습니다.', { autoClose: 2000 });
+        }
         this.setState({ open: false, img: croppedImg });
     };
 
@@ -119,6 +124,7 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
 
         return (
             <React.Fragment>
+                <ToastContainer/>
                 <Card className={ classes.card }>
                     <div className={ classes.avatarContainer }>
                         <CardContent className={ classes.content }>
@@ -132,10 +138,10 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
                             <input type="file" ref={ this.selectFileRef } onChange={ this.onSelectFile }
                                    style={ { display: 'none' } }/>
                             <Button
+                                className={ classes.button }
                                 onClick={ this.handleSelectFile }
                                 variant="contained"
                                 color="default"
-                                className={ classes.button }
                             > 이미지 수정
                             </Button>
                             <ProfileDialog onClose={ this.onClose }
@@ -187,7 +193,8 @@ export class ProfileCard extends React.Component<IProfileCardProp, IProfileCardS
 
 const mapStateToProps = storeState => ({
     account: storeState.authentication.account,
-    isAuthenticated: storeState.authentication.isAuthenticated
+    isAuthenticated: storeState.authentication.isAuthenticated,
+    imageUploadSuccess: storeState.authentication.imageUploadSuccess
 });
 
 const mapDispatchToProps = { getSession, updateUser, uploadFile };
