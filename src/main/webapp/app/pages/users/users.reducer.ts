@@ -58,9 +58,9 @@ export const getUsers = groupId => ({
     payload: axios.get(`v1/groups/${groupId}/users`)
 });
 
-export const getUser = (groupId, userId, status, role) => ({
+export const getUser = (groupId, userId) => ({
     type: ACTION_TYPES.GET_USER,
-    payload: axios.get(`v1/groups/${groupId}/users/${userId}?status=${status}&role=${role}`)
+    payload: axios.get(`v1/groups/${groupId}/users/${userId}`)
 });
 
 // export const createUser: ICrudPutAction<IUser> = user => async dispatch => {
