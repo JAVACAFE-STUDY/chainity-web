@@ -170,24 +170,24 @@ const stateParamToParam = (param: IEventListParam) => {
 const searchBar = (classes, { changeEvent, enterEvent, clickSearch, state: { isRequest } }) => {
     return (
         <Paper className={ classes.search.root } elevation={ 1 }>
-                <FormControl fullWidth>
-                    <Input
-                        className={ classes.search.input }
-                        placeholder=" 이벤트 검색 키워드를 입력해주세요. "
-                        onChange={ changeEvent }
-                        onKeyUp={ enterEvent }
-                        disabled={isRequest}
-                        endAdornment={
-                            <IconButton className={ classes.search.iconButton } aria-label="Search">
-                                {
-                                    isRequest
-                                        ? <CircularProgress size={23} />
-                                        : <SearchIcon onClick={ clickSearch }/>
-                                }
-                            </IconButton>
-                        }
-                    />
-                </FormControl>
+            <FormControl fullWidth>
+                <Input
+                    className={ classes.search.input }
+                    placeholder=" 이벤트 검색 키워드를 입력해주세요. "
+                    onChange={ changeEvent }
+                    onKeyUp={ enterEvent }
+                    disabled={ isRequest }
+                    endAdornment={
+                        <IconButton className={ classes.search.iconButton } aria-label="Search">
+                            {
+                                isRequest
+                                    ? <CircularProgress size={ 23 }/>
+                                    : <SearchIcon onClick={ clickSearch }/>
+                            }
+                        </IconButton>
+                    }
+                />
+            </FormControl>
 
         </Paper>
     );
@@ -195,12 +195,13 @@ const searchBar = (classes, { changeEvent, enterEvent, clickSearch, state: { isR
 
 const listItem = (classes, { event, index }, calcDate) => {
     return (
-        <Link to={ { pathname: `/event/detail/${ event._id }`, search: `id=${event._id}` } } key={ index } className={ classes.listItemLink }>
+        <Link to={ { pathname: `/event/detail/${ event._id }`, search: `id=${event._id}` } } key={ index }
+              className={ classes.listItemLink }>
             <Card className={ classes.listItem }>
                 <Typography component="p" className={ classes.listItemTitle }>
                     { event.title }
                 </Typography>
-                <Typography className={ classes.listItemContent } component="span" color="textSecondary" >
+                <Typography className={ classes.listItemContent } component="span" color="textSecondary">
                     { event.description }
                 </Typography>
                 <BlurCircular className={ classes.listItemCoinIcon }/>
@@ -250,7 +251,7 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.scrollEvent);
     }
-    
+
     scrollEvent = () => {
         if ((window.scrollY + window.innerHeight) === document.body.offsetHeight) {
             this.nextPageSearch();
@@ -351,10 +352,10 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
     };
 
     render() {
-        const { classes, users } = this.props;
+        const { classes, account } = this.props;
         return (
             <React.Fragment>
-                <Grid container xs={ 12 } spacing={ 24 }>
+                <Grid container spacing={ 24 }>
                     <Grid item xs={ 9 }>
                         { searchBar(classes, this) }
                         { listWrapper(classes, this.state.list, this) }
@@ -375,13 +376,15 @@ export class EventPage extends React.Component<IEventPageProp, IEventListState> 
                     </Grid>
                     <Grid item xs={ 3 }>
                         <HomeStatus/>
-                        <Divider variant="middle" className={ classes['divider-margin']}/>
+                        <Divider variant="middle" className={ classes[ 'divider-margin' ] }/>
                         <MemberRank members={ this.props.aggsParticipations }/>
                     </Grid>
                 </Grid>
-                <Fab color="primary" aria-label="Add" className={ classes.fab } onClick={ this.handleClick }>
+                { 'user' !== account.role &&
+                < Fab color="primary" aria-label="Add" className={ classes.fab } onClick={ this.handleClick }>
                     <AddIcon/>
                 </Fab>
+                }
             </React.Fragment>
         );
     }
