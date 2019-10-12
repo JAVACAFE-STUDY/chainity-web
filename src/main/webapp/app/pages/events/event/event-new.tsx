@@ -1,12 +1,11 @@
 import '../event.css';
 
 import React from 'react';
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getSession } from 'app/shared/reducers/authentication';
-import { createEvent, getEvents, getAggsParticipations } from '../event.reducer';
+import { createEvent, getAggsParticipations, getEvents } from '../event.reducer';
 import ApplyList from '../../../components/card/apply-list';
-import CompletionList from '../../../components/card/completion-list';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
@@ -54,14 +53,6 @@ export const styles = theme =>
             backgroundColor: 'transparent'
         }
     });
-
-const sidebarContent = classes => (
-    <Paper className={ classes.paper }>
-        <ApplyList participations={ [] }/>
-        <Divider variant="middle"/>
-        <CompletionList/>
-    </Paper>
-);
 
 export interface IEventNewPageProp extends StateProps, DispatchProps, RouteComponentProps {
     classes: any;
@@ -116,12 +107,18 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
         // console.log('handleSubmit ===>', title, contents, reward, date.start, date.end);
         const startDate = convertDate(date.start);
         const finishDate = convertDate(date.end);
-        this.props.createEvent('1', { 'title': title, 'description': contents, 'tokens': reward, 'startDate': startDate, 'finishDate': finishDate });
+        this.props.createEvent('1', {
+            'title': title,
+            'description': contents,
+            'tokens': reward,
+            'startDate': startDate,
+            'finishDate': finishDate
+        });
         this.props.history.push('/event');
     };
 
     render() {
-        const { classes } = this.props;
+        const { classes, account } = this.props;
         // match.params.id
         const multiline = true;
         const clearable = true;
@@ -133,25 +130,32 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
                             <Paper className={ classes.paper }>
                                 <form onSubmit={ this.handleSubmit }>
                                     <CustomFormControl title={ '제목' } onChange={ this.onChange('title') }/>
-                                    <CustomFormControl title={ '보상금' } type={ 'number' } onChange={ this.onChange('reward') }/>
+                                    <CustomFormControl title={ '보상금' } type={ 'number' }
+                                                       onChange={ this.onChange('reward') }/>
                                     <div>
                                         <FormControl className={ classes.customMargin }>
-                                            <InputLabel shrink htmlFor="bootstrap-input" className={ classes.bootstrapFormLabel }>
+                                            <InputLabel shrink htmlFor="bootstrap-input"
+                                                        className={ classes.bootstrapFormLabel }>
                                                 { '참여 신청 기간' }
                                             </InputLabel>
                                         </FormControl>
-                                        <DateRangePicker onChange={ this.handleRangeDateChange } clearable={ clearable } />
+                                        <DateRangePicker onChange={ this.handleRangeDateChange }
+                                                         clearable={ clearable }/>
                                     </div>
-                                    <CustomFormControl title={ '내용' } onChange={ this.onChange('contents') } multiline={ multiline } rows={ 8 }/>
+                                    <CustomFormControl title={ '내용' } onChange={ this.onChange('contents') }
+                                                       multiline={ multiline } rows={ 8 }/>
                                     <div>
-                                        <Button variant="contained" className={classes.button}>
-                                          <Link to={ '/event' }>
-                                            &lt; 목록으로 돌아가기
-                                          </Link>
+                                        <Button variant="contained" className={ classes.button }>
+                                            <Link to={ '/event' }>
+                                                &lt; 목록으로 돌아가기
+                                            </Link>
                                         </Button>
-                                        <Button className={ classes.rightButton + ' ' + classes.button } type="submit" variant="contained">
+                                        { 'user' !== account.role &&
+                                        <Button className={ classes.rightButton + ' ' + classes.button } type="submit"
+                                                variant="contained">
                                             등록
                                         </Button>
+                                        }
                                     </div>
                                 </form>
                             </Paper>
@@ -159,7 +163,7 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
                     </Grid>
                     <Grid item xs={ 3 }>
                         <HomeStatus/>
-                        <Divider variant="middle" className={ classes['divider-margin']}/>
+                        <Divider variant="middle" className={ classes[ 'divider-margin' ] }/>
                         <MemberRank members={ this.props.aggsParticipations }/>
                     </Grid>
                 </Grid>
@@ -169,6 +173,7 @@ export class EventNewPage extends React.Component<IEventNewPageProp, IEventNewPa
 }
 
 const mapStateToProps = storeState => ({
+    account: storeState.authentication.account,
     isAuthenticated: storeState.authentication.isAuthenticated,
     events: storeState.event.events,
     aggsParticipations: storeState.event.aggsParticipations.docs

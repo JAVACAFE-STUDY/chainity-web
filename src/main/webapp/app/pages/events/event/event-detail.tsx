@@ -119,11 +119,10 @@ export interface IEventDetailPageProp extends StateProps, DispatchProps, RouteCo
 
 export class EventDetailPage extends React.Component<IEventDetailPageProp> {
 
-    componentDidMount() {
+    async componentDidMount() {
         const eventId = queryString.parse(this.props.location.search).id;
-        this.props.getEvent('1', eventId);
-        // TODO 유저정보 조회시 status, role 파라미터가 필수로 되어있음. 이벤트 상세정보에서 어떠한 사용자가 생성한 정보인지 조회시에는 불필요한정보임. 임시로 고정처리
-        this.props.getUser('1', this.props.event.createdBy, 'active', 'system');
+        await this.props.getEvent('1', eventId);
+        this.props.getUser('1', this.props.event.createdBy);
         this.props.getEventParticipations('1', eventId);
         this.props.getEventRewards('1', eventId);
 
@@ -142,11 +141,11 @@ export class EventDetailPage extends React.Component<IEventDetailPageProp> {
         const { user, classes, event, rewards, group } = this.props;
         window.document.title = (`${group.name} - ${event.title}`) || group.name;
 
-        console.log('event', event);
-        console.log('user', user);
-        console.dir(this.props);
+        //console.log('event', event);
+        //console.log('user', user);
+        //console.dir(this.props);
 
-        console.log(classes[ 'history-back-btn' ]);
+        //console.log(classes[ 'history-back-btn' ]);
         return (
             <div>
                 { gridContainer(classes, 9, 3, event, rewards, user, queryString.parse(this.props.location.search).id) }

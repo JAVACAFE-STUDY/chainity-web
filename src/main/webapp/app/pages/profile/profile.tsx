@@ -82,7 +82,7 @@ export class ProfilePage extends React.Component<IProfileProp, IProfileState> {
 
     componentDidMount() {
         const { account } = this.props;
-        this.props.getUser('1', account._id, account.status, account.role);
+        this.props.getUser('1', account._id);
         this.props.getEventParticipationByUser('1', account._id);
     }
 
