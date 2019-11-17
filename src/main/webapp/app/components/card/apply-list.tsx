@@ -10,7 +10,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar/Avatar';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import CardHeader from '@material-ui/core/CardHeader/CardHeader';
-import { API_PREFIX, GROUP_ID, URL_EVENTS, URL_PARTICIPATIONS, URL_USERS } from 'app/config/constants';
+import { API_PREFIX, GROUP_ID, URL_EVENTS, URL_PARTICIPATIONS, URL_USERS, URL_REWARDS } from 'app/config/constants';
 import axios from 'axios';
 import _ from 'lodash';
 import { withRouter } from 'react-router';
@@ -39,6 +39,10 @@ export interface IApplyListProp {
     participants: any[];
     eventId: string;
     account: { _id: string };
+    refreshRewards: any;
+    refreshParticipants: any;
+    rewardedUsers: any;
+    participantUsers: any;
 }
 
 export class ApplyList extends React.Component<IApplyListProp> {
@@ -51,59 +55,6 @@ export class ApplyList extends React.Component<IApplyListProp> {
         };
     }
 
-    searchApplier = async () => {
-        console.dir(this.props);
-        // /v1/groups/:groupId/events/:eventId/participations
-        const url = `${API_PREFIX}/${GROUP_ID}${URL_EVENTS}/${this.props.eventId}${URL_PARTICIPATIONS}?limit=999`;
-        const res = await axios.get(url);
-        const getUsersPromises = [];
-        const participants = [];
-        const users = [];
-
-        // @ts-ignore
-        if (res && res.data && res.data.docs && res.data.docs.length > 0) {
-            // @ts-ignore
-            res.data.docs.forEach(ele => {
-                getUsersPromises.push(this.searchUserInfo(ele.participant));
-                participants.push({
-                    _id: ele.participant,
-                    participantId: ele._id,
-                    createdAt: ele.createdAt
-                });
-            });
-        }
-
-        axios.all(getUsersPromises)
-            .then(responses => {
-
-                responses.forEach(ele => {
-                    participants.forEach((participant, i) => {
-                        if (ele.data._id === participant._id) {
-                            participants[i] = {
-                                ...participant,
-                                ...ele.data
-                            };
-                        }
-                    });
-                });
-
-                this.setState({
-                    isLoaded: true,
-                    participants
-                });
-            });
-    }
-
-    searchUserInfo = async id => {
-        const url = `${API_PREFIX}/${GROUP_ID}${URL_USERS}/${id}`;
-        const res = await axios.get(url);
-        return res;
-    }
-
-    componentDidMount() {
-        this.searchApplier();
-    }
-
     handleApply = () => {
         const url = `${API_PREFIX}/${GROUP_ID}${URL_EVENTS}/${this.props.eventId}${URL_PARTICIPATIONS}`;
         axios.post(url)
@@ -111,10 +62,10 @@ export class ApplyList extends React.Component<IApplyListProp> {
                 this.setState({
                     isLoaded: true
                 });
-                this.searchApplier();
+                this.props.refreshParticipants();
+                // this.searchApplier();
                 alert('참여 신청되었습니다.');
             });
-
     };
 
     handleCancel = () => {
@@ -131,21 +82,39 @@ export class ApplyList extends React.Component<IApplyListProp> {
                 this.setState({
                     isLoaded: true
                 });
-                this.searchApplier();
+                this.props.refreshParticipants();
+                // this.searchApplier();
                 alert('참여 신청이 취소되었습니다.');
             });
     };
 
     giveReward = id => {
-        alert('보상 처리를 진행합니다. 원장에 반영되기까지 시간이 소요 될 수 있습니다.');
+
+        const url = `${API_PREFIX}/${GROUP_ID}${URL_EVENTS}/${this.props.eventId}${URL_REWARDS}`;
+        // @ts-ignore
+        const { tokens } = this.props;
+
+        axios.post(url, {
+                rewardedUser: id,
+                tokens
+            })
+            .then(res => {
+                this.setState({
+                    isLoaded: true
+                });
+                this.props.refreshRewards();
+                alert('보상 처리를 진행합니다. 원장에 반영되기까지 시간이 소요 될 수 있습니다.');
+            });
+
     };
 
     // TODO :
     render() {
 
-        const { classes, account } = this.props;
+        const { classes, account, rewardedUsers, participantUsers } = this.props;
         // @ts-ignore
-        const { participants } = this.state;
+        const rewardedUsersIds = rewardedUsers && Array.isArray(rewardedUsers) ? rewardedUsers.map(ele => ele.rewardedUser) : [];
+        const participants = participantUsers && Array.isArray(participantUsers) ? participantUsers.filter(participantUser => !rewardedUsersIds.includes(participantUser.participantUser)) : [];
         const isParticipated = participants.some(ele => ele._id === account._id);
 
         return (
@@ -179,13 +148,13 @@ export class ApplyList extends React.Component<IApplyListProp> {
                                             </React.Fragment>
                                         }
                                     />
-                                    {/*
+                                    {
                                         (account.role === 'system' || account.role === 'admin') && (
-                                            <Button variant="outlined" className={ classes.button + ' ' + classes.rewardButton } onClick={ this.giveReward.bind(this, participant._id) }>
+                                            <Button variant="outlined" className={ classes.button + ' ' + classes.rewardButton } onClick={ this.giveReward.bind(this, participant.participantUser) }>
                                                 보상
                                             </Button>
                                         )
-                                    */}
+                                    }
                                 </ListItem>
                                 )
                             ) : (

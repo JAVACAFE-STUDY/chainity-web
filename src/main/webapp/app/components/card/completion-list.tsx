@@ -10,6 +10,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import { API_PREFIX, GROUP_ID, URL_EVENTS, URL_REWARDS, URL_USERS } from 'app/config/constants';
+import axios from 'axios';
+import _ from "lodash";
 
 const styles = theme => ({
   root: {
@@ -23,73 +26,63 @@ const styles = theme => ({
 });
 
 export interface IHomeCardProp {
-  classes?: any;
-  eventId: string;
+    classes?: any;
+    eventId: string;
+    rewards: any;
+    rewardedUsers: any;
 }
 
 export class CompletionList extends React.Component<IHomeCardProp> {
-  render() {
-    const { classes } = this.props;
-    return (
-      <Card>
-        <CardHeader
-          title="참여완료"
-        />
-        <CardContent>
-          {/*<List className={classes.root}>
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar>H</Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary="홍길동"
-                secondary={
-                  <React.Fragment>
-                    <Typography component="span" className={classes.inline} color="textPrimary">
-                      금액
-                    </Typography>
-                    {' 1000 '}
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar>K</Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary="고길동"
-                secondary={
-                  <React.Fragment>
-                    <Typography component="span" className={classes.inline} color="textPrimary">
-                      금액
-                    </Typography>
-                    {' 2000 '}
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar>Y</Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary="연신"
-                secondary={
-                  <React.Fragment>
-                    <Typography component="span" className={classes.inline} color="textPrimary">
-                      금액
-                    </Typography>
-                    {' 5000 '}
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-          </List>*/}
-        </CardContent>
-      </Card>
-    );
-  }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            error: null
+        };
+    }
+
+    render() {
+        const { classes, rewardedUsers } = this.props;
+
+
+        // @ts-ignore
+        return (
+            <Card>
+                <CardHeader
+                    title="참여완료"
+                />
+                <CardContent>
+                    <List className={classes.root}>
+                        {
+                            rewardedUsers && rewardedUsers.length > 0 ? rewardedUsers.map((rewardedUser, i) => (
+                                <ListItem key={i} alignItems="flex-start">
+                                    <ListItemAvatar>
+                                        { !_.isEmpty(rewardedUser.avatar) ? <Avatar src={ rewardedUser.avatar }>{ rewardedUser.name }</Avatar>
+                                            : <Avatar>H</Avatar> }
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={rewardedUser.name}
+                                        secondary={
+                                            <React.Fragment>
+                                                <Typography component="span" className={ classes.inline } color="textPrimary">
+                                                    {rewardedUser.createdAt.substr(0, 10)}
+                                                </Typography>
+                                            </React.Fragment>
+                                        }
+                                    />
+                                </ListItem>
+                                )
+                            ) : (
+                                <ListItem alignItems="flex-start">
+                                    참여자가 없습니다.
+                                </ListItem>
+                            )
+                        }
+                    </List>
+                </CardContent>
+            </Card>
+        );
+    }
 }
 
 export default withStyles(styles)(CompletionList);

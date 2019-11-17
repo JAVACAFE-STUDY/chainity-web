@@ -8,7 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { createStyles, withStyles } from '@material-ui/core/styles';
-import { API_PREFIX, URL_REWARDS } from 'app/config/constants';
+import { API_PREFIX, URL_AGGS_PARTICIPATIONS } from 'app/config/constants';
 import axios from 'axios';
 import _ from 'lodash';
 
@@ -51,7 +51,7 @@ export class RankerList extends React.Component<IRankerListProp, IRankerListStat
 
     search = async () => {
         const { range } = this.props;
-        const url = API_PREFIX + URL_REWARDS;
+        const url = API_PREFIX + URL_AGGS_PARTICIPATIONS;
         const config = range ? { params: { startDate: range.startDate, endDate: range.endDate } } : null;
         const res = await axios.get(url, config);
 

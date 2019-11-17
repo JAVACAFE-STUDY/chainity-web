@@ -9,6 +9,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import _ from 'lodash';
+import axios from 'axios';
+import { API_PREFIX, GROUP_ID, URL_EVENTS, URL_PARTICIPATIONS, URL_USERS } from 'app/config/constants';
+import { convertDateYMDHMS, dateFormatYMDHMS } from 'app/shared/util/date-utils';
 
 const styles = theme => createStyles({
     root: {
@@ -25,11 +28,14 @@ const styles = theme => createStyles({
 export interface IRewardListProp {
     classes?: any;
     items: any;
+    rewards: any;
+    rewardedUsers: any;
 }
 
 export interface IRewardListState {
     error: any;
     isLoaded: boolean;
+    rewards: any;
 }
 
 export class RewardList extends React.Component<IRewardListProp, IRewardListState> {
@@ -37,17 +43,13 @@ export class RewardList extends React.Component<IRewardListProp, IRewardListStat
         super(props);
         this.state = {
             error: null,
-            isLoaded: false
+            isLoaded: false,
+            rewards: []
         };
     }
 
-    componentDidMount() {
-        // @ts-ignore
-        const { eventId } = this.props;
-    }
-
     render() {
-        const { classes, items } = this.props;
+        const { classes, rewardedUsers } = this.props;
         const { error, isLoaded } = this.state;
 
         // TODO 에러처리
@@ -57,8 +59,7 @@ export class RewardList extends React.Component<IRewardListProp, IRewardListStat
         //     return <div>Loading...</div>;
         // } else {
         let tableBody;
-
-        if (_.isEmpty(items)) {
+        if (_.isEmpty(rewardedUsers)) {
             return (<Card>
                 <CardHeader
                     title="보상 내역"
@@ -69,11 +70,11 @@ export class RewardList extends React.Component<IRewardListProp, IRewardListStat
             </Card>);
         } else {
             tableBody = (<TableBody>
-                { items.docs.map(row => (
-                    <TableRow key={ row[ '_id' ] }>
-                        <TableCell component="th" scope="row">{ row.rewardedUser }</TableCell>
-                        <TableCell align="right">{ row.tokens }</TableCell>
-                        <TableCell align="right">{ row.createdAt }</TableCell>
+                { rewardedUsers && Array.isArray(rewardedUsers) && rewardedUsers.length > 0 && rewardedUsers.map((row, i) => (
+                    <TableRow key={i}>
+                        <TableCell component="th" scope="row">{ row.name }</TableCell>
+                        <TableCell align="right">{ row.rewardToken }</TableCell>
+                        <TableCell align="right">{ dateFormatYMDHMS(new Date(row.createdAt)) }</TableCell>
                         <TableCell align="right">{ row.tx }</TableCell>
                     </TableRow>
                 )) }

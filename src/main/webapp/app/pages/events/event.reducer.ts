@@ -3,6 +3,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
 
+const defaultParams = '?offset=0&limit=999';
 export const ACTION_TYPES = {
     CREATE_EVENT: 'event/CREATE_EVENT',
     GET_EVENTS: 'event/GET_EVENTS',
@@ -157,29 +158,29 @@ export const getEvent = (groupId, eventId) => ({
 // v1/groups/:groupId/participations
 export const getGroupParticipations = (groupId) => ({
     type: ACTION_TYPES.GET_GROUP_PARTICIPATIONS,
-    payload: axios.get(`v1/groups/${groupId}/participations`)
+    payload: axios.get(`v1/groups/${groupId}/participations` + defaultParams)
 });
 
 // v1/groups/:groupId/events/:eventId/participations
 export const getEventParticipations = (groupId, eventId) => ({
     type: ACTION_TYPES.GET_EVENT_PARTICIPATIONS,
-    payload: axios.get(`v1/groups/${groupId}/events/${eventId}/participations`)
+    payload: axios.get(`v1/groups/${groupId}/events/${eventId}/participations` + defaultParams)
 });
 
 export const getEventParticipationByUser = (groupId, userId) => ({
     type: ACTION_TYPES.GET_EVENT_PARTICIPATIONS_BY_USER,
-    payload: axios.get(`v1/groups/${groupId}/users/${userId}/participations`)
+    payload: axios.get(`v1/groups/${groupId}/users/${userId}/participations` + defaultParams)
 });
 
 export const getEventRewards = (groupId, eventId) => ({
     type: ACTION_TYPES.GET_EVENT_REWARDS,
-    payload: axios.get(`v1/groups/${groupId}/events/${eventId}/rewards`)
+    payload: axios.get(`v1/groups/${groupId}/events/${eventId}/rewards` + defaultParams)
 });
 
 // GET /v1/groups/:groupId/users/:userId/rewards
 export const getEventRewardsByUser = (groupId, userId) => ({
     type: ACTION_TYPES.GET_EVENT_REWARDS_BY_USER,
-    payload: axios.get(`v1/groups/${groupId}/users/${userId}/rewards`)
+    payload: axios.get(`v1/groups/${groupId}/users/${userId}/rewards` + defaultParams)
 });
 
 // GET /v1/groups/:groupId/aggs/participations (optional: startDate, endDate, limit)

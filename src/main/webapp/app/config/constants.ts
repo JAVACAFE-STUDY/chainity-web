@@ -14,9 +14,10 @@ export const GROUP_ID = process.env.GROUP_ID;
 // export const API_SERVER_URL = `${PROTOCOL}://${API_SERVER_DOMAIN}:${API_SERVER_PORT}${API_PREFIX}`;
 export const URL_LOGIN = process.env.URL_LOGIN;
 export const URL_USERS = process.env.URL_USERS;
-export const URL_REWARDS = process.env.URL_REWARDS;
+export const URL_AGGS_PARTICIPATIONS = process.env.URL_AGGS_PARTICIPATIONS;
 export const URL_EVENTS = process.env.URL_EVENTS;
 export const URL_PARTICIPATIONS = process.env.URL_PARTICIPATIONS;
+export const URL_REWARDS = process.env.URL_REWARDS;
 
 export const API_URL = process.env.API_URL;
 
