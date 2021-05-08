@@ -24,7 +24,7 @@
     "dotenv-webpack": "^1.7.0",
     "jquery": "^1.9.1",
     "loaders.css": "0.1.2",
-    "lodash": "4.17.10",
+    "lodash": "4.17.21",
     "material-ui-pickers": "^2.2.4",
     "moment": "2.22.2",
     "query-string": "^6.5.0",
