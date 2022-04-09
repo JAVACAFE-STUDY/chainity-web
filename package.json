@@ -26,7 +26,7 @@
     "loaders.css": "0.1.2",
     "lodash": "4.17.10",
     "material-ui-pickers": "^2.2.4",
-    "moment": "2.22.2",
+    "moment": "2.29.2",
     "query-string": "^6.5.0",
     "react": "16.8.3",
     "react-addons-css-transition-group": "16.0.0-alpha.3",
